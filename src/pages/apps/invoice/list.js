@@ -326,7 +326,7 @@ const List = () => {
     if (lists.length === 0) {
       dispatch(getInvoiceList());
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // 
   }, []);
 
   const [list, setList] = useState([]);
@@ -419,7 +419,7 @@ const List = () => {
         Cell: ({ row }) => ActionCell(row, setGetInvoiceId, setInvoiceId, navigation, theme)
       }
     ],
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // 
     []
   );
 

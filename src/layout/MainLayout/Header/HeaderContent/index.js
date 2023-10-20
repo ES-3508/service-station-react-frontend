@@ -24,7 +24,7 @@ const HeaderContent = () => {
 
   const downLG = useMediaQuery((theme) => theme.breakpoints.down('lg'));
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // 
   const localization = useMemo(() => <Localization />, [i18n]);
 
   const megaMenu = useMemo(() => <MegaMenuSection />, []);

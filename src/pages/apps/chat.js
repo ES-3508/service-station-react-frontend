@@ -178,12 +178,12 @@ const Chat = () => {
     // hide left drawer when email app opens
     dispatch(openDrawer(false));
     dispatch(getUser(1));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // 
   }, []);
 
   useEffect(() => {
     dispatch(getUserChats(user.name));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // 
   }, [user]);
 
   return (

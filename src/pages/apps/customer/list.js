@@ -358,7 +358,7 @@ const CustomerListPage = () => {
         Cell: ({ row }) => ActionCell(row, setCustomer, setCustomerDeleteId, handleAdd, handleClose, theme)
       }
     ],
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // 
     [theme]
   );
 

@@ -41,7 +41,7 @@ const ComponentsLayout = ({ handleDrawerOpen, componentDrawerOpen }) => {
 
   useEffect(() => {
     dispatch(openComponentDrawer({ componentDrawerOpen: !matchDownMd }));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // 
   }, [matchDownMd]);
 
   return (

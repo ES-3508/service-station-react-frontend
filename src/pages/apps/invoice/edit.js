@@ -91,7 +91,7 @@ const Create = () => {
 
   useEffect(() => {
     dispatch(getInvoiceSingleList(Number(id))).then(() => setLoading(false));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // 
   }, [id]);
 
   const invoiceSingleList = {

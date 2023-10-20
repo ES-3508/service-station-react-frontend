@@ -29,4 +29,6 @@ export default function ThemeRoutes() {
     ComponentsRoutes,
     MainRoutes
   ]);
+
+  // return useRoutes([LoginRoutes, ComponentsRoutes, MainRoutes]);
 }

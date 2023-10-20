@@ -27,7 +27,7 @@ function UserList({ setUser, search }) {
 
   useEffect(() => {
     dispatch(getUsers());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // 
   }, []);
 
   useEffect(() => {
@@ -58,7 +58,7 @@ function UserList({ setUser, search }) {
     } else {
       setData(users);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // 
   }, [search]);
 
   return (

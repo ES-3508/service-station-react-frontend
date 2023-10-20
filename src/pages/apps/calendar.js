@@ -59,7 +59,7 @@ const Calendar = () => {
       dispatch(updateCalendarView(newView));
     }
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // 
   }, [matchDownSM]);
 
   const [date, setDate] = useState(new Date());

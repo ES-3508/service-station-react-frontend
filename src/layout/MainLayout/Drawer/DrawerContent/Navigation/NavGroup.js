@@ -82,7 +82,7 @@ const NavGroup = ({ item, lastItem, remItems, lastItemId, setSelectedItems, sele
         setCurrentItem(item);
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // 
   }, [item, lastItem, downLG]);
 
   const checkOpenForParent = (child, id) => {
@@ -110,7 +110,7 @@ const NavGroup = ({ item, lastItem, remItems, lastItemId, setSelectedItems, sele
   useEffect(() => {
     checkSelectedOnload(currentItem);
     if (openMini) setAnchorEl(null);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // 
   }, [pathname, currentItem]);
 
   const handleClick = (event) => {

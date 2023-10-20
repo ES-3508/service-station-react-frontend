@@ -53,7 +53,7 @@ const ProductReviews = ({ product }) => {
 
   useEffect(() => {
     dispatch(getProductReviews());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // 
   }, []);
 
   return (

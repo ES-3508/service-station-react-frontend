@@ -75,7 +75,7 @@ const Payment = ({ checkout, onBack, onNext, editAddress }) => {
     if (checkout.step > 2) {
       setComplete(true);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // 
   }, []);
 
   useEffect(() => {

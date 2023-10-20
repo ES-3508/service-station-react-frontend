@@ -49,7 +49,7 @@ const Details = () => {
 
   useEffect(() => {
     dispatch(getInvoiceSingleList(Number(id))).then(() => setLoading(false));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // 
   }, [id]);
 
   const today = new Date(`${list?.date}`).toLocaleDateString('en-GB', {

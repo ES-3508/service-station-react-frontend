@@ -130,7 +130,7 @@ const RelatedProducts = ({ id }) => {
 
   useEffect(() => {
     dispatch(getRelatedProducts(id));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // 
   }, []);
 
   let productResult = <></>;

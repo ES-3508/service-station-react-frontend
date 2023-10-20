@@ -72,7 +72,7 @@ const ProductsPage = () => {
       dispatch(resetCart());
     }
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // 
   }, []);
 
   const [openFilterDrawer, setOpenFilterDrawer] = useState(true);
@@ -99,7 +99,7 @@ const ProductsPage = () => {
 
   useEffect(() => {
     filterData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // 
   }, [filter]);
 
   let productResult = <></>;

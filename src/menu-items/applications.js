@@ -55,32 +55,32 @@ const applications = {
       url: '/apps/kanban/board'
     },
     {
-      id: 'customer',
+      id: 'users',
       title: 'Users',
       type: 'item',
       icon: icons.CustomerServiceOutlined,
       url: '/apps/customer/customer-list'
     },
-    // {
-    //   id: 'customer',
-    //   title: <FormattedMessage id="customer" />,
-    //   type: 'collapse',
-    //   icon: icons.CustomerServiceOutlined,
-    //   children: [
-    //     {
-    //       id: 'customer-list',
-    //       title: <FormattedMessage id="list" />,
-    //       type: 'item',
-    //       url: '/apps/customer/customer-list'
-    //     },
-    //     {
-    //       id: 'customer-card',
-    //       title: <FormattedMessage id="cards" />,
-    //       type: 'item',
-    //       url: '/apps/customer/customer-card'
-    //     }
-    //   ]
-    // },
+    {
+      id: 'customer',
+      title: <FormattedMessage id="customer" />,
+      type: 'collapse',
+      icon: icons.CustomerServiceOutlined,
+      children: [
+        {
+          id: 'customer-list',
+          title: <FormattedMessage id="list" />,
+          type: 'item',
+          url: '/apps/customer/customer-list'
+        },
+        {
+          id: 'customer-card',
+          title: <FormattedMessage id="cards" />,
+          type: 'item',
+          url: '/apps/customer/customer-card'
+        }
+      ]
+    },
     // {
     //   id: 'invoice',
     //   title: <FormattedMessage id="invoice" />,

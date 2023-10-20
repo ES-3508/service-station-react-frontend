@@ -128,7 +128,7 @@ const SalesChart = () => {
     } else {
       setSeries([]);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // 
   }, [income, cos]);
 
   useEffect(() => {

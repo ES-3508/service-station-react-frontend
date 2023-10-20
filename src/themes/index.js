@@ -19,7 +19,7 @@ export default function ThemeCustomization({ children }) {
 
   const theme = useMemo(() => Palette(mode, presetColor), [mode, presetColor]);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // 
   const themeTypography = useMemo(() => Typography(fontFamily), [fontFamily]);
   const themeCustomShadows = useMemo(() => CustomShadows(theme), [theme]);
 

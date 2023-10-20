@@ -22,7 +22,7 @@ const iconSX = {
 // ===========================|| DATA WIDGET - NEW CUSTOMERS CARD ||=========================== //
 
 const NewCustomers = () => (
-  <MainCard title="New Customers" content={false}>
+  <MainCard title="Add Staff" content={false}>
     <SimpleBar sx={{ height: 334 }}>
       <CardContent>
         <Grid container spacing={3} alignItems="center">

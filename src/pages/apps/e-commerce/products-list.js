@@ -292,7 +292,7 @@ const ProductList = () => {
 
   useEffect(() => {
     dispatch(getProducts());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // 
   }, []);
 
   const columns = useMemo(
@@ -351,7 +351,7 @@ const ProductList = () => {
         Cell: ({ row }) => ActionCell(row, theme)
       }
     ],
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // 
     [theme]
   );
 
