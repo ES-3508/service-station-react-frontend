@@ -68,7 +68,7 @@ const getInitialValues = (customer) => {
   return newCustomer;
 };
 
-const allStatus = ['Complicated', 'Single', 'Relationship'];
+// const allStatus = ['Complicated', 'Single', 'Relationship'];
 
 // ==============================|| CUSTOMER ADD / EDIT / DELETE ||============================== //
 

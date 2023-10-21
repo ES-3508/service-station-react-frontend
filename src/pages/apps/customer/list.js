@@ -41,22 +41,25 @@ import AddCustomer from 'sections/apps/customer/AddCustomer';
 import CustomerView from 'sections/apps/customer/CustomerView';
 import AlertCustomerDelete from 'sections/apps/customer/AlertCustomerDelete';
 
-import makeData from 'data/react-table';
 import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 
 // assets
 import { CloseOutlined, PlusOutlined, EyeTwoTone, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
+import axios from 'utils/axios';
 
-const avatarImage = require.context('assets/images/users', true);
+// const avatarImage = require.context('assets/images/users', true);
 
 // ==============================|| REACT TABLE ||============================== //
 
-function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, handleAdd }) {
+function ReactTable({ columns, getHeaderProps, renderRowSubComponent, handleAdd }) {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
 
   const filterTypes = useMemo(() => renderFilterTypes, []);
-  const sortBy = { id: 'fatherName', desc: false };
+  const sortBy = { id: 'name', desc: false };
+
+  const [data, setData] = useState([])
+  const [query, setQuery] = useState('')
 
   const {
     getTableProps,
@@ -80,7 +83,7 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
       columns,
       data,
       filterTypes,
-      initialState: { pageIndex: 0, pageSize: 10, hiddenColumns: ['avatar', 'email'], sortBy: [sortBy] }
+      initialState: { pageIndex: 0, pageSize: 10, hiddenColumns: ['age', 'address', 'imageUrl'] }
     },
     useGlobalFilter,
     useFilters,
@@ -91,10 +94,21 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
   );
 
   useEffect(() => {
+    (async () => {
+      const response = await axios.get(`/api/v1/customer?page=${pageIndex + 1}&limit=${pageSize}&query=${query}`);
+
+      if (response.status === 200) {
+        setData(response.data.data.customers);
+      }
+
+    })()
+  }, [pageIndex, pageSize, query])
+
+  useEffect(() => {
     if (matchDownSM) {
-      setHiddenColumns(['age', 'contact', 'visits', 'email', 'status', 'avatar']);
+      setHiddenColumns(['age', 'phone', 'visits', 'email', 'status', 'imageUrl']);
     } else {
-      setHiddenColumns(['avatar', 'email']);
+      setHiddenColumns(['age', 'address', 'imageUrl']);
     }
     // eslint-disable-next-line
   }, [matchDownSM]);
@@ -113,7 +127,13 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
           <GlobalFilter
             preGlobalFilteredRows={preGlobalFilteredRows}
             globalFilter={globalFilter}
-            setGlobalFilter={setGlobalFilter}
+            setGlobalFilter={(value) => {
+              if (value !== undefined) {
+                setQuery(value);
+              } else {
+                setQuery('');
+              }
+            }}
             size="small"
           />
           <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
@@ -189,13 +209,17 @@ const SelectionHeader = ({ getToggleAllPageRowsSelectedProps }) => (
   <IndeterminateCheckbox indeterminate {...getToggleAllPageRowsSelectedProps()} />
 );
 
+const IndexCell = ({ row }) => {
+  return <Typography variant="subtitle1">{Number(row.id) + 1}</Typography>;
+}
+
 const CustomCell = ({ row }) => {
   const { values } = row;
   return (
     <Stack direction="row" spacing={1.5} alignItems="center">
-      <Avatar alt="Avatar 1" size="sm" src={avatarImage(`./avatar-${!values.avatar ? 1 : values.avatar}.png`)} />
+      <Avatar alt="Avatar 1" size="sm" src={values.imageUrl} />
       <Stack spacing={0}>
-        <Typography variant="subtitle1">{values.fatherName}</Typography>
+        <Typography variant="subtitle1">{values.name}</Typography>
         <Typography variant="caption" color="textSecondary">
           {values.email}
         </Typography>
@@ -288,8 +312,7 @@ SelectionHeader.propTypes = {
 const CustomerListPage = () => {
   const theme = useTheme();
 
-  const data = useMemo(() => makeData(200), []);
-
+  const [data, setData] = useState([]);
   const [add, setAdd] = useState(false);
   const [open, setOpen] = useState(false);
   const [customer, setCustomer] = useState();
@@ -316,16 +339,17 @@ const CustomerListPage = () => {
       {
         Header: '#',
         accessor: 'id',
-        className: 'cell-center'
+        className: 'cell-center',
+        Cell: IndexCell,
       },
       {
-        Header: 'User Name',
-        accessor: 'fatherName',
+        Header: 'Name',
+        accessor: 'name',
         Cell: CustomCell
       },
       {
-        Header: 'Avatar',
-        accessor: 'avatar',
+        Header: 'Address',
+        accessor: 'address',
         disableSortBy: true
       },
       {
@@ -334,7 +358,7 @@ const CustomerListPage = () => {
       },
       {
         Header: 'Contact',
-        accessor: 'contact',
+        accessor: 'phone',
         Cell: NumberFormatCell
       },
       {
@@ -345,6 +369,10 @@ const CustomerListPage = () => {
       {
         Header: 'Country',
         accessor: 'country'
+      },
+      {
+        Header: 'Image',
+        accessor: 'imageUrl'
       },
       {
         Header: 'Status',
@@ -362,7 +390,7 @@ const CustomerListPage = () => {
     [theme]
   );
 
-  const renderRowSubComponent = useCallback(({ row }) => <CustomerView data={data[row.id]} />, [data]);
+  const renderRowSubComponent = useCallback(({ row }) => <CustomerView data={data[row._id]} />, [data]);
 
   return (
     <MainCard content={false}>
