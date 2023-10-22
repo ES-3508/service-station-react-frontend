@@ -190,7 +190,10 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
             })}
             <TableRow sx={{ '&:hover': { bgcolor: 'transparent !important' } }}>
               <TableCell sx={{ p: 2, py: 3 }} colSpan={9}>
-                <TablePagination serverSidePagination={true} total={total} gotoPage={gotoPage} rows={rows} setPageSize={setPageSize} pageSize={pageSize} pageIndex={pageIndex} />
+                <TablePagination serverSidePagination={true} total={total} gotoPage={gotoPage} rows={rows} setPageSize={(size) => {
+                  setPageSize(size);
+                  setNumOfPages(size);
+                }} pageSize={pageSize} pageIndex={pageIndex} />
               </TableCell>
             </TableRow>
           </TableBody>
