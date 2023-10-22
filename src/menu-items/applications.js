@@ -54,13 +54,13 @@ const applications = {
       icon: BuildOutlined,
       url: '/apps/kanban/board'
     },
-    {
-      id: 'users',
-      title: 'Users',
-      type: 'item',
-      icon: icons.CustomerServiceOutlined,
-      url: '/apps/customer/customer-list'
-    },
+    // {
+    //   id: 'users',
+    //   title: 'Users',
+    //   type: 'item',
+    //   icon: icons.CustomerServiceOutlined,
+    //   url: '/apps/customer/customer-list'
+    // },
     {
       id: 'customer',
       title: <FormattedMessage id="customer" />,
