@@ -45,39 +45,39 @@ import { openSnackbar } from 'store/reducers/snackbar';
 
 // assets
 import { CameraOutlined, DeleteFilled } from '@ant-design/icons';
-import { createCustomer } from 'store/reducers/customers';
+import { createCustomer, deleteCustomer, updateCustomer } from 'store/reducers/customers';
 import { CustomerStatus } from 'config';
 
 // const avatarImage = require.context('assets/images/users', true);
 
 // constant
-const getInitialValues = (customer) => {
+// const getInitialValues = (customer) => {
 
-  const newCustomer = {
-    name: '',
-    email: '',
-    phone: '',
-    address: '',
-    country: '',
-    status: CustomerStatus.PENDING,
-  };
+//   const newCustomer = {
+//     name: '',
+//     email: '',
+//     phone: '',
+//     address: '',
+//     country: '',
+//     status: CustomerStatus.PENDING,
+//   };
 
-  if (customer) {
-    newCustomer.name = customer.name;
-    newCustomer.phone = customer.phone;
-    newCustomer.email = customer.email;
-    newCustomer.address = customer.address;
-    newCustomer.country = customer.country;
-    newCustomer.status = customer.status;
-    newCustomer.age = customer.age;
-    newCustomer.zipCode = customer.zipCode;
-    newCustomer.web = customer.web;
-    newCustomer.description = customer?.description;
-    return _.merge({}, newCustomer, customer);
-  }
+//   if (customer) {
+//     newCustomer.name = customer.name;
+//     newCustomer.phone = customer.phone;
+//     newCustomer.email = customer.email;
+//     newCustomer.address = customer.address;
+//     newCustomer.country = customer.country;
+//     newCustomer.status = customer.status;
+//     newCustomer.age = customer.age;
+//     newCustomer.zipCode = customer.zipCode;
+//     newCustomer.web = customer.web;
+//     newCustomer.description = customer?.description;
+//     return _.merge({}, newCustomer, customer);
+//   }
 
-  return newCustomer;
-};
+//   return newCustomer;
+// };
 
 // const allStatus = ['Complicated', 'Single', 'Relationship'];
 
@@ -86,6 +86,11 @@ const getInitialValues = (customer) => {
 const AddCustomer = ({ customer, onCancel }) => {
 
   const [openAlert, setOpenAlert] = useState(false);
+
+  const [deletingCustomer, setDeletingCustomer] = useState({
+    _id: null,
+    name: ''
+  });
 
   const handleAlertClose = () => {
     setOpenAlert(!openAlert);
@@ -96,7 +101,7 @@ const AddCustomer = ({ customer, onCancel }) => {
   const isCreating = !customer;
 
   const [selectedImage, setSelectedImage] = useState(undefined);
-  const [avatar, setAvatar] = useState(customer ? customer.imageUrl : '');
+  const [avatar, setAvatar] = useState('');
 
   useEffect(() => {
     if (selectedImage) {
@@ -104,14 +109,28 @@ const AddCustomer = ({ customer, onCancel }) => {
     }
   }, [selectedImage]);
 
+  useEffect(() => {
+    if (customer) {
+      setAvatar(customer.imageUrl);
+    }
+  }, [customer])
+
+  const deleteHandler = async (customer) => {
+    setDeletingCustomer({
+      _id: customer._id,
+      name: customer.name
+    })
+    setOpenAlert(true)
+  }
+
   const CustomerSchema = Yup.object().shape({
     name: Yup.string().max(255).required('Name is required'),
     email: Yup.string().max(255).required('Email is required').email('Must be a valid email'),
-    phone: Yup.string().matches(/^\(?(?:(?:0(?:0|11)\)?[\s-]?\(?|\+)44\)?[\s-]?\(?(?:0\)?[\s-]?\(?)?|0)(?:\d{5}\)?[\s-]?\d{4,5}|\d{4}\)?[\s-]?(?:\d{5}|\d{3}[\s-]?\d{3})|\d{3}\)?[\s-]?\d{3}[\s-]?\d{3,4}|\d{2}\)?[\s-]?\d{4}[\s-]?\d{4}|8(?:00[\s-]?11[\s-]?11|45[\s-]?46[\s-]?4\d))(?:(?:[\s-]?(?:x|ext\.?\s?|\#)\d+)?)$/).required("Phone number is required"),
+    phone: Yup.string().matches(/^\(?(?:(?:0(?:0|11)\)?[\s-]?\(?|\+)44\)?[\s-]?\(?(?:0\)?[\s-]?\(?)?|0)(?:\d{5}\)?[\s-]?\d{4,5}|\d{4}\)?[\s-]?(?:\d{5}|\d{3}[\s-]?\d{3})|\d{3}\)?[\s-]?\d{3}[\s-]?\d{3,4}|\d{2}\)?[\s-]?\d{4}[\s-]?\d{4}|8(?:00[\s-]?11[\s-]?11|45[\s-]?46[\s-]?4\d))(?:(?:[\s-]?(?:x|ext\.?\s?|\#)\d+)?)$/, "Invalid phone number").required("Phone number is required"),
     age: Yup.number().min(16).required('Age is required'), // TODO: Define Min and Max age limits
     address: Yup.string().max(255).required('Address is required'),
     country: Yup.string().max(255).required('Country is required'),
-    zipCode: Yup.number().required('Zip code is required'),
+    zipCode: Yup.number().typeError("Please enter a number").required('Zip code is required'),
     web: Yup.string().matches(/^((https?|ftp):\/\/)?(www.)?(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i, "Invalid URL").required('Zip code is required'),
     description: Yup.string().max(500).optional(),
     status: Yup.mixed().oneOf([CustomerStatus.PENDING, CustomerStatus.VERIFIED, CustomerStatus.REJECTED]).default(CustomerStatus.PENDING)
@@ -139,18 +158,8 @@ const AddCustomer = ({ customer, onCancel }) => {
       try {
 
         if (customer) {
-          // dispatch(updateCustomer(customer.id, newCustomer)); - update
-          dispatch(
-            openSnackbar({
-              open: true,
-              message: 'Customer update successfully.',
-              variant: 'alert',
-              alert: {
-                color: 'success'
-              },
-              close: false
-            })
-          );
+          dispatch(updateCustomer(customer._id, values));
+          resetForm();
         } else {
 
           dispatch(createCustomer(values));
@@ -167,6 +176,8 @@ const AddCustomer = ({ customer, onCancel }) => {
   });
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue, resetForm } = formik;
+
+  console.log(errors)
 
   return (
     <>
@@ -428,7 +439,7 @@ const AddCustomer = ({ customer, onCancel }) => {
                 <Grid item>
                   {!isCreating && (
                     <Tooltip title="Delete Customer" placement="top">
-                      <IconButton onClick={() => setOpenAlert(true)} size="large" color="error">
+                      <IconButton onClick={() => deleteHandler(customer)} size="large" color="error">
                         <DeleteFilled />
                       </IconButton>
                     </Tooltip>
@@ -449,7 +460,7 @@ const AddCustomer = ({ customer, onCancel }) => {
           </Form>
         </LocalizationProvider>
       </FormikProvider>
-      {!isCreating && <AlertCustomerDelete title={customer.fatherName} open={openAlert} handleClose={handleAlertClose} />}
+      {!isCreating && <AlertCustomerDelete title={deletingCustomer.name} customerId={deletingCustomer._id} open={openAlert} handleClose={handleAlertClose} />}
     </>
   );
 };
