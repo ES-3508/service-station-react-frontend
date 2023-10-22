@@ -45,7 +45,8 @@ import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 
 // assets
 import { CloseOutlined, PlusOutlined, EyeTwoTone, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
-import axios from 'utils/axios';
+import { dispatch, useSelector } from 'store';
+import { getCustomers } from 'store/reducers/customers';
 
 // const avatarImage = require.context('assets/images/users', true);
 
@@ -58,15 +59,18 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
   const filterTypes = useMemo(() => renderFilterTypes, []);
   const sortBy = { id: 'name', desc: false };
 
-  const [data, setData] = useState([])
   const [query, setQuery] = useState('')
+
+  const { customers: {
+    customers,
+  }, action } = useSelector((state) => state.customers);
 
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     prepareRow,
-    setHiddenColumns,
+    // setHiddenColumns,
     allColumns,
     visibleColumns,
     rows,
@@ -75,13 +79,13 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
     setPageSize,
     state: { globalFilter, selectedRowIds, pageIndex, pageSize, expanded },
     preGlobalFilteredRows,
-    setGlobalFilter,
+    // setGlobalFilter,
     setSortBy,
     selectedFlatRows
   } = useTable(
     {
       columns,
-      data,
+      data: customers,
       filterTypes,
       initialState: { pageIndex: 0, pageSize: 10, hiddenColumns: ['age', 'address', 'imageUrl', 'accountStatus'] }
     },
@@ -94,35 +98,21 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
   );
 
   useEffect(() => {
-    (async () => {
+    dispatch(getCustomers(pageIndex, pageSize, query));
+  }, [pageIndex, pageSize, query, action])
 
-      let requestUrl = `/api/v1/customer?page=${pageIndex + 1}&limit=${pageSize}`;
-
-      if (query) {
-        requestUrl = `${requestUrl}&query=${query}`
-      }
-
-      const response = await axios.get(requestUrl);
-
-      if (response.status === 200) {
-        setData(response.data.data.customers);
-      }
-
-    })()
-  }, [pageIndex, pageSize, query])
-
-  useEffect(() => {
-    if (matchDownSM) {
-      setHiddenColumns(['age', 'phone', 'visits', 'email', 'accountStatus', 'imageUrl']);
-    } else {
-      setHiddenColumns(['age', 'address', 'imageUrl', 'accountStatus']);
-    }
-    // eslint-disable-next-line
-  }, [matchDownSM]);
+  // useEffect(() => {
+  //   if (matchDownSM) {
+  //     setHiddenColumns(['age', 'phone', 'visits', 'email', 'accountStatus', 'imageUrl']);
+  //   } else {
+  //     setHiddenColumns(['age', 'address', 'imageUrl', 'accountStatus']);
+  //   }
+  //   // eslint-disable-next-line
+  // }, [matchDownSM]);
 
   const renderRowSubComponent = useCallback(({ row }) => {
-    return <CustomerView data={data.find((customer) => customer._id === row.values._id)} />;
-  }, [data]);
+    return <CustomerView data={customers.find((customer) => customer._id === row.values._id)} />;
+  }, [customers]);
 
 
   return (
@@ -153,7 +143,7 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
             <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAdd} size="small">
               Add Customer
             </Button>
-            <CSVExport data={selectedFlatRows.length > 0 ? selectedFlatRows.map((d) => d.original) : data} filename={'customer-list.csv'} />
+            <CSVExport data={selectedFlatRows.length > 0 ? selectedFlatRows.map((d) => d.original) : customers} filename={'customer-list.csv'} />
           </Stack>
         </Stack>
 
@@ -291,7 +281,10 @@ const ActionCell = (row, setCustomer, setCustomerDeleteId, handleAdd, handleClos
           onClick={(e) => {
             e.stopPropagation();
             handleClose();
-            setCustomerDeleteId(row.values.fatherName);
+            setCustomerDeleteId({
+              _id: row.values._id,
+              name: row.values.name
+            });
           }}
         >
           <DeleteTwoTone twoToneColor={theme.palette.error.main} />
@@ -328,7 +321,10 @@ const CustomerListPage = () => {
   const [add, setAdd] = useState(false);
   const [open, setOpen] = useState(false);
   const [customer, setCustomer] = useState();
-  const [customerDeleteId, setCustomerDeleteId] = useState();
+  const [deletingCustomer, setDeletingCustomer] = useState({
+    _id: null,
+    name: ''
+  });
 
   const handleAdd = () => {
     setAdd(!add);
@@ -395,7 +391,7 @@ const CustomerListPage = () => {
         Header: 'Actions',
         className: 'cell-center',
         disableSortBy: true,
-        Cell: ({ row }) => ActionCell(row, setCustomer, setCustomerDeleteId, handleAdd, handleClose, theme)
+        Cell: ({ row }) => ActionCell(row, setCustomer, setDeletingCustomer, handleAdd, handleClose, theme)
       }
     ],
     // 
@@ -418,7 +414,7 @@ const CustomerListPage = () => {
           getHeaderProps={(column) => column.getSortByToggleProps()}
         />
       </ScrollX>
-      <AlertCustomerDelete title={customerDeleteId} open={open} handleClose={handleClose} />
+      <AlertCustomerDelete title={deletingCustomer.name} customerId={deletingCustomer._id} open={open} handleClose={handleClose} />
       {/* add user dialog */}
       <Dialog
         maxWidth="sm"
