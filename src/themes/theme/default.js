@@ -6,16 +6,16 @@ const Default = (colors) => {
   console.log(colors)
   const { blue, red, gold, cyan, green, grey } = colors;
   const redShades = [
-    '#c62e51',
-    '#cc4362',
-    '#d15874',
-    '#d76d85',
-    '#dd8297',
-    '#e397a8',
-    '#e8abb9',
-    '#eec0cb',
-    '#f4d5dc',
     '#f9eaee',
+    '#f4d5dc',
+    '#eec0cb',
+    '#e8abb9',
+    '#e397a8',
+    '#dd8297',
+    '#d76d85',
+    '#d15874',
+    '#cc4362',
+    '#c62e51',
   ];
 
   const greyColors = {

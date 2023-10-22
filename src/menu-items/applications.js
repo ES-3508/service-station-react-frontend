@@ -73,12 +73,12 @@ const applications = {
           type: 'item',
           url: '/apps/customer/customer-list'
         },
-        {
-          id: 'customer-card',
-          title: <FormattedMessage id="cards" />,
-          type: 'item',
-          url: '/apps/customer/customer-card'
-        }
+        // {
+        //   id: 'customer-card',
+        //   title: <FormattedMessage id="cards" />,
+        //   type: 'item',
+        //   url: '/apps/customer/customer-card'
+        // }
       ]
     },
     // {

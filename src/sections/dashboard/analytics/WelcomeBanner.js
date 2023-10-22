@@ -29,10 +29,10 @@ const WelcomeBanner = () => {
         <Grid item md={6} sm={6} xs={12}>
           <Stack spacing={2} sx={{ padding: 3.4 }}>
             <Typography variant="h2" color={theme.palette.background.paper}>
-              Welcome to Mantis
+              Welcome to Toucan Dashboard
             </Typography>
             <Typography variant="h6" color={theme.palette.background.paper}>
-              The purpose of a product update is to add new features, fix bugs or improve the performance of the product.
+              Toucan Electrical is a leading provider of electrical services to commercial and residential clients throughout Kent, Surrey, Essex, and Hertfordshire.
             </Typography>
             <Box>
               <Button

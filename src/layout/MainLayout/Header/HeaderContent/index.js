@@ -33,13 +33,13 @@ const HeaderContent = () => {
     <>
       {menuOrientation === MenuOrientation.HORIZONTAL && !downLG && <DrawerHeader open={true} />}
       {!downLG && <Search />}
-      {!downLG && megaMenu}
-      {!downLG && localization}
+      {/* {!downLG && megaMenu} */}
+      {/* {!downLG && localization} */}
       {downLG && <Box sx={{ width: '100%', ml: 1 }} />}
 
-      <Notification />
-      <Message />
-      <Customization />
+      {/* <Notification /> */}
+      {/* <Message /> */}
+      {/* <Customization /> */}
       {!downLG && <Profile />}
       {downLG && <MobileSection />}
     </>
