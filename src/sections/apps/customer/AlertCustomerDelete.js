@@ -9,10 +9,18 @@ import { PopupTransition } from 'components/@extended/Transitions';
 
 // assets
 import { DeleteFilled } from '@ant-design/icons';
+import { deleteCustomer } from 'store/reducers/customers';
+import { dispatch } from 'store';
 
 // ==============================|| CUSTOMER - DELETE ||============================== //
 
-export default function AlertCustomerDelete({ title, open, handleClose }) {
+export default function AlertCustomerDelete({ title, customerId, open, handleClose }) {
+
+  const deleteHandler = async () => {
+    dispatch(deleteCustomer(customerId));
+    handleClose(true)
+  }
+
   return (
     <Dialog
       open={open}
@@ -46,7 +54,7 @@ export default function AlertCustomerDelete({ title, open, handleClose }) {
             <Button fullWidth onClick={() => handleClose(false)} color="secondary" variant="outlined">
               Cancel
             </Button>
-            <Button fullWidth color="error" variant="contained" onClick={() => handleClose(true)} autoFocus>
+            <Button fullWidth color="error" variant="contained" onClick={deleteHandler} autoFocus>
               Delete
             </Button>
           </Stack>

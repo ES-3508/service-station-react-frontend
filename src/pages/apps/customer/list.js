@@ -41,29 +41,38 @@ import AddCustomer from 'sections/apps/customer/AddCustomer';
 import CustomerView from 'sections/apps/customer/CustomerView';
 import AlertCustomerDelete from 'sections/apps/customer/AlertCustomerDelete';
 
-import makeData from 'data/react-table';
 import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 
 // assets
 import { CloseOutlined, PlusOutlined, EyeTwoTone, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
+import { dispatch, useSelector } from 'store';
+import { getCustomers } from 'store/reducers/customers';
 
-const avatarImage = require.context('assets/images/users', true);
+// const avatarImage = require.context('assets/images/users', true);
 
 // ==============================|| REACT TABLE ||============================== //
 
-function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, handleAdd }) {
+function ReactTable({ columns, getHeaderProps, handleAdd }) {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
 
   const filterTypes = useMemo(() => renderFilterTypes, []);
-  const sortBy = { id: 'fatherName', desc: false };
+  const sortBy = { id: 'name', desc: false };
+
+  const [query, setQuery] = useState('')
+  const [numOfPages, setNumOfPages] = useState(10)
+
+  const { customers: {
+    customers,
+    total,
+  }, action } = useSelector((state) => state.customers);
 
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     prepareRow,
-    setHiddenColumns,
+    // setHiddenColumns,
     allColumns,
     visibleColumns,
     rows,
@@ -72,15 +81,18 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
     setPageSize,
     state: { globalFilter, selectedRowIds, pageIndex, pageSize, expanded },
     preGlobalFilteredRows,
-    setGlobalFilter,
+    // setGlobalFilter,
     setSortBy,
-    selectedFlatRows
+    selectedFlatRows,
   } = useTable(
     {
       columns,
-      data,
+      data: customers,
       filterTypes,
-      initialState: { pageIndex: 0, pageSize: 10, hiddenColumns: ['avatar', 'email'], sortBy: [sortBy] }
+      initialState: { pageIndex: 0, pageSize: 10, hiddenColumns: ['age', 'address', 'imageUrl', 'zipCode', 'web', 'description'] },
+      manualPagination: true,
+      pageCount: Math.ceil(total / numOfPages),
+      autoResetPage: false,
     },
     useGlobalFilter,
     useFilters,
@@ -91,13 +103,22 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
   );
 
   useEffect(() => {
-    if (matchDownSM) {
-      setHiddenColumns(['age', 'contact', 'visits', 'email', 'status', 'avatar']);
-    } else {
-      setHiddenColumns(['avatar', 'email']);
-    }
-    // eslint-disable-next-line
-  }, [matchDownSM]);
+    dispatch(getCustomers(pageIndex, pageSize, query));
+  }, [pageIndex, pageSize, query, action])
+
+  // useEffect(() => {
+  //   if (matchDownSM) {
+  //     setHiddenColumns(['age', 'phone', 'visits', 'email', 'accountStatus', 'imageUrl']);
+  //   } else {
+  //     setHiddenColumns(['age', 'address', 'imageUrl', 'accountStatus']);
+  //   }
+  //   // eslint-disable-next-line
+  // }, [matchDownSM]);
+
+  const renderRowSubComponent = useCallback(({ row }) => {
+    return <CustomerView data={customers.find((customer) => customer._id === row.values._id)} />;
+  }, [customers]);
+
 
   return (
     <>
@@ -113,7 +134,13 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
           <GlobalFilter
             preGlobalFilteredRows={preGlobalFilteredRows}
             globalFilter={globalFilter}
-            setGlobalFilter={setGlobalFilter}
+            setGlobalFilter={(value) => {
+              if (value !== undefined) {
+                setQuery(value);
+              } else {
+                setQuery('');
+              }
+            }}
             size="small"
           />
           <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
@@ -121,7 +148,7 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
             <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAdd} size="small">
               Add Customer
             </Button>
-            <CSVExport data={selectedFlatRows.length > 0 ? selectedFlatRows.map((d) => d.original) : data} filename={'customer-list.csv'} />
+            <CSVExport data={selectedFlatRows.length > 0 ? selectedFlatRows.map((d) => d.original) : customers} filename={'customer-list.csv'} />
           </Stack>
         </Stack>
 
@@ -163,7 +190,10 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
             })}
             <TableRow sx={{ '&:hover': { bgcolor: 'transparent !important' } }}>
               <TableCell sx={{ p: 2, py: 3 }} colSpan={9}>
-                <TablePagination gotoPage={gotoPage} rows={rows} setPageSize={setPageSize} pageSize={pageSize} pageIndex={pageIndex} />
+                <TablePagination serverSidePagination={true} total={total} gotoPage={gotoPage} rows={rows} setPageSize={(size) => {
+                  setPageSize(size);
+                  setNumOfPages(size);
+                }} pageSize={pageSize} pageIndex={pageIndex} />
               </TableCell>
             </TableRow>
           </TableBody>
@@ -189,13 +219,17 @@ const SelectionHeader = ({ getToggleAllPageRowsSelectedProps }) => (
   <IndeterminateCheckbox indeterminate {...getToggleAllPageRowsSelectedProps()} />
 );
 
+const IndexCell = ({ row, state }) => {
+  return <Typography variant="subtitle1">{Number(row.id) + 1 + state.pageIndex * state.pageSize}</Typography>;
+}
+
 const CustomCell = ({ row }) => {
   const { values } = row;
   return (
     <Stack direction="row" spacing={1.5} alignItems="center">
-      <Avatar alt="Avatar 1" size="sm" src={avatarImage(`./avatar-${!values.avatar ? 1 : values.avatar}.png`)} />
+      <Avatar alt="Avatar 1" size="sm" src={values.imageUrl} />
       <Stack spacing={0}>
-        <Typography variant="subtitle1">{values.fatherName}</Typography>
+        <Typography variant="subtitle1">{values.name}</Typography>
         <Typography variant="caption" color="textSecondary">
           {values.email}
         </Typography>
@@ -208,11 +242,11 @@ const NumberFormatCell = ({ value }) => <PatternFormat displayType="text" format
 
 const StatusCell = ({ value }) => {
   switch (value) {
-    case 'Complicated':
+    case 'Rejected':
       return <Chip color="error" label="Rejected" size="small" variant="light" />;
-    case 'Relationship':
+    case 'Verified':
       return <Chip color="success" label="Verified" size="small" variant="light" />;
-    case 'Single':
+    case 'Pending':
     default:
       return <Chip color="info" label="Pending" size="small" variant="light" />;
   }
@@ -255,7 +289,10 @@ const ActionCell = (row, setCustomer, setCustomerDeleteId, handleAdd, handleClos
           onClick={(e) => {
             e.stopPropagation();
             handleClose();
-            setCustomerDeleteId(row.values.fatherName);
+            setCustomerDeleteId({
+              _id: row.values._id,
+              name: row.values.name
+            });
           }}
         >
           <DeleteTwoTone twoToneColor={theme.palette.error.main} />
@@ -288,12 +325,13 @@ SelectionHeader.propTypes = {
 const CustomerListPage = () => {
   const theme = useTheme();
 
-  const data = useMemo(() => makeData(200), []);
-
   const [add, setAdd] = useState(false);
   const [open, setOpen] = useState(false);
   const [customer, setCustomer] = useState();
-  const [customerDeleteId, setCustomerDeleteId] = useState();
+  const [deletingCustomer, setDeletingCustomer] = useState({
+    _id: null,
+    name: ''
+  });
 
   const handleAdd = () => {
     setAdd(!add);
@@ -315,17 +353,18 @@ const CustomerListPage = () => {
       },
       {
         Header: '#',
-        accessor: 'id',
-        className: 'cell-center'
+        accessor: '_id',
+        className: 'cell-center',
+        Cell: IndexCell,
       },
       {
-        Header: 'User Name',
-        accessor: 'fatherName',
+        Header: 'Name',
+        accessor: 'name',
         Cell: CustomCell
       },
       {
-        Header: 'Avatar',
-        accessor: 'avatar',
+        Header: 'Address',
+        accessor: 'address',
         disableSortBy: true
       },
       {
@@ -334,7 +373,7 @@ const CustomerListPage = () => {
       },
       {
         Header: 'Contact',
-        accessor: 'contact',
+        accessor: 'phone',
         Cell: NumberFormatCell
       },
       {
@@ -347,35 +386,54 @@ const CustomerListPage = () => {
         accessor: 'country'
       },
       {
+        Header: 'Image',
+        accessor: 'imageUrl'
+      },
+      {
         Header: 'Status',
-        accessor: 'status',
+        accessor: 'accountStatus',
         Cell: StatusCell
+      },
+      {
+        Header: 'Zip Code',
+        accessor: 'zipCode',
+      },
+      {
+        Header: 'Website',
+        accessor: 'web',
+      },
+      {
+        Header: 'Description',
+        accessor: 'description',
       },
       {
         Header: 'Actions',
         className: 'cell-center',
         disableSortBy: true,
-        Cell: ({ row }) => ActionCell(row, setCustomer, setCustomerDeleteId, handleAdd, handleClose, theme)
+        Cell: ({ row }) => ActionCell(row, setCustomer, setDeletingCustomer, handleAdd, handleClose, theme)
       }
     ],
     // 
     [theme]
   );
 
-  const renderRowSubComponent = useCallback(({ row }) => <CustomerView data={data[row.id]} />, [data]);
+  // const renderRowSubComponent = useCallback(({ row }) => {
+  //   console.log('DEVELOPER ROW ', data.find((customer) => customer._id === row.values._id));
+  //   console.log('DEVELOPER ', data);
+  //   return null;
+  //   // return <CustomerView data={data[row._id]} />;
+  // }, [data]);
 
   return (
     <MainCard content={false}>
       <ScrollX>
         <ReactTable
           columns={columns}
-          data={data}
           handleAdd={handleAdd}
           getHeaderProps={(column) => column.getSortByToggleProps()}
-          renderRowSubComponent={renderRowSubComponent}
         />
       </ScrollX>
-      <AlertCustomerDelete title={customerDeleteId} open={open} handleClose={handleClose} />
+      <AlertCustomerDelete title={deletingCustomer.name} customerId={deletingCustomer._id} open={open} handleClose={handleClose} />
       {/* add user dialog */}
       <Dialog
         maxWidth="sm"
