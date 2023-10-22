@@ -60,9 +60,11 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
   const sortBy = { id: 'name', desc: false };
 
   const [query, setQuery] = useState('')
+  const [numOfPages, setNumOfPages] = useState(10)
 
   const { customers: {
     customers,
+    total,
   }, action } = useSelector((state) => state.customers);
 
   const {
@@ -81,13 +83,16 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
     preGlobalFilteredRows,
     // setGlobalFilter,
     setSortBy,
-    selectedFlatRows
+    selectedFlatRows,
   } = useTable(
     {
       columns,
       data: customers,
       filterTypes,
-      initialState: { pageIndex: 0, pageSize: 10, hiddenColumns: ['age', 'address', 'imageUrl'] }
+      initialState: { pageIndex: 0, pageSize: 10, hiddenColumns: ['age', 'address', 'imageUrl'] },
+      manualPagination: true,
+      pageCount: Math.ceil(total / numOfPages),
+      autoResetPage: false,
     },
     useGlobalFilter,
     useFilters,
@@ -185,7 +190,7 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
             })}
             <TableRow sx={{ '&:hover': { bgcolor: 'transparent !important' } }}>
               <TableCell sx={{ p: 2, py: 3 }} colSpan={9}>
-                <TablePagination gotoPage={gotoPage} rows={rows} setPageSize={setPageSize} pageSize={pageSize} pageIndex={pageIndex} />
+                <TablePagination serverSidePagination={true} total={total} gotoPage={gotoPage} rows={rows} setPageSize={setPageSize} pageSize={pageSize} pageIndex={pageIndex} />
               </TableCell>
             </TableRow>
           </TableBody>
@@ -211,8 +216,8 @@ const SelectionHeader = ({ getToggleAllPageRowsSelectedProps }) => (
   <IndeterminateCheckbox indeterminate {...getToggleAllPageRowsSelectedProps()} />
 );
 
-const IndexCell = ({ row }) => {
-  return <Typography variant="subtitle1">{Number(row.id) + 1}</Typography>;
+const IndexCell = ({ row, state }) => {
+  return <Typography variant="subtitle1">{Number(row.id) + 1 + state.pageIndex * state.pageSize}</Typography>;
 }
 
 const CustomCell = ({ row }) => {
