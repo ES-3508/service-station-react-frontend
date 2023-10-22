@@ -9,7 +9,7 @@ import getShadow from 'utils/getShadow';
 
 function getColorStyle({ variant, color, theme }) {
   const colors = getColors(theme, color);
-  const { lighter, main, dark, contrastText } = colors;
+  const { lighter, main, dark, darker, contrastText } = colors;
 
   const buttonShadow = `${color}Button`;
   const shadows = getShadow(theme, buttonShadow);
@@ -30,6 +30,7 @@ function getColorStyle({ variant, color, theme }) {
   switch (variant) {
     case 'contained':
       return {
+        backgroundColor: darker,
         '&:hover': {
           backgroundColor: dark
         },

@@ -5,6 +5,7 @@ import storage from 'redux-persist/lib/storage';
 
 // project import
 import chat from './chat';
+import customers from './customers';
 import calendar from './calendar';
 import menu from './menu';
 import snackbar from './snackbar';
@@ -17,6 +18,7 @@ import invoice from './invoice';
 
 const reducers = combineReducers({
   chat,
+  customers,
   calendar,
   menu,
   snackbar,

@@ -68,7 +68,7 @@ HeaderSort.propTypes = {
 
 // ==============================|| TABLE PAGINATION ||============================== //
 
-export const TablePagination = ({ gotoPage, rows, setPageSize, pageSize, pageIndex }) => {
+export const TablePagination = ({ gotoPage, rows, setPageSize, pageSize, pageIndex, total = 0, serverSidePagination = false }) => {
   const [open, setOpen] = useState(false);
 
   const handleClose = () => {
@@ -130,15 +130,27 @@ export const TablePagination = ({ gotoPage, rows, setPageSize, pageSize, pageInd
         </Stack>
       </Grid>
       <Grid item sx={{ mt: { xs: 2, sm: 0 } }}>
-        <Pagination
-          count={Math.ceil(rows.length / pageSize)}
-          page={pageIndex + 1}
-          onChange={handleChangePagination}
-          color="primary"
-          variant="combined"
-          showFirstButton
-          showLastButton
-        />
+        {serverSidePagination ? (
+          <Pagination
+            count={Math.ceil(total / pageSize)}
+            page={pageIndex + 1}
+            onChange={handleChangePagination}
+            color="primary"
+            variant="combined"
+            showFirstButton
+            showLastButton
+          />
+        ) : (
+          <Pagination
+            count={Math.ceil(rows.length / pageSize)}
+            page={pageIndex + 1}
+            onChange={handleChangePagination}
+            color="primary"
+            variant="combined"
+            showFirstButton
+            showLastButton
+          />
+        )}
       </Grid>
     </Grid>
   );

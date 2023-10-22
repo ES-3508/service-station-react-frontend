@@ -23,6 +23,12 @@ export const ThemeDirection = {
   RTL: 'rtl'
 };
 
+export const CustomerStatus = {
+  PENDING: 'Pending',
+  VERIFIED: 'Verified',
+  REJECTED: 'Rejected',
+}
+
 // ==============================|| THEME CONFIG  ||============================== //
 
 const config = {
