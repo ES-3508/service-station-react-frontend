@@ -44,7 +44,6 @@ export default function KanbanPage() {
   useEffect(() => {
     // hide left drawer when email app opens
     dispatch(openDrawer(false));
-    // 
   }, []);
 
   useEffect(() => {
@@ -58,7 +57,6 @@ export default function KanbanPage() {
 
     Promise.all([items, columns, columnOrder, profile, comments, story, storyOrder]).then(() => setLoading(false));
 
-    // 
   }, []);
 
   if (loading) return <Loader />;

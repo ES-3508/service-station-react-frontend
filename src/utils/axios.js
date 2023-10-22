@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const axiosServices = axios.create({ baseURL: 'http://localhost:5000/' });
+const axiosServices = axios.create({ baseURL: 'https://toucan-api.donext.org/' });
 
 // ==============================|| AXIOS - FOR MOCK SERVICES ||============================== //
 
