@@ -47,6 +47,7 @@ import { openSnackbar } from 'store/reducers/snackbar';
 import { CameraOutlined, DeleteFilled } from '@ant-design/icons';
 import axios from 'utils/axios';
 import { createCustomer } from 'store/reducers/customers';
+import { CustomerStatus } from 'config';
 
 const avatarImage = require.context('assets/images/users', true);
 
@@ -58,6 +59,7 @@ const getInitialValues = (customer) => {
     phone: '',
     address: '',
     country: '',
+    status: CustomerStatus.PENDING,
   };
 
   if (customer) {
@@ -103,6 +105,7 @@ const AddCustomer = ({ customer, onCancel }) => {
     zipCode: Yup.number().required('Zip code is required'),
     web: Yup.string().matches(/^((https?|ftp):\/\/)?(www.)?(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i, "Invalid URL").required('Zip code is required'),
     description: Yup.string().max(500).optional(),
+    status: Yup.mixed().oneOf([CustomerStatus.PENDING, CustomerStatus.VERIFIED, CustomerStatus.REJECTED]).default(CustomerStatus.PENDING)
   });
 
   const formik = useFormik({
@@ -128,6 +131,7 @@ const AddCustomer = ({ customer, onCancel }) => {
         } else {
 
           dispatch(createCustomer(values));
+          resetForm();
 
         }
 
@@ -139,7 +143,7 @@ const AddCustomer = ({ customer, onCancel }) => {
     }
   });
 
-  const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue } = formik;
+  const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue, resetForm } = formik;
 
   return (
     <>
@@ -256,15 +260,15 @@ const AddCustomer = ({ customer, onCancel }) => {
                     </Grid>
                     {/* end of age */}
                     {/* status */}
-                    {/* <Grid item xs={12}>
+                    <Grid item xs={12}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="customer-orderStatus">Status</InputLabel>
+                        <InputLabel htmlFor="customer-status">Status</InputLabel>
                         <FormControl fullWidth>
                           <Select
                             id="column-hiding"
                             displayEmpty
-                            {...getFieldProps('orderStatus')}
-                            onChange={(event) => setFieldValue('orderStatus', event.target.value)}
+                            {...getFieldProps('status')}
+                            onChange={(event) => setFieldValue('status', event.target.value)}
                             input={<OutlinedInput id="select-column-hiding" placeholder="Sort by" />}
                             renderValue={(selected) => {
                               if (!selected) {
@@ -274,7 +278,7 @@ const AddCustomer = ({ customer, onCancel }) => {
                               return <Typography variant="subtitle2">{selected}</Typography>;
                             }}
                           >
-                            {allStatus.map((column) => (
+                            {Object.values(CustomerStatus).map((column) => (
                               <MenuItem key={column} value={column}>
                                 <ListItemText primary={column} />
                               </MenuItem>
@@ -287,7 +291,7 @@ const AddCustomer = ({ customer, onCancel }) => {
                           </FormHelperText>
                         )}
                       </Stack>
-                    </Grid> */}
+                    </Grid>
                     {/* end of status */}
                     {/* address */}
                     <Grid item xs={12}>
