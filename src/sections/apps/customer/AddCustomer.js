@@ -46,6 +46,7 @@ import { openSnackbar } from 'store/reducers/snackbar';
 // assets
 import { CameraOutlined, DeleteFilled } from '@ant-design/icons';
 import axios from 'utils/axios';
+import { createCustomer } from 'store/reducers/customers';
 
 const avatarImage = require.context('assets/images/users', true);
 
@@ -126,26 +127,8 @@ const AddCustomer = ({ customer, onCancel }) => {
           );
         } else {
 
-          const response = await axios.post('/api/v1/customer', {
-            ...values,
-            phone: Number(values.phone),
-            age: Number(values.age),
-            // TODO: set uploaded image,
-            imageUrl: "https://uploads-ssl.webflow.com/63f46d18f2e566716e8d3a69/63f88caea3a61965fef45229_oguz-yagiz-kara-MZf0mI14RI0-unsplash%20(1)-p-500.jpg"
-          });
+          dispatch(createCustomer(values));
 
-          // dispatch(createCustomer(newCustomer)); - add
-          dispatch(
-            openSnackbar({
-              open: true,
-              message: 'Customer crated successfully.',
-              variant: 'alert',
-              alert: {
-                color: 'success'
-              },
-              close: false
-            })
-          );
         }
 
         setSubmitting(false);
@@ -157,8 +140,6 @@ const AddCustomer = ({ customer, onCancel }) => {
   });
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue } = formik;
-
-  console.log(errors);
 
   return (
     <>

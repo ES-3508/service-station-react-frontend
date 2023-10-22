@@ -87,7 +87,7 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
       columns,
       data: customers,
       filterTypes,
-      initialState: { pageIndex: 0, pageSize: 10, hiddenColumns: ['age', 'address', 'imageUrl', 'accountStatus'] }
+      initialState: { pageIndex: 0, pageSize: 10, hiddenColumns: ['age', 'address', 'imageUrl'] }
     },
     useGlobalFilter,
     useFilters,

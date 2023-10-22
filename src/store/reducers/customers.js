@@ -69,6 +69,52 @@ export function getCustomers(pageIndex = 0, pageSize = 10, query) {
     };
 }
 
+export function createCustomer(values) {
+    return async () => {
+        try {
+            const response = await axios.post('/api/v1/customer', {
+                ...values,
+                phone: Number(values.phone),
+                age: Number(values.age),
+                // TODO: set uploaded image,
+                imageUrl: "https://uploads-ssl.webflow.com/63f46d18f2e566716e8d3a69/63f88caea3a61965fef45229_oguz-yagiz-kara-MZf0mI14RI0-unsplash%20(1)-p-500.jpg"
+            });
+
+            if (response.status === 200) {
+
+                setActionCustomer();
+
+                dispatch(
+                    openSnackbar({
+                        open: true,
+                        message: 'Customer crated successfully.',
+                        variant: 'alert',
+                        alert: {
+                            color: 'success'
+                        },
+                        close: false
+                    })
+                );
+            }
+
+
+        } catch (err) {
+            dispatch(
+                openSnackbar({
+                    open: true,
+                    message: 'Customer could not create.',
+                    variant: 'alert',
+                    alert: {
+                        color: 'error'
+                    },
+                    close: false
+                })
+            );
+            dispatch(customers.actions.hasError(error));
+        }
+    }
+}
+
 export function deleteCustomer(customerId) {
     return async () => {
         try {
