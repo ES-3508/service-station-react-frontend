@@ -115,6 +115,52 @@ export function createCustomer(values) {
     }
 }
 
+export function updateCustomer(customerId, values) {
+    return async () => {
+        try {
+            const response = await axios.put(`/api/v1/customer/${customerId}/update`, {
+                ...values,
+                phone: Number(values.phone),
+                age: Number(values.age),
+                // TODO: set uploaded image,
+                imageUrl: "https://uploads-ssl.webflow.com/63f46d18f2e566716e8d3a69/63f88caea3a61965fef45229_oguz-yagiz-kara-MZf0mI14RI0-unsplash%20(1)-p-500.jpg"
+            });
+
+            if (response.status === 200) {
+
+                setActionCustomer();
+
+                dispatch(
+                    openSnackbar({
+                        open: true,
+                        message: 'Customer updated successfully.',
+                        variant: 'alert',
+                        alert: {
+                            color: 'success'
+                        },
+                        close: false
+                    })
+                );
+            }
+
+
+        } catch (err) {
+            dispatch(
+                openSnackbar({
+                    open: true,
+                    message: 'Customer could not update.',
+                    variant: 'alert',
+                    alert: {
+                        color: 'error'
+                    },
+                    close: false
+                })
+            );
+            dispatch(customers.actions.hasError(error));
+        }
+    }
+}
+
 export function deleteCustomer(customerId) {
     return async () => {
         try {
