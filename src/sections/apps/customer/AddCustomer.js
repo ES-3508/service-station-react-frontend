@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -45,14 +45,14 @@ import { openSnackbar } from 'store/reducers/snackbar';
 
 // assets
 import { CameraOutlined, DeleteFilled } from '@ant-design/icons';
-import axios from 'utils/axios';
 import { createCustomer } from 'store/reducers/customers';
 import { CustomerStatus } from 'config';
 
-const avatarImage = require.context('assets/images/users', true);
+// const avatarImage = require.context('assets/images/users', true);
 
 // constant
 const getInitialValues = (customer) => {
+
   const newCustomer = {
     name: '',
     email: '',
@@ -63,8 +63,16 @@ const getInitialValues = (customer) => {
   };
 
   if (customer) {
-    newCustomer.name = customer.fatherName;
-    newCustomer.location = customer.address;
+    newCustomer.name = customer.name;
+    newCustomer.phone = customer.phone;
+    newCustomer.email = customer.email;
+    newCustomer.address = customer.address;
+    newCustomer.country = customer.country;
+    newCustomer.status = customer.status;
+    newCustomer.age = customer.age;
+    newCustomer.zipCode = customer.zipCode;
+    newCustomer.web = customer.web;
+    newCustomer.description = customer?.description;
     return _.merge({}, newCustomer, customer);
   }
 
@@ -76,6 +84,7 @@ const getInitialValues = (customer) => {
 // ==============================|| CUSTOMER ADD / EDIT / DELETE ||============================== //
 
 const AddCustomer = ({ customer, onCancel }) => {
+
   const [openAlert, setOpenAlert] = useState(false);
 
   const handleAlertClose = () => {
@@ -87,7 +96,7 @@ const AddCustomer = ({ customer, onCancel }) => {
   const isCreating = !customer;
 
   const [selectedImage, setSelectedImage] = useState(undefined);
-  const [avatar, setAvatar] = useState(avatarImage(`./avatar-${isCreating && !customer?.avatar ? 1 : customer.avatar}.png`));
+  const [avatar, setAvatar] = useState(customer ? customer.imageUrl : '');
 
   useEffect(() => {
     if (selectedImage) {
@@ -108,11 +117,25 @@ const AddCustomer = ({ customer, onCancel }) => {
     status: Yup.mixed().oneOf([CustomerStatus.PENDING, CustomerStatus.VERIFIED, CustomerStatus.REJECTED]).default(CustomerStatus.PENDING)
   });
 
+  const defaultValues = useMemo(() => ({
+    name: customer ? customer.name : '',
+    phone: customer ? customer.phone : '',
+    email: customer ? customer.email : '',
+    address: customer ? customer.address : '',
+    country: customer ? customer.country : '',
+    status: customer ? customer.accountStatus : '',
+    age: customer ? customer.age : '',
+    zipCode: customer ? customer.zipCode : '',
+    web: customer ? customer.web : '',
+    description: customer ? customer?.description : '',
+  }), [customer])
+
   const formik = useFormik({
-    initialValues: getInitialValues(customer),
+    enableReinitialize: true,
+    // initialValues: getInitialValues(customer),
+    initialValues: defaultValues,
     validationSchema: CustomerSchema,
     onSubmit: async (values, { setSubmitting }) => {
-      console.log(values);
       try {
 
         if (customer) {

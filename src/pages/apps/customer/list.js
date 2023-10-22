@@ -89,7 +89,7 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
       columns,
       data: customers,
       filterTypes,
-      initialState: { pageIndex: 0, pageSize: 10, hiddenColumns: ['age', 'address', 'imageUrl'] },
+      initialState: { pageIndex: 0, pageSize: 10, hiddenColumns: ['age', 'address', 'imageUrl', 'zipCode', 'web', 'description'] },
       manualPagination: true,
       pageCount: Math.ceil(total / numOfPages),
       autoResetPage: false,
@@ -322,7 +322,6 @@ SelectionHeader.propTypes = {
 const CustomerListPage = () => {
   const theme = useTheme();
 
-  const [data, setData] = useState([]);
   const [add, setAdd] = useState(false);
   const [open, setOpen] = useState(false);
   const [customer, setCustomer] = useState();
@@ -391,6 +390,18 @@ const CustomerListPage = () => {
         Header: 'Status',
         accessor: 'accountStatus',
         Cell: StatusCell
+      },
+      {
+        Header: 'Zip Code',
+        accessor: 'zipCode',
+      },
+      {
+        Header: 'Website',
+        accessor: 'web',
+      },
+      {
+        Header: 'Description',
+        accessor: 'description',
       },
       {
         Header: 'Actions',
