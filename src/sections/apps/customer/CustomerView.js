@@ -45,7 +45,7 @@ const CustomerView = ({ data }) => {
             <Grid item xs={12} sm={5} md={4} lg={4} xl={3}>
               <MainCard>
                 <Chip
-                  label={data.status}
+                  label={data.accountStatus}
                   size="small"
                   color="primary"
                   sx={{
@@ -58,10 +58,10 @@ const CustomerView = ({ data }) => {
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
                     <Stack spacing={2.5} alignItems="center">
-                      <Avatar alt="Avatar 1" size="xl" src={avatarImage(`./avatar-${data.avatar}.png`)} />
+                      <Avatar alt="Avatar 1" size="xl" src={data.imageUrl} />
                       <Stack spacing={0.5} alignItems="center">
-                        <Typography variant="h5">{data.fatherName}</Typography>
-                        <Typography color="secondary">{data.role}</Typography>
+                        <Typography variant="h5">{data.name}</Typography>
+                        <Typography color="secondary">{data.email}</Typography>
                       </Stack>
                     </Stack>
                   </Grid>
@@ -76,12 +76,12 @@ const CustomerView = ({ data }) => {
                       </Stack>
                       <Divider orientation="vertical" flexItem />
                       <Stack spacing={0.5} alignItems="center">
-                        <Typography variant="h5">{data.progress}%</Typography>
+                        <Typography variant="h5">{99}%</Typography>
                         <Typography color="secondary">Progress</Typography>
                       </Stack>
                       <Divider orientation="vertical" flexItem />
                       <Stack spacing={0.5} alignItems="center">
-                        <Typography variant="h5">{data.visits}</Typography>
+                        <Typography variant="h5">{'3M'}</Typography>
                         <Typography color="secondary">Visits</Typography>
                       </Stack>
                     </Stack>
@@ -105,7 +105,7 @@ const CustomerView = ({ data }) => {
                         </ListItemIcon>
                         <ListItemSecondaryAction>
                           <Typography align="right">
-                            <PatternFormat displayType="text" format="+1 (###) ###-####" mask="_" defaultValue={data.contact} />
+                            <PatternFormat displayType="text" format="+1 (###) ###-####" mask="_" defaultValue={data.phone} />
                           </Typography>
                         </ListItemSecondaryAction>
                       </ListItem>
@@ -123,7 +123,7 @@ const CustomerView = ({ data }) => {
                         </ListItemIcon>
                         <ListItemSecondaryAction>
                           <Link align="right" href="https://google.com" target="_blank">
-                            https://anshan.dh.url
+                            {data.web}
                           </Link>
                         </ListItemSecondaryAction>
                       </ListItem>
@@ -141,17 +141,17 @@ const CustomerView = ({ data }) => {
                         <Grid item xs={12} md={6}>
                           <Stack spacing={0.5}>
                             <Typography color="secondary">Full Name</Typography>
-                            <Typography>{data.fatherName}</Typography>
+                            <Typography>{data.name}</Typography>
                           </Stack>
                         </Grid>
-                        <Grid item xs={12} md={6}>
+                        {/* <Grid item xs={12} md={6}>
                           <Stack spacing={0.5}>
                             <Typography color="secondary">Father Name</Typography>
                             <Typography>
                               Mr. {data.firstName} {data.lastName}
                             </Typography>
                           </Stack>
-                        </Grid>
+                        </Grid> */}
                       </Grid>
                     </ListItem>
                     <ListItem divider={!matchDownMD}>
@@ -166,7 +166,8 @@ const CustomerView = ({ data }) => {
                           <Stack spacing={0.5}>
                             <Typography color="secondary">Zip Code</Typography>
                             <Typography>
-                              <PatternFormat displayType="text" format="### ###" mask="_" defaultValue={data.contact} />
+                              {/* <PatternFormat displayType="text" format="### ###" mask="_" defaultValue={data.zipCode} /> */}
+                              <Typography>{data.zipCode}</Typography>
                             </Typography>
                           </Stack>
                         </Grid>
@@ -180,11 +181,13 @@ const CustomerView = ({ data }) => {
                     </ListItem>
                   </List>
                 </MainCard>
-                <MainCard title="About me">
-                  <Typography color="secondary">
-                    Hello, I’m {data.fatherName} {data.role} based in international company, {data.about}
-                  </Typography>
-                </MainCard>
+                {data?.description && (
+                  <MainCard title="Description">
+                    <Typography color="secondary">
+                      {data?.description}
+                    </Typography>
+                  </MainCard>
+                )}
               </Stack>
             </Grid>
           </Grid>

@@ -51,7 +51,7 @@ import axios from 'utils/axios';
 
 // ==============================|| REACT TABLE ||============================== //
 
-function ReactTable({ columns, getHeaderProps, renderRowSubComponent, handleAdd }) {
+function ReactTable({ columns, getHeaderProps, handleAdd }) {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -83,7 +83,7 @@ function ReactTable({ columns, getHeaderProps, renderRowSubComponent, handleAdd 
       columns,
       data,
       filterTypes,
-      initialState: { pageIndex: 0, pageSize: 10, hiddenColumns: ['age', 'address', 'imageUrl'] }
+      initialState: { pageIndex: 0, pageSize: 10, hiddenColumns: ['age', 'address', 'imageUrl', 'accountStatus'] }
     },
     useGlobalFilter,
     useFilters,
@@ -95,7 +95,14 @@ function ReactTable({ columns, getHeaderProps, renderRowSubComponent, handleAdd 
 
   useEffect(() => {
     (async () => {
-      const response = await axios.get(`/api/v1/customer?page=${pageIndex + 1}&limit=${pageSize}&query=${query}`);
+
+      let requestUrl = `/api/v1/customer?page=${pageIndex + 1}&limit=${pageSize}`;
+
+      if (query) {
+        requestUrl = `${requestUrl}&query=${query}`
+      }
+
+      const response = await axios.get(requestUrl);
 
       if (response.status === 200) {
         setData(response.data.data.customers);
@@ -106,12 +113,17 @@ function ReactTable({ columns, getHeaderProps, renderRowSubComponent, handleAdd 
 
   useEffect(() => {
     if (matchDownSM) {
-      setHiddenColumns(['age', 'phone', 'visits', 'email', 'status', 'imageUrl']);
+      setHiddenColumns(['age', 'phone', 'visits', 'email', 'accountStatus', 'imageUrl']);
     } else {
-      setHiddenColumns(['age', 'address', 'imageUrl']);
+      setHiddenColumns(['age', 'address', 'imageUrl', 'accountStatus']);
     }
     // eslint-disable-next-line
   }, [matchDownSM]);
+
+  const renderRowSubComponent = useCallback(({ row }) => {
+    return <CustomerView data={data.find((customer) => customer._id === row.values._id)} />;
+  }, [data]);
+
 
   return (
     <>
@@ -232,11 +244,11 @@ const NumberFormatCell = ({ value }) => <PatternFormat displayType="text" format
 
 const StatusCell = ({ value }) => {
   switch (value) {
-    case 'Complicated':
+    case 'Rejected':
       return <Chip color="error" label="Rejected" size="small" variant="light" />;
-    case 'Relationship':
+    case 'Verified':
       return <Chip color="success" label="Verified" size="small" variant="light" />;
-    case 'Single':
+    case 'Pending':
     default:
       return <Chip color="info" label="Pending" size="small" variant="light" />;
   }
@@ -338,7 +350,7 @@ const CustomerListPage = () => {
       },
       {
         Header: '#',
-        accessor: 'id',
+        accessor: '_id',
         className: 'cell-center',
         Cell: IndexCell,
       },
@@ -376,7 +388,7 @@ const CustomerListPage = () => {
       },
       {
         Header: 'Status',
-        accessor: 'status',
+        accessor: 'accountStatus',
         Cell: StatusCell
       },
       {
@@ -390,17 +402,20 @@ const CustomerListPage = () => {
     [theme]
   );
 
-  const renderRowSubComponent = useCallback(({ row }) => <CustomerView data={data[row._id]} />, [data]);
+  // const renderRowSubComponent = useCallback(({ row }) => {
+  //   console.log('DEVELOPER ROW ', data.find((customer) => customer._id === row.values._id));
+  //   console.log('DEVELOPER ', data);
+  //   return null;
+  //   // return <CustomerView data={data[row._id]} />;
+  // }, [data]);
 
   return (
     <MainCard content={false}>
       <ScrollX>
         <ReactTable
           columns={columns}
-          data={data}
           handleAdd={handleAdd}
           getHeaderProps={(column) => column.getSortByToggleProps()}
-          renderRowSubComponent={renderRowSubComponent}
         />
       </ScrollX>
       <AlertCustomerDelete title={customerDeleteId} open={open} handleClose={handleClose} />
