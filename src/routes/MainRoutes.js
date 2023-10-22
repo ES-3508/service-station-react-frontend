@@ -132,7 +132,7 @@ const MainRoutes = {
           children: [
             {
               path: 'default',
-              element: <DashboardDefault />
+              element: <DashboardAnalytics />
             },
             {
               path: 'analytics',
