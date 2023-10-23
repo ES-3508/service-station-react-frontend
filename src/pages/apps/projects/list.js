@@ -1,8 +1,7 @@
 import PropTypes from 'prop-types';
-import { useCallback, useEffect, useMemo, useState, Fragment } from 'react';
+import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 
 // material-ui
-import { alpha, useTheme } from '@mui/material/styles';
 import {
   Button,
   Chip,
@@ -17,17 +16,18 @@ import {
   Typography,
   useMediaQuery
 } from '@mui/material';
+import { alpha, useTheme } from '@mui/material/styles';
 
 // third-party
 import { PatternFormat } from 'react-number-format';
-import { useFilters, useExpanded, useGlobalFilter, useRowSelect, useSortBy, useTable, usePagination } from 'react-table';
+import { useExpanded, useFilters, useGlobalFilter, usePagination, useRowSelect, useSortBy, useTable } from 'react-table';
 
 // project import
-import MainCard from 'components/MainCard';
-import ScrollX from 'components/ScrollX';
 import Avatar from 'components/@extended/Avatar';
 import IconButton from 'components/@extended/IconButton';
 import { PopupTransition } from 'components/@extended/Transitions';
+import MainCard from 'components/MainCard';
+import ScrollX from 'components/ScrollX';
 import {
   CSVExport,
   HeaderSort,
@@ -37,20 +37,17 @@ import {
   TableRowSelection
 } from 'components/third-party/ReactTable';
 
-import AddCustomer from 'sections/apps/customer/AddCustomer';
 import CustomerView from 'sections/apps/customer/CustomerView';
-import AlertCustomerDelete from 'sections/apps/customer/AlertCustomerDelete';
 
-import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
+import { GlobalFilter, renderFilterTypes } from 'utils/react-table';
 
 // assets
-import { CloseOutlined, PlusOutlined, EyeTwoTone, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
-import { dispatch, useSelector } from 'store';
-import { getCustomers } from 'store/reducers/customers';
+import { CloseOutlined, DeleteTwoTone, EditTwoTone, EyeTwoTone, PlusOutlined } from '@ant-design/icons';
+import { format, parseISO } from 'date-fns';
 import AddProject from 'sections/apps/project/AddProject';
 import AlertProjectDelete from 'sections/apps/project/AlertProjectDelete';
+import { dispatch, useSelector } from 'store';
 import { getProjects } from 'store/reducers/projects';
-import { format, parseISO } from 'date-fns';
 
 // const avatarImage = require.context('assets/images/users', true);
 
@@ -396,7 +393,7 @@ const ProjectListPage = () => {
       },
       {
         Header: 'Status',
-        accessor: 'accountStatus',
+        accessor: 'status',
         Cell: StatusCell
       },
       {

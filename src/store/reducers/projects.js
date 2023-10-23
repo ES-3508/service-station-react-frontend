@@ -1,5 +1,6 @@
 import { dispatch } from "store";
 import axios from "utils/axios";
+import axiosClient from "axios";
 import { openSnackbar } from "./snackbar";
 
 const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit")
@@ -246,3 +247,36 @@ export const uploadProjectAttachment = createAsyncThunk('', async (image) => {
         dispatch(customers.actions.hasError(err));
     }
 });
+
+export function getProjectAttachment(url) {
+    return async () => {
+        try {
+            const response = await axiosClient.get(url, {
+                headers: {
+                    responseType: 'blob',
+                }
+            });
+
+            if (response.status === 200) {
+
+                const file = new Blob([response.data], { type: 'image/jpeg' });
+
+                return file;
+            }
+
+        } catch (error) {
+            dispatch(
+                openSnackbar({
+                    open: true,
+                    message: 'Attachment fetch failed',
+                    variant: 'alert',
+                    alert: {
+                        color: 'error'
+                    },
+                    close: false
+                })
+            );
+            dispatch(projects.actions.hasError(error));
+        }
+    };
+}

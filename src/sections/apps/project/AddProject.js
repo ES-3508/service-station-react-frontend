@@ -37,8 +37,9 @@ import { dispatch } from 'store';
 // assets
 import { DeleteFilled } from '@ant-design/icons';
 import UploadSingleFile from 'components/third-party/dropzone/SingleFile';
+import UploadAvatar from 'components/third-party/dropzone/Avatar';
 import { ProjectStatus } from 'config';
-import { createProject, uploadProjectAttachment } from 'store/reducers/projects';
+import { createProject, getProjectAttachment, updateProject, uploadProjectAttachment } from 'store/reducers/projects';
 import AlertProjectDelete from './AlertProjectDelete';
 
 // const avatarImage = require.context('assets/images/users', true);
@@ -90,13 +91,12 @@ const AddProject = ({ project, onCancel }) => {
     onCancel();
   };
 
-  const theme = useTheme();
   const isCreating = !project;
 
   const deleteHandler = async (project) => {
     setDeletingProject({
       _id: project._id,
-      name: project.name
+      name: project.projectName
     })
     setOpenAlert(true)
   }
@@ -125,8 +125,8 @@ const AddProject = ({ project, onCancel }) => {
     clientName: project ? project.clientName : '',
     asignTo: project ? project.asignTo : '',
     asignBy: project ? project.asignBy : '',
-    startDate: project ? project.startDate : new Date(),
-    endDate: project ? project.endDate : null,
+    startDate: project ? new Date(project.startDate) : new Date(),
+    endDate: project ? new Date(project.endDate) : null,
     description: project ? project?.description : '',
     status: project ? project?.status : ProjectStatus.PENDING,
   }), [project])
@@ -142,13 +142,27 @@ const AddProject = ({ project, onCancel }) => {
 
         if (project) {
 
-          // dispatch(updateProject(project._id, values));
+          if (values.files) {
+            dispatch(uploadProjectAttachment(values.files[0]))
+              .then((fileUrl) => {
+                if (fileUrl) {
+                  dispatch(updateProject(project._id, {
+                    ...values, imageUrl: fileUrl.payload
+                  }));
+                }
+              })
+          } else {
+            dispatch(updateCustomer(project._id, {
+              ...values,
+              imageUrl: project.imageUrl,
+            }));
+          }
 
           resetForm();
         } else {
 
           if (values.files) {
-            dispatch(uploadProjectAttachment(values.files))
+            dispatch(uploadProjectAttachment(values.files[0]))
               .then((fileUrl) => {
                 if (fileUrl) {
                   dispatch(createProject({
@@ -349,6 +363,16 @@ const AddProject = ({ project, onCancel }) => {
                       </Stack>
                     </Grid>
                     {/* end of attachment */}
+
+                    {project?.imageUrl && !values.files && (<img
+                      src={project?.imageUrl}
+                      style={{
+                        width: 'calc(100% - 16px)',
+                        height: 'calc(100% - 16px)',
+                      }}
+                    />)}
+
+
                     {/* bottom content */}
                     {/* <Grid item xs={12}>
                       <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
