@@ -81,6 +81,26 @@ const applications = {
         }
       ]
     },
+    {
+      id: 'projects',
+      title: <FormattedMessage id="project" />,
+      type: 'collapse',
+      icon: icons.CustomerServiceOutlined,
+      children: [
+        {
+          id: 'project-list',
+          title: <FormattedMessage id="list" />,
+          type: 'item',
+          url: '/apps/project/project-list'
+        },
+        {
+          id: 'project-card',
+          title: <FormattedMessage id="cards" />,
+          type: 'item',
+          url: '/apps/project/project-card'
+        }
+      ]
+    },
     // {
     //   id: 'invoice',
     //   title: <FormattedMessage id="invoice" />,
