@@ -171,20 +171,20 @@ const MainRoutes = {
               path: 'calendar',
               element: <AppCalendar />
             },
-            {
-              path: 'kanban',
-              element: <AppKanban />,
-              children: [
-                {
-                  path: 'backlogs',
-                  element: <AppKanbanBacklogs />
-                },
-                {
-                  path: 'board',
-                  element: <AppKanbanBoard />
-                }
-              ]
-            },
+            // {
+            //   path: 'kanban',
+            //   element: <AppKanban />,
+            //   children: [
+            //     {
+            //       path: 'backlogs',
+            //       element: <AppKanbanBacklogs />
+            //     },
+            //     {
+            //       path: 'board',
+            //       element: <AppKanbanBoard />
+            //     }
+            //   ]
+            // },
             {
               path: 'customer',
               children: [

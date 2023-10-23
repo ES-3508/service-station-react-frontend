@@ -36,12 +36,12 @@ const Breadcrumbs = ({
 
   let currentPath = location.pathname;
 
-  const resolvedPath = useResolvedPath('/apps/project/:id/kanban/board');
-  const shouldRenderBreadcrumbs = location.pathname !== resolvedPath.pathname;
-
-  if (!shouldRenderBreadcrumbs) {
-    return null;
-  }
+  // const resolvedPath = useResolvedPath('/apps/project/:id/kanban/board');
+  // const shouldRenderBreadcrumbs = location.pathname !== resolvedPath.pathname;
+  //
+  // if (!shouldRenderBreadcrumbs) {
+  //   return null;
+  // }
 
   // only used for component demo breadcrumbs
   if (currentPath.includes('/components-overview/breadcrumbs')) {

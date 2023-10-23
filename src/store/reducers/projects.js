@@ -32,6 +32,10 @@ const projects = createSlice({
             state.projects = action.payload;
         },
 
+        getProjectSuccess(state, action) {
+            state.project = action.payload;
+        },
+
         deleteProjectSuccess(state, action) {
             state.deletedProject = action.payload;
         },
@@ -62,6 +66,24 @@ export function getProjects(pageIndex = 0, pageSize = 10, query) {
 
             if (response.status === 200) {
                 dispatch(projects.actions.getProjectsSuccess(response.data.data));
+            }
+
+        } catch (error) {
+            dispatch(projects.actions.hasError(error));
+        }
+    };
+}
+
+export function getProjectById(projectId) {
+    return async () => {
+        try {
+
+            let requestUrl = `/api/v1/project/${projectId}`;
+
+            const response = await axios.get(requestUrl);
+
+            if (response.status === 200) {
+                dispatch(projects.actions.getProjectSuccess(response.data.data));
             }
 
         } catch (error) {
