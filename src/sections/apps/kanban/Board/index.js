@@ -9,8 +9,13 @@ import Columns from './Columns';
 import AddColumn from './AddColumn';
 import ItemDetails from './ItemDetails';
 import MainCard from 'components/MainCard';
-import { useDispatch, useSelector } from 'store';
+import {dispatch, useDispatch, useSelector} from 'store';
 import { updateColumnOrder, updateColumnItemOrder } from 'store/reducers/kanban';
+import {useEffect} from "react";
+import {getProjects} from "../../../../store/reducers/projects";
+import {getBoards} from "../../../../store/reducers/boards";
+import {useParams} from "react-router-dom";
+import BoardTask from "./BoardTask";
 
 const getDragWrapper = () => ({
   p: 2.5,
@@ -25,7 +30,15 @@ const getDragWrapper = () => ({
 const Board = () => {
   const dispatch = useDispatch();
 
+  const { id } = useParams()
+
   const { columns, columnsOrder } = useSelector((state) => state.kanban);
+
+  const { boards: {
+    boards,
+    total,
+  }, action } = useSelector((state) => state.boards);
+
   // handle drag & drop
   const onDragEnd = (result) => {
     let newColumn;
@@ -110,6 +123,12 @@ const Board = () => {
     dispatch(updateColumnItemOrder(newColumn));
   };
 
+  useEffect(() => {
+    dispatch(getBoards(id, 0, 100, null));
+  }, [id, action])
+
+  console.log(boards);
+
   return (
     <Box sx={{ display: 'flex' }}>
       <DragDropContext onDragEnd={onDragEnd}>
@@ -122,10 +141,13 @@ const Board = () => {
               contentSX={getDragWrapper(snapshot.isDraggingOver)}
               {...provided.droppableProps}
             >
-              {columnsOrder.map((columnId, index) => {
-                const column = columns.filter((item) => item.id === columnId)[0];
-                return <Columns key={columnId} column={column} index={index} />;
-              })}
+              {/*{columnsOrder.map((columnId, index) => {*/}
+              {/*  const column = columns.filter((item) => item.id === columnId)[0];*/}
+              {/*  return <Columns key={columnId} column={column} index={index} />;*/}
+              {/*})}*/}
+              {boards.map((board, index) => (
+                  <BoardTask key={board._id} board={board} index={index} />
+              ))}
               {provided.placeholder}
               <AddColumn />
             </MainCard>
