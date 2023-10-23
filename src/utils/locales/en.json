@@ -135,5 +135,7 @@
   "utils": "Utils",
   "virtualized": "Virtualized",
   "widgets": "Widgets",
-  "More Items": "More Items"
+  "More Items": "More Items",
+  "users": "Users",
+  "permission": "Permissions"
 }
