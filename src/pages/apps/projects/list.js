@@ -48,6 +48,7 @@ import AddProject from 'sections/apps/project/AddProject';
 import AlertProjectDelete from 'sections/apps/project/AlertProjectDelete';
 import { dispatch, useSelector } from 'store';
 import { getProjects } from 'store/reducers/projects';
+import {Link} from "react-router-dom";
 
 // const avatarImage = require.context('assets/images/users', true);
 
@@ -264,23 +265,21 @@ const StatusCell = ({ value }) => {
 };
 
 const ActionCell = (row, setProject, setProjectDeleteId, handleAdd, handleClose, theme) => {
-  const collapseIcon = row.isExpanded ? (
-    <CloseOutlined style={{ color: theme.palette.error.main }} />
-  ) : (
-    <EyeTwoTone twoToneColor={theme.palette.secondary.main} />
-  );
+  // const collapseIcon = row.isExpanded ? (
+  //   <CloseOutlined style={{ color: theme.palette.error.main }} />
+  // ) : (
+  //   <EyeTwoTone twoToneColor={theme.palette.secondary.main} />
+  // );
   return (
     <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
       <Tooltip title="View">
-        <IconButton
-          color="secondary"
-          onClick={(e) => {
-            e.stopPropagation();
-            row.toggleRowExpanded();
-          }}
-        >
-          {collapseIcon}
-        </IconButton>
+          <Link to={`/apps/project/${row.values._id}/kanban/board`}>
+              <IconButton
+                  color="secondary"
+              >
+                  <EyeTwoTone twoToneColor={theme.palette.secondary.main} />
+              </IconButton>
+          </Link>
       </Tooltip>
       <Tooltip title="Edit">
         <IconButton
