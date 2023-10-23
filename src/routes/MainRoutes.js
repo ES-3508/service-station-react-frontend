@@ -21,6 +21,8 @@ const AppCalendar = Loadable(lazy(() => import('pages/apps/calendar')));
 const AppCustomerList = Loadable(lazy(() => import('pages/apps/customer/list')));
 const AppCustomerCard = Loadable(lazy(() => import('pages/apps/customer/card')));
 
+const AppUserList = Loadable(lazy(() => import('pages/apps/user/list')));
+
 const AppKanban = Loadable(lazy(() => import('pages/apps/kanban')));
 const AppKanbanBacklogs = Loadable(lazy(() => import('sections/apps/kanban/Backlogs')));
 const AppKanbanBoard = Loadable(lazy(() => import('sections/apps/kanban/Board')));
@@ -193,6 +195,15 @@ const MainRoutes = {
                   path: 'customer-card',
                   element: <AppCustomerCard />
                 }
+              ]
+            },
+            {
+              path: 'user',
+              children: [
+                {
+                  path: 'user-list',
+                  element: <AppUserList />
+                },
               ]
             },
             {

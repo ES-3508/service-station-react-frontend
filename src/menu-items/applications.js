@@ -54,13 +54,26 @@ const applications = {
       icon: BuildOutlined,
       url: '/apps/kanban/board'
     },
-    // {
-    //   id: 'users',
-    //   title: 'Users',
-    //   type: 'item',
-    //   icon: icons.CustomerServiceOutlined,
-    //   url: '/apps/customer/customer-list'
-    // },
+    {
+      id: 'users',
+      title: <FormattedMessage id="users" />,
+      type: 'collapse',
+      icon: icons.CustomerServiceOutlined,
+      children: [
+        {
+          id: 'user-list',
+          title: <FormattedMessage id="list" />,
+          type: 'item',
+          url: '/apps/user/user-list'
+        },
+        // {
+        //   id: 'permission-list',
+        //   title: <FormattedMessage id="permission" />,
+        //   type: 'item',
+        //   url: '/apps/permission/permission-list'
+        // },
+      ]
+    },
     {
       id: 'customer',
       title: <FormattedMessage id="customer" />,
