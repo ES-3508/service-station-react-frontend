@@ -47,6 +47,10 @@ import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 import { CloseOutlined, PlusOutlined, EyeTwoTone, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
 import { dispatch, useSelector } from 'store';
 import { getCustomers } from 'store/reducers/customers';
+import AddProject from 'sections/apps/project/AddProject';
+import AlertProjectDelete from 'sections/apps/project/AlertProjectDelete';
+import { getProjects } from 'store/reducers/projects';
+import { format, parseISO } from 'date-fns';
 
 // const avatarImage = require.context('assets/images/users', true);
 
@@ -57,15 +61,15 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
   const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
 
   const filterTypes = useMemo(() => renderFilterTypes, []);
-  const sortBy = { id: 'name', desc: false };
+  const sortBy = { id: 'projectName', desc: false };
 
   const [query, setQuery] = useState('')
   const [numOfPages, setNumOfPages] = useState(10)
 
-  const { customers: {
-    customers,
+  const { projects: {
+    projects,
     total,
-  }, action } = useSelector((state) => state.customers);
+  }, action } = useSelector((state) => state.projects);
 
   const {
     getTableProps,
@@ -87,9 +91,9 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
   } = useTable(
     {
       columns,
-      data: customers,
+      data: projects,
       filterTypes,
-      initialState: { pageIndex: 0, pageSize: 10, hiddenColumns: ['age', 'address', 'imageUrl', 'zipCode', 'web', 'description'] },
+      initialState: { pageIndex: 0, pageSize: 10, hiddenColumns: ['description'] },
       manualPagination: true,
       pageCount: Math.ceil(total / numOfPages),
       autoResetPage: false,
@@ -103,7 +107,7 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
   );
 
   useEffect(() => {
-    dispatch(getCustomers(pageIndex, pageSize, query));
+    dispatch(getProjects(pageIndex, pageSize, query));
   }, [pageIndex, pageSize, query, action])
 
   // useEffect(() => {
@@ -116,8 +120,8 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
   // }, [matchDownSM]);
 
   const renderRowSubComponent = useCallback(({ row }) => {
-    return <CustomerView data={customers.find((customer) => customer._id === row.values._id)} />;
-  }, [customers]);
+    return <CustomerView data={projects.find((project) => project._id === row.values._id)} />;
+  }, [projects]);
 
 
   return (
@@ -146,9 +150,9 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
           <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
             <SortingSelect sortBy={sortBy.id} setSortBy={setSortBy} allColumns={allColumns} />
             <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAdd} size="small">
-              Add Customer
+              Add Project
             </Button>
-            <CSVExport data={selectedFlatRows.length > 0 ? selectedFlatRows.map((d) => d.original) : customers} filename={'customer-list.csv'} />
+            <CSVExport data={selectedFlatRows.length > 0 ? selectedFlatRows.map((d) => d.original) : projects} filename={'customer-list.csv'} />
           </Stack>
         </Stack>
 
@@ -226,17 +230,27 @@ const IndexCell = ({ row, state }) => {
 const CustomCell = ({ row }) => {
   const { values } = row;
   return (
-    <Stack direction="row" spacing={1.5} alignItems="center">
+    <Stack direction="row" alignItems="center" justifyContent="center">
       <Avatar alt="Avatar 1" size="sm" src={values.imageUrl} />
-      <Stack spacing={0}>
-        <Typography variant="subtitle1">{values.name}</Typography>
-        <Typography variant="caption" color="textSecondary">
-          {values.email}
-        </Typography>
-      </Stack>
     </Stack>
   );
 };
+
+const StartDateCell = ({ row }) => {
+  const { values } = row;
+  return (
+    <>
+      <Typography variant="subtitle1">{format(parseISO(values.startDate), "M/d/yyyy")}</Typography>
+
+    </>
+  );
+}
+const EndDateCell = ({ row }) => {
+  const { values } = row;
+  return (
+    <Typography variant="subtitle1">{format(parseISO(values.endDate), "M/d/yyyy")}</Typography>
+  );
+}
 
 const NumberFormatCell = ({ value }) => <PatternFormat displayType="text" format="+1 (###) ###-####" mask="_" defaultValue={value} />;
 
@@ -252,7 +266,7 @@ const StatusCell = ({ value }) => {
   }
 };
 
-const ActionCell = (row, setCustomer, setCustomerDeleteId, handleAdd, handleClose, theme) => {
+const ActionCell = (row, setProject, setProjectDeleteId, handleAdd, handleClose, theme) => {
   const collapseIcon = row.isExpanded ? (
     <CloseOutlined style={{ color: theme.palette.error.main }} />
   ) : (
@@ -276,7 +290,7 @@ const ActionCell = (row, setCustomer, setCustomerDeleteId, handleAdd, handleClos
           color="primary"
           onClick={(e) => {
             e.stopPropagation();
-            setCustomer(row.values);
+            setProject(row.values);
             handleAdd();
           }}
         >
@@ -289,9 +303,9 @@ const ActionCell = (row, setCustomer, setCustomerDeleteId, handleAdd, handleClos
           onClick={(e) => {
             e.stopPropagation();
             handleClose();
-            setCustomerDeleteId({
+            setProjectDeleteId({
               _id: row.values._id,
-              name: row.values.name
+              name: row.values.projectName
             });
           }}
         >
@@ -322,20 +336,20 @@ SelectionHeader.propTypes = {
   getToggleAllPageRowsSelectedProps: PropTypes.func
 };
 
-const CustomerListPage = () => {
+const ProjectListPage = () => {
   const theme = useTheme();
 
   const [add, setAdd] = useState(false);
   const [open, setOpen] = useState(false);
-  const [customer, setCustomer] = useState();
-  const [deletingCustomer, setDeletingCustomer] = useState({
+  const [project, setProject] = useState();
+  const [deletingProject, setDeletingProject] = useState({
     _id: null,
     name: ''
   });
 
   const handleAdd = () => {
     setAdd(!add);
-    if (customer && !add) setCustomer(null);
+    if (project && !add) setProject(null);
   };
 
   const handleClose = () => {
@@ -358,49 +372,32 @@ const CustomerListPage = () => {
         Cell: IndexCell,
       },
       {
-        Header: 'Name',
-        accessor: 'name',
+        Header: 'Project Name',
+        accessor: 'projectName',
+      },
+      {
+        Header: 'Client Name',
+        accessor: 'clientName',
+      },
+      {
+        Header: 'Start Date',
+        accessor: 'startDate',
+        Cell: StartDateCell,
+      },
+      {
+        Header: 'End Date',
+        accessor: 'endDate',
+        Cell: EndDateCell
+      },
+      {
+        Header: 'Attachment',
+        accessor: 'imageUrl',
         Cell: CustomCell
-      },
-      {
-        Header: 'Address',
-        accessor: 'address',
-        disableSortBy: true
-      },
-      {
-        Header: 'Email',
-        accessor: 'email'
-      },
-      {
-        Header: 'Contact',
-        accessor: 'phone',
-        Cell: NumberFormatCell
-      },
-      {
-        Header: 'Age',
-        accessor: 'age',
-        className: 'cell-right'
-      },
-      {
-        Header: 'Country',
-        accessor: 'country'
-      },
-      {
-        Header: 'Image',
-        accessor: 'imageUrl'
       },
       {
         Header: 'Status',
         accessor: 'accountStatus',
         Cell: StatusCell
-      },
-      {
-        Header: 'Zip Code',
-        accessor: 'zipCode',
-      },
-      {
-        Header: 'Website',
-        accessor: 'web',
       },
       {
         Header: 'Description',
@@ -410,7 +407,7 @@ const CustomerListPage = () => {
         Header: 'Actions',
         className: 'cell-center',
         disableSortBy: true,
-        Cell: ({ row }) => ActionCell(row, setCustomer, setDeletingCustomer, handleAdd, handleClose, theme)
+        Cell: ({ row }) => ActionCell(row, setProject, setDeletingProject, handleAdd, handleClose, theme)
       }
     ],
     // 
@@ -433,7 +430,7 @@ const CustomerListPage = () => {
           getHeaderProps={(column) => column.getSortByToggleProps()}
         />
       </ScrollX>
-      <AlertCustomerDelete title={deletingCustomer.name} customerId={deletingCustomer._id} open={open} handleClose={handleClose} />
+      <AlertProjectDelete title={deletingProject.name} projectId={deletingProject._id} open={open} handleClose={handleClose} />
       {/* add user dialog */}
       <Dialog
         maxWidth="sm"
@@ -445,10 +442,10 @@ const CustomerListPage = () => {
         sx={{ '& .MuiDialog-paper': { p: 0 }, transition: 'transform 225ms' }}
         aria-describedby="alert-dialog-slide-description"
       >
-        <AddCustomer customer={customer} onCancel={handleAdd} />
+        <AddProject project={project} onCancel={handleAdd} />
       </Dialog>
     </MainCard>
   );
 };
 
-export default CustomerListPage;
+export default ProjectListPage;
