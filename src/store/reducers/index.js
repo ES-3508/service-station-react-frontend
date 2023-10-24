@@ -8,6 +8,7 @@ import chat from './chat';
 import customers from './customers';
 import boards from './boards';
 import projects from './projects';
+import users from './user';
 import calendar from './calendar';
 import menu from './menu';
 import snackbar from './snackbar';
@@ -16,7 +17,6 @@ import cartReducer from './cart';
 import kanban from './kanban';
 import invoice from './invoice';
 import tasks from './tasks';
-import users from './users';
 
 // ==============================|| COMBINE REDUCERS ||============================== //
 
@@ -24,10 +24,7 @@ const reducers = combineReducers({
   chat,
   customers,
   projects,
-    boards,
   calendar,
-  users,
-  tasks,
   menu,
   snackbar,
   cart: persistReducer(
