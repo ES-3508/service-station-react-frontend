@@ -146,7 +146,7 @@ const Board = () => {
               {/*  const column = columns.filter((item) => item.id === columnId)[0];*/}
               {/*  return <Columns key={columnId} column={column} index={index} />;*/}
               {/*})}*/}
-              {boards.map((board, index) => (
+              {[...boards].sort((a, b) => a.order - b.order).map((board, index) => (
                   <BoardTask key={board._id} board={board} index={index} />
               ))}
               {provided.placeholder}

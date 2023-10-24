@@ -10,6 +10,8 @@ import { useDispatch, useSelector } from 'store';
 import { editColumn } from 'store/reducers/kanban';
 import {updateBoard} from "../../../../store/reducers/boards";
 import {useParams} from "react-router-dom";
+import {useAsyncDebounce} from "react-table";
+import {useState} from "react";
 
 // ==============================|| KANBAN BOARD - COLUMN EDIT ||============================== //
 
@@ -18,19 +20,29 @@ const BoardEdit = ({ board }) => {
     const theme = useTheme();
     const dispatch = useDispatch();
 
+    const [fieldValue, setFieldValue] = useState(board.boardName);
+
+    const onChange = useAsyncDebounce((value) => {
+        if (value && value.length > 0) {
+            dispatch(
+                updateBoard(id, board._id, {
+                    boardName: value,
+                    order: board.order,
+                })
+            );
+        }
+
+    }, 200);
+
     const handleColumnRename = (event) => {
-        dispatch(
-            updateBoard(id, board._id, {
-                boardName: event.target.value,
-                order: board.order,
-            })
-        );
+        setFieldValue(event.target.value)
+        onChange(event.target.value);
     };
 
     return (
         <OutlinedInput
             fullWidth
-            value={board.boardName}
+            value={fieldValue}
             onChange={handleColumnRename}
             sx={{
                 mb: 1.5,
