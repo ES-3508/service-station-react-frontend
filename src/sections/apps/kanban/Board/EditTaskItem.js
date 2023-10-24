@@ -35,7 +35,6 @@ import LinearWithLabel from "../../../../components/@extended/progress/LinearWit
 import AttachmentsPreview from "./AttachmentsPreview";
 import {useEffect, useState} from "react";
 import * as Yup from "yup";
-import {getUsers} from "../../../../store/reducers/users";
 import {useTheme} from "@mui/material/styles";
 import {updateProject, uploadProjectAttachment} from "../../../../store/reducers/projects";
 import {updateTask, uploadTaskAttachments} from "../../../../store/reducers/tasks";

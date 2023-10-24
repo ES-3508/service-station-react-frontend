@@ -18,7 +18,7 @@ import {useParams} from "react-router-dom";
 import BoardTask from "./BoardTask";
 import AddBoard from "./AddBoard";
 import {getAllTasks, getTasks} from "../../../../store/reducers/tasks";
-import {getUsers} from "../../../../store/reducers/users";
+import {getUsers} from "../../../../store/reducers/user";
 
 const getDragWrapper = () => ({
   p: 2.5,
