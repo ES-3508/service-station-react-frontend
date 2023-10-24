@@ -16,6 +16,7 @@ import {getProjects} from "../../../../store/reducers/projects";
 import {getBoards} from "../../../../store/reducers/boards";
 import {useParams} from "react-router-dom";
 import BoardTask from "./BoardTask";
+import AddBoard from "./AddBoard";
 
 const getDragWrapper = () => ({
   p: 2.5,
@@ -149,7 +150,7 @@ const Board = () => {
                   <BoardTask key={board._id} board={board} index={index} />
               ))}
               {provided.placeholder}
-              <AddColumn />
+              <AddBoard />
             </MainCard>
           )}
         </Droppable>

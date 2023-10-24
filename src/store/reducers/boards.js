@@ -69,7 +69,7 @@ export function getBoards(projectId, pageIndex = 0, pageSize = 10, query) {
     };
 }
 
-export function createCustomer(projectId, values) {
+export function createBoard(projectId, values) {
     return async () => {
         try {
             const response = await axios.post(`/api/v1/project/${projectId}/board`, values);
