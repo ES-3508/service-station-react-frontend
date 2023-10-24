@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { Button, Grid, TextField, Stack, Tooltip, Box } from '@mui/material';
 
 // third-party
-import { sub } from 'date-fns';
+import { sub, add } from 'date-fns';
 import { Chance } from 'chance';
 
 // project imports
@@ -52,7 +52,9 @@ const AddItem = ({ columnId }) => {
       dispatch(createTask(id, columnId, {
         title,
         progress: 0,
-        priority: "Low"
+        priority: "Low",
+        startDate: new Date(),
+        endDate: add(new Date(), { days: 1, hours: 0, minutes: 0 })
       }))
 
       // const newItem = {

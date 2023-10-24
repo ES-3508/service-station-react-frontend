@@ -17,6 +17,7 @@ import {
 } from "@ant-design/icons";
 import {useTheme} from "@mui/material/styles";
 import {getProjectById} from "../../../store/reducers/projects";
+import ScrollX from "../../../components/ScrollX";
 
 function a11yProps(index) {
   return {
@@ -37,6 +38,8 @@ export default function KanbanPage() {
   const [loading, setLoading] = useState(true);
 
   const { project } = useSelector((state) => state.projects);
+  const { boards: { boards, total } } = useSelector((state) => state.boards);
+  const { tasks: {total: tasksTotal} } = useSelector((state) => state.tasks);
 
   let selectedTab = 0;
   switch (pathname) {
@@ -84,20 +87,29 @@ export default function KanbanPage() {
         <Box>
           <Typography variant="h2">{project.projectName}</Typography>
         </Box>
-        <Grid container spacing={3}>
-          <Grid item xs={12} lg={3} sm={6}>
-            <ReportCard primary="99" secondary="Total tasks" color={theme.palette.secondary.main} iconPrimary={EyeOutlined} />
+        <ScrollX>
+          <Grid container spacing={3}>
+            <Grid item xs={12} lg={3} sm={6}>
+              <ReportCard primary={tasksTotal} secondary="Total tasks" color={theme.palette.secondary.main} iconPrimary={EyeOutlined} />
+            </Grid>
+            {boards.map((board) => (
+                <Grid key={board._id} item xs={12} lg={3} sm={6}>
+                  <ReportCard primary={board.taskOrders.length} secondary={board.boardName} color={theme.palette.secondary.main} iconPrimary={EyeOutlined} />
+                </Grid>
+            ))}
+
+            {/*<Grid item xs={12} lg={3} sm={6}>*/}
+            {/*  <ReportCard primary="55" secondary="{Completed} Tasks" color={theme.palette.error.main} iconPrimary={FieldTimeOutlined} />*/}
+            {/*</Grid>*/}
+            {/*<Grid item xs={12} lg={3} sm={6}>*/}
+            {/*  <ReportCard primary="10" secondary="{Todo} Tasks" color={theme.palette.success.dark} iconPrimary={AimOutlined} />*/}
+            {/*</Grid>*/}
+            {/*<Grid item xs={12} lg={3} sm={6}>*/}
+            {/*  <ReportCard primary="1" secondary="{In Progress} Tasks" color={theme.palette.primary.main} iconPrimary={FieldTimeOutlined} />*/}
+            {/*</Grid>*/}
           </Grid>
-          <Grid item xs={12} lg={3} sm={6}>
-            <ReportCard primary="55" secondary="{Completed} Tasks" color={theme.palette.error.main} iconPrimary={FieldTimeOutlined} />
-          </Grid>
-          <Grid item xs={12} lg={3} sm={6}>
-            <ReportCard primary="10" secondary="{Todo} Tasks" color={theme.palette.success.dark} iconPrimary={AimOutlined} />
-          </Grid>
-          <Grid item xs={12} lg={3} sm={6}>
-            <ReportCard primary="1" secondary="{In Progress} Tasks" color={theme.palette.primary.main} iconPrimary={FieldTimeOutlined} />
-          </Grid>
-        </Grid>
+        </ScrollX>
+
         <Box sx={{ display: 'flex' }} mt={1}>
 
           <Grid container spacing={1}>

@@ -7,7 +7,7 @@ const { createSlice } = require("@reduxjs/toolkit")
 const initialState = {
     action: false,
     error: null,
-    task: {},
+    task: null,
     tasks: {
         tasks: [],
         page: null,
@@ -38,6 +38,10 @@ const tasks = createSlice({
         setAction(state) {
             state.action = !state.action;
         },
+
+        setSelectedTaskAction(state, action) {
+            state.task = action.payload;
+        }
     }
 });
 
@@ -45,6 +49,12 @@ export default tasks.reducer;
 
 export function setActionTask() {
     dispatch(tasks.actions.setAction());
+}
+
+export function setSelectedTask(task) {
+    return async () => {
+        dispatch(tasks.actions.setSelectedTaskAction(task))
+    }
 }
 
 export function getAllTasks(projectId, pageIndex = 0, pageSize = 10, query) {

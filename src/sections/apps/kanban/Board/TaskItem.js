@@ -19,6 +19,7 @@ import IconButton from 'components/@extended/IconButton';
 
 // assets
 import { ClusterOutlined, MoreOutlined } from '@ant-design/icons';
+import {setSelectedTask} from "../../../../store/reducers/tasks";
 
 const backImage = require.context('assets/images/profile', true);
 
@@ -53,6 +54,10 @@ const TaskItem = ({ item, index }) => {
     const handlerDetails = (id) => {
         dispatch(selectItem(id));
     };
+
+    const detailsHandler = (task) => {
+        dispatch(setSelectedTask(task));
+    }
 
     const [anchorEl, setAnchorEl] = useState(null);
     const handleClick = (event) => {
@@ -103,7 +108,7 @@ const TaskItem = ({ item, index }) => {
                 >
                     <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: itemStory ? -0.75 : 0 }}>
                         <Typography
-                            onClick={() => handlerDetails(item._id)}
+                            onClick={() => detailsHandler(item)}
                             variant="subtitle1"
                             sx={{
                                 display: 'inline-block',
