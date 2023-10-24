@@ -17,6 +17,7 @@ import {getBoards} from "../../../../store/reducers/boards";
 import {useParams} from "react-router-dom";
 import BoardTask from "./BoardTask";
 import AddBoard from "./AddBoard";
+import {getAllTasks, getTasks} from "../../../../store/reducers/tasks";
 
 const getDragWrapper = () => ({
   p: 2.5,
@@ -42,10 +43,10 @@ const Board = () => {
 
   const { project } = useSelector((state) => state.projects);
 
+  const { action: tasksAction } = useSelector((state) => state.tasks);
+
   // handle drag & drop
   const onDragEnd = (result) => {
-
-    console.log(result)
 
     // let newColumn;
     const { source, destination, draggableId, type } = result;
@@ -138,7 +139,8 @@ const Board = () => {
   useEffect(() => {
     dispatch(getProjectById(id));
     dispatch(getBoards(id, 0, 100, null));
-  }, [id, action])
+    dispatch(getAllTasks(id, 0, 100, null))
+  }, [id, action, tasksAction])
 
   return (
     <Box sx={{ display: 'flex' }}>

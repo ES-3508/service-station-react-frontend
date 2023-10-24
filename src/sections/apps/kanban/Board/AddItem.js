@@ -18,6 +18,8 @@ import IconButton from 'components/@extended/IconButton';
 
 // assets
 import { CalculatorOutlined, CloseOutlined, TeamOutlined } from '@ant-design/icons';
+import {createTask} from "../../../../store/reducers/tasks";
+import {useParams} from "react-router-dom";
 
 const chance = new Chance();
 
@@ -28,6 +30,9 @@ const AddItem = ({ columnId }) => {
 
   const [addTaskBox, setAddTaskBox] = useState(false);
   const { columns, items, userStory } = useSelector((state) => state.kanban);
+
+  const { id } = useParams()
+
   const handleAddTaskChange = () => {
     setAddTaskBox((prev) => !prev);
   };
@@ -43,30 +48,37 @@ const AddItem = ({ columnId }) => {
 
   const addTask = () => {
     if (title.length > 0) {
-      const newItem = {
-        id: `${chance.integer({ min: 1000, max: 9999 })}`,
-        title,
-        dueDate: sub(new Date(), { days: 0, hours: 1, minutes: 45 }),
-        image: false,
-        assign: '',
-        description: '',
-        priority: 'low',
-        attachments: []
-      };
 
-      dispatch(addItem(columnId, columns, newItem, items, '0', userStory));
-      dispatch(
-        openSnackbar({
-          open: true,
-          message: 'Task Added successfully',
-          anchorOrigin: { vertical: 'top', horizontal: 'right' },
-          variant: 'alert',
-          alert: {
-            color: 'success'
-          },
-          close: false
-        })
-      );
+      dispatch(createTask(id, columnId, {
+        title,
+        progress: 0,
+        priority: "Low"
+      }))
+
+      // const newItem = {
+      //   id: `${chance.integer({ min: 1000, max: 9999 })}`,
+      //   title,
+      //   dueDate: sub(new Date(), { days: 0, hours: 1, minutes: 45 }),
+      //   image: false,
+      //   assign: '',
+      //   description: '',
+      //   priority: 'low',
+      //   attachments: []
+      // };
+      //
+      // dispatch(addItem(columnId, columns, newItem, items, '0', userStory));
+      // dispatch(
+      //   openSnackbar({
+      //     open: true,
+      //     message: 'Task Added successfully',
+      //     anchorOrigin: { vertical: 'top', horizontal: 'right' },
+      //     variant: 'alert',
+      //     alert: {
+      //       color: 'success'
+      //     },
+      //     close: false
+      //   })
+      // );
       handleAddTaskChange();
       setTitle('');
     } else {

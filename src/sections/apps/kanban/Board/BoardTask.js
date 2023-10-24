@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -17,7 +17,7 @@ import AlertColumnDelete from './AlertColumnDelete';
 import IconButton from 'components/@extended/IconButton';
 
 import { ThemeMode } from 'config';
-import { useDispatch, useSelector } from 'store';
+import {dispatch, useDispatch, useSelector} from 'store';
 import { deleteColumn } from 'store/reducers/kanban';
 import { openSnackbar } from 'store/reducers/snackbar';
 
@@ -25,6 +25,11 @@ import { openSnackbar } from 'store/reducers/snackbar';
 import { DeleteOutlined } from '@ant-design/icons';
 import BoardEdit from "./BoardEdit";
 import AlertBoardDelete from "./AlertBoardDelete";
+import {getProjectById} from "../../../../store/reducers/projects";
+import {getBoards} from "../../../../store/reducers/boards";
+import {useParams} from "react-router-dom";
+import Tasks, {getTasks} from "../../../../store/reducers/tasks";
+import TaskItem from "./TaskItem";
 
 // column drag wrapper
 const getDragWrapper = (isDragging, draggableStyle, theme, radius) => {
@@ -62,6 +67,12 @@ const BoardTask = ({ board, index }) => {
 
     // const { items, columns, columnsOrder } = useSelector((state) => state.kanban);
 
+
+    const { tasks: {
+        tasks,
+        total,
+    }, action } = useSelector((state) => state.tasks);
+
     const handleBoardDelete = () => {
         setOpen(true);
     };
@@ -85,6 +96,10 @@ const BoardTask = ({ board, index }) => {
     //         );
     //     }
     // };
+
+    // useEffect(() => {
+    //     dispatch(getTasks(id, board._id,0, 100, null));
+    // }, [id, action])
 
     return (
         <Draggable draggableId={board._id} index={index}>
@@ -115,9 +130,9 @@ const BoardTask = ({ board, index }) => {
                                         <AlertBoardDelete title={board.boardName} boardId={board._id} open={open} handleClose={() => {}} />
                                     </Grid>
                                 </Grid>
-                                {/*{columnItems.map((item, i) => (*/}
-                                {/*    <Items key={i} item={item} index={i} />*/}
-                                {/*))}*/}
+                                {tasks.filter((task) => task.board === board._id).map((task, index) => (
+                                    <TaskItem key={task._id} item={task} index={index}  />
+                                ))}
                                 {providedDrop.placeholder}
                                 <AddItem columnId={board._id} />
                             </div>
