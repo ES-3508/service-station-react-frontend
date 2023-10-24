@@ -16,6 +16,7 @@ import cartReducer from './cart';
 import kanban from './kanban';
 import invoice from './invoice';
 import tasks from './tasks';
+import users from './users';
 
 // ==============================|| COMBINE REDUCERS ||============================== //
 
@@ -25,6 +26,7 @@ const reducers = combineReducers({
   projects,
     boards,
   calendar,
+  users,
   tasks,
   menu,
   snackbar,

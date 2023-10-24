@@ -19,7 +19,7 @@ import IconButton from 'components/@extended/IconButton';
 
 // assets
 import { ClusterOutlined, MoreOutlined } from '@ant-design/icons';
-import {setSelectedTask} from "../../../../store/reducers/tasks";
+import {getTaskById, setSelectedTask} from "../../../../store/reducers/tasks";
 
 const backImage = require.context('assets/images/profile', true);
 
@@ -41,9 +41,10 @@ const getDragWrapper = (isDragging, draggableStyle, theme, radius) => {
 // ==============================|| KANBAN BOARD - ITEMS ||============================== //
 
 const TaskItem = ({ item, index }) => {
+
     const theme = useTheme();
     const dispatch = useDispatch();
-    const backProfile = item.image && backImage(`./${item.image}`);
+    // const backProfile = item.image && backImage(`./${item.image}`);
 
     const kanban = useSelector((state) => state.kanban);
     const { userStory, items, columns } = kanban;
@@ -56,7 +57,7 @@ const TaskItem = ({ item, index }) => {
     };
 
     const detailsHandler = (task) => {
-        dispatch(setSelectedTask(task));
+        dispatch(getTaskById(task.project, task.board, task._id));
     }
 
     const [anchorEl, setAnchorEl] = useState(null);

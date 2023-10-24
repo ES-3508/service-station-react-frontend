@@ -52,9 +52,9 @@ const AddItem = ({ columnId }) => {
       dispatch(createTask(id, columnId, {
         title,
         progress: 0,
-        priority: "Low",
+        priority: "Medium",
         startDate: new Date(),
-        endDate: add(new Date(), { days: 1, hours: 0, minutes: 0 })
+        endDate: add(new Date(), { days: 1, hours: 0, minutes: 0 }),
       }))
 
       // const newItem = {

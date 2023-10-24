@@ -18,6 +18,7 @@ import {useParams} from "react-router-dom";
 import BoardTask from "./BoardTask";
 import AddBoard from "./AddBoard";
 import {getAllTasks, getTasks} from "../../../../store/reducers/tasks";
+import {getUsers} from "../../../../store/reducers/users";
 
 const getDragWrapper = () => ({
   p: 2.5,
@@ -140,7 +141,9 @@ const Board = () => {
     dispatch(getProjectById(id));
     dispatch(getBoards(id, 0, 100, null));
     dispatch(getAllTasks(id, 0, 100, null))
+    dispatch(getUsers(0, 100, null))
   }, [id, action, tasksAction])
+
 
   return (
     <Box sx={{ display: 'flex' }}>

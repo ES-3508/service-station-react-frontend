@@ -34,8 +34,6 @@ const ItemDetails = () => {
 
     const { task } = useSelector((state) => state.tasks);
 
-    console.log(task)
-
   // drawer
   const [open, setOpen] = useState(!!task);
   const handleDrawerOpen = () => {
