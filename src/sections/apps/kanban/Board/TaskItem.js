@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { CardMedia, Link, Menu, MenuItem, Stack, Tooltip, Typography } from '@mui/material';
+import {CardMedia, Chip, Link, Menu, MenuItem, Stack, Tooltip, Typography} from '@mui/material';
 
 // third-party
 import { Draggable } from '@hello-pangea/dnd';
@@ -18,10 +18,15 @@ import { selectItem, deleteItem } from 'store/reducers/kanban';
 import IconButton from 'components/@extended/IconButton';
 
 // assets
-import { ClusterOutlined, MoreOutlined } from '@ant-design/icons';
+import {ClockCircleOutlined, ClusterOutlined, FallOutlined, MoreOutlined, RiseOutlined} from '@ant-design/icons';
 import {deleteTask, getTaskById, setSelectedTask} from "../../../../store/reducers/tasks";
+import {format, parseISO} from "date-fns";
 
-const backImage = require.context('assets/images/profile', true);
+// const backImage = require.context('assets/images/profile', true);
+
+const iconSX = {
+    fontSize: '0.675rem'
+};
 
 // item drag wrapper
 const getDragWrapper = (isDragging, draggableStyle, theme, radius) => {
@@ -85,6 +90,19 @@ const TaskItem = ({ item, index }) => {
     const editStory = () => {
         setOpenStoryDrawer((prevState) => !prevState);
     };
+
+    function getPriorityColor(priority) {
+        switch (priority) {
+            case "High":
+                return "primary";
+            case "Medium":
+                return "warning";
+            case "Low":
+                return "secondary";
+            default:
+                return "warning"
+        }
+    }
 
     return (
         <Draggable key={item._id} draggableId={item._id} index={index}>
@@ -152,6 +170,26 @@ const TaskItem = ({ item, index }) => {
                             </MenuItem>
                         </Menu>
                         <AlertItemDelete title={item.title} open={open} handleClose={handleModalClose} />
+                    </Stack>
+                    <Stack direction="row" mt={1}>
+                        <Chip
+                            variant="combined"
+                            color={getPriorityColor(item.priority)}
+                            label={item.priority}
+                            size="small"
+                        />
+                    </Stack>
+                    <Stack direction="row" mt={1} justifyContent='space-between'>
+                        <Stack direction="row" alignItems={'center'} gap={0.25}>
+                            <ClockCircleOutlined style={iconSX} />
+                            <Typography variant='caption'>{format(parseISO(item.startDate), "M/d/yyyy")}</Typography>
+                        </Stack>
+                        <Typography variant='caption'>&#8594;</Typography>
+                        <Stack direction="row" alignItems={'center'} gap={0.25}>
+                            <ClockCircleOutlined style={iconSX} />
+                            <Typography variant='caption'>{format(parseISO(item.endDate), "M/d/yyyy")}</Typography>
+                        </Stack>
+
                     </Stack>
                     {/*{itemStory && (*/}
                     {/*    <>*/}
