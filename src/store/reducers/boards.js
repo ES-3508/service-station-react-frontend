@@ -1,6 +1,7 @@
 import { dispatch } from "store";
 import axios from "utils/axios";
 import { openSnackbar } from "./snackbar";
+import {setActionProject} from "./projects";
 
 const { createSlice } = require("@reduxjs/toolkit")
 
@@ -188,4 +189,45 @@ export function deleteBoard(projectId, boardId) {
             dispatch(boards.actions.hasError(error));
         }
     };
+}
+
+export function updateBoardTasksOrder(projectId, boardId, values) {
+    return async () => {
+        try {
+            const response = await axios.put(`/api/v1/project/${projectId}/board/${boardId}/update/task`, values);
+
+            if (response.status === 200) {
+
+                setActionBoard();
+                dispatch(setActionProject());
+
+                dispatch(
+                    openSnackbar({
+                        open: true,
+                        message: 'Task updated successfully',
+                        variant: 'alert',
+                        alert: {
+                            color: 'success'
+                        },
+                        close: false
+                    })
+                );
+            }
+
+
+        } catch (err) {
+            // dispatch(
+            //     openSnackbar({
+            //         open: true,
+            //         message: 'Task could not update.',
+            //         variant: 'alert',
+            //         alert: {
+            //             color: 'error'
+            //         },
+            //         close: false
+            //     })
+            // );
+            // dispatch(projects.actions.hasError(err));
+        }
+    }
 }

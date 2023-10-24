@@ -15,7 +15,7 @@ import {
     RadioGroup,
     Select,
     Stack,
-    TextField
+    TextField, Typography
 } from '@mui/material';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -39,6 +39,8 @@ import {getUsers} from "../../../../store/reducers/users";
 import {useTheme} from "@mui/material/styles";
 import {updateProject, uploadProjectAttachment} from "../../../../store/reducers/projects";
 import {updateTask, uploadTaskAttachments} from "../../../../store/reducers/tasks";
+import IconButton from "../../../../components/@extended/IconButton";
+import {FileAddOutlined} from "@ant-design/icons";
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -441,9 +443,14 @@ const EditTaskItem = ({ item, profiles, columns, handleDrawerOpen }) => {
                                 <InputLabel sx={{ mt: 0.5 }}>Attachments:</InputLabel>
                             </Grid>
                             <Grid item xs={12}>
-                                <AttachmentsPreview attachments={attachments} onRemove={(attachment) => {
-                                    setAttachments(prevAttachments => prevAttachments.filter(a => a !== attachment));
-                                }} />
+                                {attachments.map((attachment) => (
+                                    <Box sx={{display: 'flex', alignItems: 'center', gap: 1, width: '100%'}}>
+                                        <IconButton key={attachment} sx={{ fontSize: 30 }}>
+                                            <FileAddOutlined  />
+                                        </IconButton>
+                                        <Typography component="a" href={attachment} variant='caption'>{attachment}</Typography>
+                                    </Box>
+                                ))}
                             </Grid>
                             <Grid item xs={12}>
                                 <UploadMultiFile

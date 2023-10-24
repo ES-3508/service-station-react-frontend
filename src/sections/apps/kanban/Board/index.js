@@ -13,7 +13,7 @@ import {dispatch, useDispatch, useSelector} from 'store';
 import { updateColumnOrder, updateColumnItemOrder } from 'store/reducers/kanban';
 import {useEffect} from "react";
 import {getProjectById, getProjects, updateProjectBoardOrder} from "../../../../store/reducers/projects";
-import {getBoards} from "../../../../store/reducers/boards";
+import {getBoards, updateBoardTasksOrder} from "../../../../store/reducers/boards";
 import {useParams} from "react-router-dom";
 import BoardTask from "./BoardTask";
 import AddBoard from "./AddBoard";
@@ -52,13 +52,24 @@ const Board = () => {
     // let newColumn;
     const { source, destination, draggableId, type } = result;
 
+    console.log(result)
+
     if (!destination) return;
     if (destination.droppableId === source.droppableId && destination.index === source.index) return;
 
-    dispatch(updateProjectBoardOrder(id, {
-      sourceIndex: source.index,
-      destinationIndex: destination.index
-    }));
+    if (type === "column") {
+      dispatch(updateProjectBoardOrder(id, {
+        sourceIndex: source.index,
+        destinationIndex: destination.index
+      }));
+    } else if (type === "item") {
+      dispatch(updateBoardTasksOrder(id, source.droppableId, {
+        destinationIndex: destination.index,
+        sourceIndex: source.index,
+        destinationBoardId: destination.droppableId,
+        sourceBoardId: source.droppableId
+      }))
+    }
 
     //
     // if (type === 'column') {

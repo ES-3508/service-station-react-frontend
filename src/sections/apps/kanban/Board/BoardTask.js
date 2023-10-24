@@ -130,7 +130,11 @@ const BoardTask = ({ board, index }) => {
                                         <AlertBoardDelete title={board.boardName} boardId={board._id} open={open} handleClose={() => {}} />
                                     </Grid>
                                 </Grid>
-                                {tasks.filter((task) => task.board === board._id).map((task, index) => (
+                                {tasks.filter(task => board.taskOrders.includes(task._id)).sort((a, b) => {
+                                    const indexA = board.taskOrders.indexOf(a._id);
+                                    const indexB = board.taskOrders.indexOf(b._id);
+                                    return indexA - indexB;
+                                }).map((task, index) => (
                                     <TaskItem key={task._id} item={task} index={index}  />
                                 ))}
                                 {providedDrop.placeholder}

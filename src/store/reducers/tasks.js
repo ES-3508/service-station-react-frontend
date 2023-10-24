@@ -206,7 +206,7 @@ export const uploadTaskAttachments = createAsyncThunk('', async (images) => {
         dispatch(
             openSnackbar({
                 open: true,
-                message: 'Uploading images...',
+                message: 'Uploading documents...',
                 variant: 'alert',
                 alert: {
                     color: 'info'
@@ -221,7 +221,7 @@ export const uploadTaskAttachments = createAsyncThunk('', async (images) => {
             let formData = new FormData();
             formData.append("file", image);
 
-            const response = await axios.post(`/api/v1/media/file-upload`, formData, {
+            const response = await axios.post(`/api/v1/media/document-upload`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -237,7 +237,7 @@ export const uploadTaskAttachments = createAsyncThunk('', async (images) => {
         dispatch(
             openSnackbar({
                 open: true,
-                message: 'Images uploaded successfully',
+                message: 'Documents uploaded successfully',
                 variant: 'alert',
                 alert: {
                     color: 'success'
