@@ -19,7 +19,7 @@ import { CloseOutlined, DeleteFilled } from '@ant-design/icons';
 
 import IconButton from 'components/@extended/IconButton';
 import AlertTaskItemDelete from "./AlertTaskItemDelete";
-import {setSelectedTask} from "../../../../store/reducers/tasks";
+import {deleteTask, setSelectedTask} from "../../../../store/reducers/tasks";
 import EditTaskItem from "./EditTaskItem";
 
 // ==============================|| KANBAN BOARD - ITEM DETAILS ||============================== //
@@ -62,19 +62,7 @@ const ItemDetails = () => {
     setOpenModal(false);
     if (status) {
       handleDrawerOpen();
-      // dispatch(deleteItem(selectedData.id, items, columns, userStory));
-      dispatch(
-        openSnackbar({
-          open: true,
-          message: 'Task Deleted successfully',
-          anchorOrigin: { vertical: 'top', horizontal: 'right' },
-          variant: 'alert',
-          alert: {
-            color: 'success'
-          },
-          close: false
-        })
-      );
+      dispatch(deleteTask(task.project, task.board, task._id));
     }
   };
 

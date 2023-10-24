@@ -19,7 +19,7 @@ import IconButton from 'components/@extended/IconButton';
 
 // assets
 import { ClusterOutlined, MoreOutlined } from '@ant-design/icons';
-import {getTaskById, setSelectedTask} from "../../../../store/reducers/tasks";
+import {deleteTask, getTaskById, setSelectedTask} from "../../../../store/reducers/tasks";
 
 const backImage = require.context('assets/images/profile', true);
 
@@ -73,19 +73,7 @@ const TaskItem = ({ item, index }) => {
     const handleModalClose = (status) => {
         setOpen(false);
         if (status) {
-            dispatch(deleteItem(item.id, items, columns, userStory));
-            dispatch(
-                openSnackbar({
-                    open: true,
-                    message: 'Task Deleted successfully',
-                    anchorOrigin: { vertical: 'top', horizontal: 'right' },
-                    variant: 'alert',
-                    alert: {
-                        color: 'success'
-                    },
-                    close: false
-                })
-            );
+            dispatch(deleteTask(item.project, item.board, item._id));
         }
     };
 
@@ -149,7 +137,7 @@ const TaskItem = ({ item, index }) => {
                             <MenuItem
                                 onClick={() => {
                                     handleClose();
-                                    handlerDetails(item._id);
+                                    detailsHandler(item);
                                 }}
                             >
                                 Edit
@@ -163,7 +151,7 @@ const TaskItem = ({ item, index }) => {
                                 Delete
                             </MenuItem>
                         </Menu>
-                        {/*<AlertItemDelete title={item.title} open={open} handleClose={handleModalClose} />*/}
+                        <AlertItemDelete title={item.title} open={open} handleClose={handleModalClose} />
                     </Stack>
                     {/*{itemStory && (*/}
                     {/*    <>*/}

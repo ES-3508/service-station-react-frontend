@@ -19,6 +19,7 @@ import IconButton from 'components/@extended/IconButton';
 
 // assets
 import { ClusterOutlined, MoreOutlined } from '@ant-design/icons';
+import {deleteTask} from "../../../../store/reducers/tasks";
 
 const backImage = require.context('assets/images/profile', true);
 
@@ -40,6 +41,9 @@ const getDragWrapper = (isDragging, draggableStyle, theme, radius) => {
 // ==============================|| KANBAN BOARD - ITEMS ||============================== //
 
 const BoardItem = ({ item, index }) => {
+
+    console.log('ITEM BOARD ', item)
+
     const theme = useTheme();
     const dispatch = useDispatch();
     const backProfile = item.image && backImage(`./${item.image}`);
@@ -66,19 +70,7 @@ const BoardItem = ({ item, index }) => {
     const handleModalClose = (status) => {
         setOpen(false);
         if (status) {
-            dispatch(deleteItem(item.id, items, columns, userStory));
-            dispatch(
-                openSnackbar({
-                    open: true,
-                    message: 'Task Deleted successfully',
-                    anchorOrigin: { vertical: 'top', horizontal: 'right' },
-                    variant: 'alert',
-                    alert: {
-                        color: 'success'
-                    },
-                    close: false
-                })
-            );
+            // dispatch(deleteTask(task.project, task.board, task._id));
         }
     };
 

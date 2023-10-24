@@ -265,44 +265,44 @@ export const uploadTaskAttachments = createAsyncThunk('', async (images) => {
 });
 
 
-//
-// export function deleteBoard(projectId, boardId) {
-//     return async () => {
-//         try {
-//             const response = await axios.delete(`/api/v1/project/${projectId}/board/${boardId}/delete`);
-//
-//             if (response.status === 200) {
-//
-//                 dispatch(tasks.actions.deleteBoardSuccess(response.data));
-//
-//                 setActionBoard();
-//
-//                 dispatch(
-//                     openSnackbar({
-//                         open: true,
-//                         message: 'Board deleted successfully.',
-//                         variant: 'alert',
-//                         alert: {
-//                             color: 'success'
-//                         },
-//                         close: false
-//                     })
-//                 );
-//             }
-//
-//         } catch (error) {
-//             dispatch(
-//                 openSnackbar({
-//                     open: true,
-//                     message: 'Board deleted failed.',
-//                     variant: 'alert',
-//                     alert: {
-//                         color: 'error'
-//                     },
-//                     close: false
-//                 })
-//             );
-//             dispatch(tasks.actions.hasError(error));
-//         }
-//     };
-// }
+
+export function deleteTask(projectId, boardId, taskId) {
+    return async () => {
+        try {
+            const response = await axios.delete(`/api/v1/project/${projectId}/board/${boardId}/task/${taskId}/delete`);
+
+            if (response.status === 200) {
+
+                dispatch(tasks.actions.deleteTaskSuccess(response.data));
+
+                setActionTask();
+
+                dispatch(
+                    openSnackbar({
+                        open: true,
+                        message: 'Task deleted successfully.',
+                        variant: 'alert',
+                        alert: {
+                            color: 'success'
+                        },
+                        close: false
+                    })
+                );
+            }
+
+        } catch (error) {
+            dispatch(
+                openSnackbar({
+                    open: true,
+                    message: 'Task deleted failed.',
+                    variant: 'alert',
+                    alert: {
+                        color: 'error'
+                    },
+                    close: false
+                })
+            );
+            dispatch(tasks.actions.hasError(error));
+        }
+    };
+}
