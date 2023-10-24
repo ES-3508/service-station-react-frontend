@@ -2,6 +2,7 @@ import { dispatch } from "store";
 import axios from "utils/axios";
 import axiosClient from "axios";
 import { openSnackbar } from "./snackbar";
+import {setActionBoard} from "./boards";
 
 const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit")
 
@@ -168,6 +169,47 @@ export function updateProject(projectId, values) {
                 })
             );
             dispatch(projects.actions.hasError(err));
+        }
+    }
+}
+
+export function updateProjectBoardOrder(projectId, values) {
+    return async () => {
+        try {
+            const response = await axios.put(`/api/v1/project/${projectId}/update/board`, values);
+
+            if (response.status === 200) {
+
+                dispatch(setActionBoard());
+                setActionProject();
+
+                dispatch(
+                    openSnackbar({
+                        open: true,
+                        message: 'Board updated successfully',
+                        variant: 'alert',
+                        alert: {
+                            color: 'success'
+                        },
+                        close: false
+                    })
+                );
+            }
+
+
+        } catch (err) {
+            // dispatch(
+            //     openSnackbar({
+            //         open: true,
+            //         message: 'Board could not update.',
+            //         variant: 'alert',
+            //         alert: {
+            //             color: 'error'
+            //         },
+            //         close: false
+            //     })
+            // );
+            // dispatch(projects.actions.hasError(err));
         }
     }
 }

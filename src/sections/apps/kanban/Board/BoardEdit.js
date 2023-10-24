@@ -27,7 +27,6 @@ const BoardEdit = ({ board }) => {
             dispatch(
                 updateBoard(id, board._id, {
                     boardName: value,
-                    order: board.order,
                 })
             );
         }

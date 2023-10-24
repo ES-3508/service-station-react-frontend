@@ -45,7 +45,6 @@ const AddBoard = () => {
 
             dispatch(createBoard(id, {
                 boardName: title,
-                order: 5 // TODO:
             }))
 
             // const newBoard = {
@@ -55,18 +54,18 @@ const AddBoard = () => {
             // };
             //
             // dispatch(addColumn(newBoard, columns, columnsOrder));
-            dispatch(
-                openSnackbar({
-                    open: true,
-                    message: 'Column Added successfully',
-                    anchorOrigin: { vertical: 'top', horizontal: 'right' },
-                    variant: 'alert',
-                    alert: {
-                        color: 'success'
-                    },
-                    close: false
-                })
-            );
+            // dispatch(
+            //     openSnackbar({
+            //         open: true,
+            //         message: 'Board Added successfully',
+            //         anchorOrigin: { vertical: 'top', horizontal: 'right' },
+            //         variant: 'alert',
+            //         alert: {
+            //             color: 'success'
+            //         },
+            //         close: false
+            //     })
+            // );
             setIsAddBoard((prev) => !prev);
             setTitle('');
         } else {
