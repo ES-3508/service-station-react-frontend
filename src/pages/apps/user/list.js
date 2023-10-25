@@ -38,7 +38,7 @@ import {
 } from 'components/third-party/ReactTable';
 
 import AddUser from 'sections/apps/user/AddUser';
-import CustomerView from 'sections/apps/customer/CustomerView';
+import UserView from 'sections/apps/user/UserView';
 // import AlertCustomerDelete from 'sections/apps/customer/AlertCustomerDelete';
 import AlertUserDelete from 'sections/apps/user/AlertUserDelete';
 
@@ -117,7 +117,7 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
   // }, [matchDownSM]);
 
   const renderRowSubComponent = useCallback(({ row }) => {
-    return <CustomerView data={users.find((user) => user._id === row.values._id)} />;
+    return <UserView data={users.find((user) => user._id === row.values._id)} />;
   }, [users]);
 
 
