@@ -93,7 +93,7 @@ const TabPersonal = () => {
                   placeholder="Outlined"
                   variant="outlined"
                   sx={{ display: 'none' }}
-                  onChange={(e) => setSelectedImage(e.target.files?.[0])}
+                  onChange={(e) => setSelectedImage(e.target.attachments?.[0])}
                 />
               </Stack>
             </Grid>

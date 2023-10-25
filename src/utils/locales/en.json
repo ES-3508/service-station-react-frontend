@@ -37,7 +37,7 @@
   "contact-us": "Contact US",
   "create": "Create",
   "custom": "Custom",
-  "customer": "Customer",
+  "customer": "Customers",
   "dashboard": "Dashboard",
   "data": "Data",
   "data-display": "Data Display",
@@ -135,5 +135,7 @@
   "utils": "Utils",
   "virtualized": "Virtualized",
   "widgets": "Widgets",
-  "More Items": "More Items"
+  "More Items": "More Items",
+  "users": "Users",
+  "permission": "Permissions"
 }

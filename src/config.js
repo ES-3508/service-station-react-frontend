@@ -29,6 +29,12 @@ export const CustomerStatus = {
   REJECTED: 'Rejected',
 }
 
+export const ProjectStatus = {
+  PENDING: 'Pending',
+  VERIFIED: 'Verified',
+  REJECTED: 'Rejected',
+}
+
 // ==============================|| THEME CONFIG  ||============================== //
 
 const config = {

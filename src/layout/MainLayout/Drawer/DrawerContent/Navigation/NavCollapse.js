@@ -168,8 +168,6 @@ const NavCollapse = ({ menu, level, parentId, setSelectedItems, selectedItems, s
         }
       });
     }
-
-    // 
   }, [pathname, menu.children]);
 
   useEffect(() => {

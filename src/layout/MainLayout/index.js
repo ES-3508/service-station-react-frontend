@@ -34,7 +34,6 @@ const MainLayout = () => {
     if (!miniDrawer) {
       dispatch(openDrawer(!matchDownXL));
     }
-    // 
   }, [matchDownXL]);
 
   return (

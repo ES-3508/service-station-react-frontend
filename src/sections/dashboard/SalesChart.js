@@ -128,7 +128,6 @@ const SalesChart = () => {
     } else {
       setSeries([]);
     }
-    // 
   }, [income, cos]);
 
   useEffect(() => {

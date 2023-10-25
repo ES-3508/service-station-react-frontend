@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
-import { lazy, Suspense } from 'react';
-import { Outlet } from 'react-router-dom';
+import { lazy, Suspense, useEffect } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 // material-ui
 import { Container, Toolbar } from '@mui/material';
@@ -40,11 +40,19 @@ const Loader = () => (
 
 const CommonLayout = ({ layout = 'blank' }) => {
   const menu = useSelector((state) => state.menu);
+  const navigate = useNavigate();
+
   const { componentDrawerOpen } = menu;
 
   const handleDrawerOpen = () => {
     dispatch(openComponentDrawer({ componentDrawerOpen: !componentDrawerOpen }));
   };
+
+  useEffect(() => {
+    if (layout === 'blank') {
+      navigate('/login')
+    }
+  }, [])
 
   return (
     <>

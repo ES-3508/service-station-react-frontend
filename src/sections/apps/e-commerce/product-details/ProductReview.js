@@ -53,7 +53,6 @@ const ProductReviews = ({ product }) => {
 
   useEffect(() => {
     dispatch(getProductReviews());
-    // 
   }, []);
 
   return (

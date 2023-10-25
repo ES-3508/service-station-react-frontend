@@ -56,10 +56,23 @@ const applications = {
     },
     {
       id: 'users',
-      title: 'Users',
-      type: 'item',
+      title: <FormattedMessage id="users" />,
+      type: 'collapse',
       icon: icons.CustomerServiceOutlined,
-      url: '/apps/customer/customer-list'
+      children: [
+        {
+          id: 'user-list',
+          title: <FormattedMessage id="list" />,
+          type: 'item',
+          url: '/apps/user/user-list'
+        },
+        // {
+        //   id: 'permission-list',
+        //   title: <FormattedMessage id="permission" />,
+        //   type: 'item',
+        //   url: '/apps/permission/permission-list'
+        // },
+      ]
     },
     {
       id: 'customer',
@@ -73,11 +86,31 @@ const applications = {
           type: 'item',
           url: '/apps/customer/customer-list'
         },
+        // {
+        //   id: 'customer-card',
+        //   title: <FormattedMessage id="cards" />,
+        //   type: 'item',
+        //   url: '/apps/customer/customer-card'
+        // }
+      ]
+    },
+    {
+      id: 'projects',
+      title: <FormattedMessage id="project" />,
+      type: 'collapse',
+      icon: icons.CustomerServiceOutlined,
+      children: [
         {
-          id: 'customer-card',
+          id: 'project-list',
+          title: <FormattedMessage id="list" />,
+          type: 'item',
+          url: '/apps/project/project-list'
+        },
+        {
+          id: 'project-card',
           title: <FormattedMessage id="cards" />,
           type: 'item',
-          url: '/apps/customer/customer-card'
+          url: '/apps/project/project-card'
         }
       ]
     },

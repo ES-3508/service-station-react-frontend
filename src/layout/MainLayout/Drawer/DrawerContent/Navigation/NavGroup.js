@@ -82,7 +82,6 @@ const NavGroup = ({ item, lastItem, remItems, lastItemId, setSelectedItems, sele
         setCurrentItem(item);
       }
     }
-    // 
   }, [item, lastItem, downLG]);
 
   const checkOpenForParent = (child, id) => {
@@ -110,7 +109,6 @@ const NavGroup = ({ item, lastItem, remItems, lastItemId, setSelectedItems, sele
   useEffect(() => {
     checkSelectedOnload(currentItem);
     if (openMini) setAnchorEl(null);
-    // 
   }, [pathname, currentItem]);
 
   const handleClick = (event) => {

@@ -18,6 +18,9 @@ import { selectItem, deleteItem } from 'store/reducers/kanban';
 import { CloseOutlined, DeleteFilled } from '@ant-design/icons';
 
 import IconButton from 'components/@extended/IconButton';
+import AlertTaskItemDelete from "./AlertTaskItemDelete";
+import {deleteTask, setSelectedTask} from "../../../../store/reducers/tasks";
+import EditTaskItem from "./EditTaskItem";
 
 // ==============================|| KANBAN BOARD - ITEM DETAILS ||============================== //
 
@@ -29,26 +32,28 @@ const ItemDetails = () => {
   const kanban = useSelector((state) => state.kanban);
   const { columns, comments, profiles, items, selectedItem, userStory } = kanban;
 
+    const { task } = useSelector((state) => state.tasks);
+
   // drawer
-  const [open, setOpen] = useState(selectedItem !== false);
+  const [open, setOpen] = useState(!!task);
   const handleDrawerOpen = () => {
     setOpen((prevState) => !prevState);
-    dispatch(selectItem(false));
+    dispatch(setSelectedTask(null));
   };
 
   useEffect(() => {
-    selectedItem !== false && setOpen(true);
-  }, [selectedItem]);
+      setOpen(!!task);
+  }, [task]);
 
-  if (selectedItem !== false) {
-    selectedData = items.filter((item) => item.id === selectedItem)[0];
-    if (selectedData?.commentIds) {
-      commentList = [...selectedData.commentIds].reverse().map((commentId, index) => {
-        const commentData = comments.filter((comment) => comment.id === commentId)[0];
-        const profile = profiles.filter((item) => item.id === commentData.profileId)[0];
-        return <ItemComment key={index} comment={commentData} profile={profile} />;
-      });
-    }
+  if (task !== false) {
+    // selectedData = items.filter((item) => item.id === selectedItem)[0];
+    // if (selectedData?.commentIds) {
+    //   commentList = [...selectedData.commentIds].reverse().map((commentId, index) => {
+    //     const commentData = comments.filter((comment) => comment.id === commentId)[0];
+    //     const profile = profiles.filter((item) => item.id === commentData.profileId)[0];
+    //     return <ItemComment key={index} comment={commentData} profile={profile} />;
+    //   });
+    // }
   }
 
   const [openModal, setOpenModal] = useState(false);
@@ -57,19 +62,7 @@ const ItemDetails = () => {
     setOpenModal(false);
     if (status) {
       handleDrawerOpen();
-      dispatch(deleteItem(selectedData.id, items, columns, userStory));
-      dispatch(
-        openSnackbar({
-          open: true,
-          message: 'Task Deleted successfully',
-          anchorOrigin: { vertical: 'top', horizontal: 'right' },
-          variant: 'alert',
-          alert: {
-            color: 'success'
-          },
-          close: false
-        })
-      );
+      dispatch(deleteTask(task.project, task.board, task._id));
     }
   };
 
@@ -100,7 +93,7 @@ const ItemDetails = () => {
             height: '100vh'
           }}
         >
-          {selectedData && (
+          {task && (
             <>
               <Box sx={{ p: 3 }}>
                 <Grid container alignItems="center" spacing={0.5} justifyContent="space-between">
@@ -117,7 +110,7 @@ const ItemDetails = () => {
                           verticalAlign: 'middle'
                         }}
                       >
-                        {selectedData.title}
+                        {task.title}
                       </Typography>
                     </Stack>
                   </Grid>
@@ -135,7 +128,7 @@ const ItemDetails = () => {
                         </IconButton>
                       </Tooltip>
                     </Stack>
-                    <AlertItemDelete title={selectedData.title} open={openModal} handleClose={handleModalClose} />
+                    <AlertTaskItemDelete title={task.title} open={openModal} handleClose={handleModalClose} />
                   </Grid>
                 </Grid>
               </Box>
@@ -143,25 +136,24 @@ const ItemDetails = () => {
               <Box sx={{ p: 3 }}>
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
-                    <EditItem
-                      item={selectedData}
+                    <EditTaskItem
+                      item={task}
                       profiles={profiles}
-                      userStory={userStory}
                       columns={columns}
                       handleDrawerOpen={handleDrawerOpen}
                     />
                   </Grid>
-                  <Grid item xs={12}>
-                    {commentList}
-                  </Grid>
-                  <Grid item xs={12}>
-                    <AddItemComment itemId={selectedItem} />
-                  </Grid>
+                  {/*<Grid item xs={12}>*/}
+                  {/*  {commentList}*/}
+                  {/*</Grid>*/}
+                  {/*<Grid item xs={12}>*/}
+                  {/*  <AddItemComment itemId={selectedItem} />*/}
+                  {/*</Grid>*/}
                 </Grid>
               </Box>
             </>
           )}
-          {!selectedData && (
+          {!task && (
             <Stack justifyContent="center" alignItems="center" sx={{ height: '100vh' }}>
               <Typography variant="h5" color="error">
                 No item found
