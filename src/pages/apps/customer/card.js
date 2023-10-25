@@ -48,7 +48,7 @@ const allColumns = [
   },
   {
     id: 4,
-    header: 'Contact'
+    header: 'Phone'
   },
   {
     id: 5,
@@ -74,6 +74,7 @@ const CustomerCardPage = () => {
   const [customer, setCustomer] = useState(null);
   const [userCard, setUserCard] = useState([]);
   const [page, setPage] = useState(1);
+  const [query, setQuery] = useState('')
 
   const { customers: {
     customers,
@@ -112,54 +113,60 @@ const CustomerCardPage = () => {
   };
 
   useEffect(() => {
-    dispatch(getCustomers(page - 1, PER_PAGE, ''));
-  }, [page, action])
+    dispatch(getCustomers(page - 1, PER_PAGE, query));
+  }, [page, action, query])
 
   return (
     <>
-      {/*<Box sx={{ position: 'relative', marginBottom: 3 }}>*/}
-      {/*  <Stack direction="row" alignItems="center">*/}
-      {/*    <Stack*/}
-      {/*      direction={matchDownSM ? 'column' : 'row'}*/}
-      {/*      sx={{ width: '100%' }}*/}
-      {/*      spacing={1}*/}
-      {/*      justifyContent="space-between"*/}
-      {/*      alignItems="center"*/}
-      {/*    >*/}
-      {/*      /!*Search & Filter*!/*/}
-      {/*      <GlobalFilter preGlobalFilteredRows={data} globalFilter={globalFilter} setGlobalFilter={setGlobalFilter} />*/}
-      {/*      /!*End of Search & Filter*!/*/}
-      {/*      <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>*/}
-      {/*        <FormControl sx={{ m: 1, minWidth: 120 }}>*/}
-      {/*          <Select*/}
-      {/*            value={sortBy}*/}
-      {/*            onChange={handleChange}*/}
-      {/*            displayEmpty*/}
-      {/*            inputProps={{ 'aria-label': 'Without label' }}*/}
-      {/*            renderValue={(selected) => {*/}
-      {/*              if (!selected) {*/}
-      {/*                return <Typography variant="subtitle1">Sort By</Typography>;*/}
-      {/*              }*/}
+      <Box sx={{ position: 'relative', marginBottom: 3 }}>
+        <Stack direction="row" alignItems="center">
+          <Stack
+            direction={matchDownSM ? 'column' : 'row'}
+            sx={{ width: '100%' }}
+            spacing={1}
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            {/*Search & Filter*/}
+            <GlobalFilter preGlobalFilteredRows={customers} globalFilter={globalFilter} setGlobalFilter={(value) => {
+              if (value !== undefined) {
+                setQuery(value);
+              } else {
+                setQuery('');
+              }
+            }} />
+            {/*End of Search & Filter*/}
+            <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
+              <FormControl sx={{ m: 1, minWidth: 120 }}>
+                <Select
+                  value={sortBy}
+                  onChange={handleChange}
+                  displayEmpty
+                  inputProps={{ 'aria-label': 'Without label' }}
+                  renderValue={(selected) => {
+                    if (!selected) {
+                      return <Typography variant="subtitle1">Sort By</Typography>;
+                    }
       
-      {/*              return <Typography variant="subtitle2">Sort by ({sortBy})</Typography>;*/}
-      {/*            }}*/}
-      {/*          >*/}
-      {/*            {allColumns.map((column) => {*/}
-      {/*              return (*/}
-      {/*                <MenuItem key={column.id} value={column.header}>*/}
-      {/*                  {column.header}*/}
-      {/*                </MenuItem>*/}
-      {/*              );*/}
-      {/*            })}*/}
-      {/*          </Select>*/}
-      {/*        </FormControl>*/}
-      {/*        <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAdd}>*/}
-      {/*          Add Customer*/}
-      {/*        </Button>*/}
-      {/*      </Stack>*/}
-      {/*    </Stack>*/}
-      {/*  </Stack>*/}
-      {/*</Box>*/}
+                    return <Typography variant="subtitle2">Sort by ({sortBy})</Typography>;
+                  }}
+                >
+                  {allColumns.map((column) => {
+                    return (
+                      <MenuItem key={column.id} value={column.header}>
+                        {column.header}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
+              <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAdd}>
+                Add Customer
+              </Button>
+            </Stack>
+          </Stack>
+        </Stack>
+      </Box>
 
       {/*Content Cards*/}
       <Grid container spacing={3}>
