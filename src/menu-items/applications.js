@@ -82,7 +82,7 @@ const applications = {
       children: [
         {
           id: 'customer-list',
-          title: <FormattedMessage id="list" />,
+          title: <FormattedMessage id="All Customers" />,
           type: 'item',
           url: '/apps/customer/customer-list'
         },
@@ -95,23 +95,23 @@ const applications = {
       ]
     },
     {
-      id: 'projects',
-      title: <FormattedMessage id="project" />,
+      id: 'project',
+      title: <FormattedMessage id="Projects" />,
       type: 'collapse',
       icon: icons.CustomerServiceOutlined,
       children: [
         {
           id: 'project-list',
-          title: <FormattedMessage id="list" />,
+          title: <FormattedMessage id="All Projects" />,
           type: 'item',
           url: '/apps/project/project-list'
         },
-        {
-          id: 'project-card',
-          title: <FormattedMessage id="cards" />,
-          type: 'item',
-          url: '/apps/project/project-card'
-        }
+        // {
+        //   id: 'project-card',
+        //   title: <FormattedMessage id="cards" />,
+        //   type: 'item',
+        //   url: '/apps/project/project-card'
+        // }
       ]
     },
     // {
