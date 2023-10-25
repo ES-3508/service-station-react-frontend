@@ -39,8 +39,20 @@ import ListCard from './exportpdf/ListCard';
 // assets
 import { DeleteOutlined, DownloadOutlined, EditOutlined } from '@ant-design/icons';
 
-const avatarImage = require.context('assets/images/users', true);
+// const avatarImage = require.context('assets/images/users', true);
 
+
+const StatusCell = ({ value }) => {
+  switch (value) {
+    case 'Rejected':
+      return <Chip color="error" label="Rejected" size="small" variant="light" />;
+    case 'Verified':
+      return <Chip color="success" label="Verified" size="small" variant="light" />;
+    case 'Pending':
+    default:
+      return <Chip color="info" label="Pending" size="small" variant="light" />;
+  }
+};
 // ==============================|| CUSTOMER - CARD PREVIEW ||============================== //
 
 export default function CustomerPreview({ customer, open, onClose }) {
@@ -74,13 +86,13 @@ export default function CustomerPreview({ customer, open, onClose }) {
                 disablePadding
                 secondaryAction={
                   <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
-                    <Tooltip title="Export">
-                      <PDFDownloadLink document={<ListCard customer={customer} />} fileName={`Customer-${customer.fatherName}.pdf`}>
-                        <IconButton color="secondary">
-                          <DownloadOutlined />
-                        </IconButton>
-                      </PDFDownloadLink>
-                    </Tooltip>
+                    {/*<Tooltip title="Export">*/}
+                    {/*  <PDFDownloadLink document={<ListCard customer={customer} />} fileName={`Customer-${customer.fatherName}.pdf`}>*/}
+                    {/*    <IconButton color="secondary">*/}
+                    {/*      <DownloadOutlined />*/}
+                    {/*    </IconButton>*/}
+                    {/*  </PDFDownloadLink>*/}
+                    {/*</Tooltip>*/}
                     <Tooltip title="Edit">
                       <IconButton color="secondary" onClick={handleAdd}>
                         <EditOutlined />
@@ -95,11 +107,11 @@ export default function CustomerPreview({ customer, open, onClose }) {
                 }
               >
                 <ListItemAvatar sx={{ mr: 0.75 }}>
-                  <Avatar alt={customer.fatherName} size="lg" src={avatarImage(`./avatar-${!customer.avatar ? 1 : customer.avatar}.png`)} />
+                  <Avatar alt={customer.name} size="lg" src={customer?.imageUrl} />
                 </ListItemAvatar>
                 <ListItemText
-                  primary={<Typography variant="h5">{customer.fatherName}</Typography>}
-                  secondary={<Typography color="secondary">{customer.role}</Typography>}
+                  primary={<Typography variant="h5">{customer.name}{' '} {StatusCell(customer.accountStatus)}</Typography>}
+                  secondary={<Typography color="secondary">{customer.email}</Typography>}
                 />
               </ListItem>
             </List>
@@ -112,144 +124,144 @@ export default function CustomerPreview({ customer, open, onClose }) {
                     <Grid item xs={12}>
                       <MainCard title="About me">
                         <Typography>
-                          Hello, Myself {customer.fatherName}, I’m {customer.role} in international company, {customer.about}
+                          {customer?.description}
                         </Typography>
                       </MainCard>
                     </Grid>
                     <Grid item xs={12}>
-                      <MainCard title="Education">
+                      <MainCard title="Contact Details">
                         <List sx={{ py: 0 }}>
-                          <ListItem divider>
-                            <Grid container spacing={matchDownMD ? 0.5 : 3}>
-                              <Grid item xs={12} md={6}>
-                                <Stack spacing={0.5}>
-                                  <Typography color="secondary">Master Degree (Year)</Typography>
-                                  <Typography>2014-2017</Typography>
-                                </Stack>
-                              </Grid>
-                              <Grid item xs={12} md={6}>
-                                <Stack spacing={0.5}>
-                                  <Typography color="secondary">Institute</Typography>
-                                  <Typography>-</Typography>
-                                </Stack>
-                              </Grid>
-                            </Grid>
-                          </ListItem>
-                          <ListItem divider>
-                            <Grid container spacing={matchDownMD ? 0.5 : 3}>
-                              <Grid item xs={12} md={6}>
-                                <Stack spacing={0.5}>
-                                  <Typography color="secondary">Bachelor (Year)</Typography>
-                                  <Typography>2011-2013</Typography>
-                                </Stack>
-                              </Grid>
-                              <Grid item xs={12} md={6}>
-                                <Stack spacing={0.5}>
-                                  <Typography color="secondary">Institute</Typography>
-                                  <Typography>Imperial College London</Typography>
-                                </Stack>
-                              </Grid>
-                            </Grid>
-                          </ListItem>
                           <ListItem>
                             <Grid container spacing={matchDownMD ? 0.5 : 3}>
                               <Grid item xs={12} md={6}>
                                 <Stack spacing={0.5}>
-                                  <Typography color="secondary">School (Year)</Typography>
-                                  <Typography>2009-2011</Typography>
+                                  <Typography color="secondary">Address</Typography>
+                                  <Typography>{customer.address} {customer.zipCode}</Typography>
                                 </Stack>
                               </Grid>
                               <Grid item xs={12} md={6}>
                                 <Stack spacing={0.5}>
-                                  <Typography color="secondary">Institute</Typography>
-                                  <Typography>School of London, England</Typography>
+                                  <Typography color="secondary">Country</Typography>
+                                  <Typography>{customer.country}</Typography>
                                 </Stack>
                               </Grid>
                             </Grid>
                           </ListItem>
+                          {/*<ListItem divider>*/}
+                          {/*  <Grid container spacing={matchDownMD ? 0.5 : 3}>*/}
+                          {/*    <Grid item xs={12} md={6}>*/}
+                          {/*      <Stack spacing={0.5}>*/}
+                          {/*        <Typography color="secondary">Email Address</Typography>*/}
+                          {/*        <Typography>{customer.email}</Typography>*/}
+                          {/*      </Stack>*/}
+                          {/*    </Grid>*/}
+                          {/*    <Grid item xs={12} md={6}>*/}
+                          {/*      <Stack spacing={0.5}>*/}
+                          {/*        <Typography color="secondary"></Typography>*/}
+                          {/*        <Typography>Imperial College London</Typography>*/}
+                          {/*      </Stack>*/}
+                          {/*    </Grid>*/}
+                          {/*  </Grid>*/}
+                          {/*</ListItem>*/}
+                          {/*<ListItem>*/}
+                          {/*  <Grid container spacing={matchDownMD ? 0.5 : 3}>*/}
+                          {/*    <Grid item xs={12} md={6}>*/}
+                          {/*      <Stack spacing={0.5}>*/}
+                          {/*        <Typography color="secondary">School (Year)</Typography>*/}
+                          {/*        <Typography>2009-2011</Typography>*/}
+                          {/*      </Stack>*/}
+                          {/*    </Grid>*/}
+                          {/*    <Grid item xs={12} md={6}>*/}
+                          {/*      <Stack spacing={0.5}>*/}
+                          {/*        <Typography color="secondary">Institute</Typography>*/}
+                          {/*        <Typography>School of London, England</Typography>*/}
+                          {/*      </Stack>*/}
+                          {/*    </Grid>*/}
+                          {/*  </Grid>*/}
+                          {/*</ListItem>*/}
                         </List>
                       </MainCard>
                     </Grid>
-                    <Grid item xs={12}>
-                      <MainCard title="Emplyment">
-                        <List sx={{ py: 0 }}>
-                          <ListItem divider>
-                            <Grid container spacing={matchDownMD ? 0.5 : 3}>
-                              <Grid item xs={12} md={6}>
-                                <Stack spacing={0.5}>
-                                  <Typography color="secondary">Senior UI/UX designer (Year)</Typography>
-                                  <Typography>2019-Current</Typography>
-                                </Stack>
-                              </Grid>
-                              <Grid item xs={12} md={6}>
-                                <Stack spacing={0.5}>
-                                  <Typography color="secondary">Job Responsibility</Typography>
-                                  <Typography>
-                                    Perform task related to project manager with the 100+ team under my observation. Team management is key
-                                    role in this company.
-                                  </Typography>
-                                </Stack>
-                              </Grid>
-                            </Grid>
-                          </ListItem>
-                          <ListItem>
-                            <Grid container spacing={matchDownMD ? 0.5 : 3}>
-                              <Grid item xs={12} md={6}>
-                                <Stack spacing={0.5}>
-                                  <Typography color="secondary">Trainee cum Project Manager (Year)</Typography>
-                                  <Typography>2017-2019</Typography>
-                                </Stack>
-                              </Grid>
-                              <Grid item xs={12} md={6}>
-                                <Stack spacing={0.5}>
-                                  <Typography color="secondary">Job Responsibility</Typography>
-                                  <Typography>Team management is key role in this company.</Typography>
-                                </Stack>
-                              </Grid>
-                            </Grid>
-                          </ListItem>
-                        </List>
-                      </MainCard>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <MainCard title="Skills">
-                        <Box
-                          sx={{
-                            display: 'flex',
-                            flexWrap: 'wrap',
-                            listStyle: 'none',
-                            p: 0.5,
-                            m: 0
-                          }}
-                          component="ul"
-                        >
-                          {customer.skills.map((skill, index) => (
-                            <ListItem disablePadding key={index} sx={{ width: 'auto', pr: 0.75, pb: 0.75 }}>
-                              <Chip color="secondary" variant="outlined" size="small" label={skill} />
-                            </ListItem>
-                          ))}
-                        </Box>
-                      </MainCard>
-                    </Grid>
+                    {/*<Grid item xs={12}>*/}
+                    {/*  <MainCard title="Emplyment">*/}
+                    {/*    <List sx={{ py: 0 }}>*/}
+                    {/*      <ListItem divider>*/}
+                    {/*        <Grid container spacing={matchDownMD ? 0.5 : 3}>*/}
+                    {/*          <Grid item xs={12} md={6}>*/}
+                    {/*            <Stack spacing={0.5}>*/}
+                    {/*              <Typography color="secondary">Senior UI/UX designer (Year)</Typography>*/}
+                    {/*              <Typography>2019-Current</Typography>*/}
+                    {/*            </Stack>*/}
+                    {/*          </Grid>*/}
+                    {/*          <Grid item xs={12} md={6}>*/}
+                    {/*            <Stack spacing={0.5}>*/}
+                    {/*              <Typography color="secondary">Job Responsibility</Typography>*/}
+                    {/*              <Typography>*/}
+                    {/*                Perform task related to project manager with the 100+ team under my observation. Team management is key*/}
+                    {/*                role in this company.*/}
+                    {/*              </Typography>*/}
+                    {/*            </Stack>*/}
+                    {/*          </Grid>*/}
+                    {/*        </Grid>*/}
+                    {/*      </ListItem>*/}
+                    {/*      <ListItem>*/}
+                    {/*        <Grid container spacing={matchDownMD ? 0.5 : 3}>*/}
+                    {/*          <Grid item xs={12} md={6}>*/}
+                    {/*            <Stack spacing={0.5}>*/}
+                    {/*              <Typography color="secondary">Trainee cum Project Manager (Year)</Typography>*/}
+                    {/*              <Typography>2017-2019</Typography>*/}
+                    {/*            </Stack>*/}
+                    {/*          </Grid>*/}
+                    {/*          <Grid item xs={12} md={6}>*/}
+                    {/*            <Stack spacing={0.5}>*/}
+                    {/*              <Typography color="secondary">Job Responsibility</Typography>*/}
+                    {/*              <Typography>Team management is key role in this company.</Typography>*/}
+                    {/*            </Stack>*/}
+                    {/*          </Grid>*/}
+                    {/*        </Grid>*/}
+                    {/*      </ListItem>*/}
+                    {/*    </List>*/}
+                    {/*  </MainCard>*/}
+                    {/*</Grid>*/}
+                    {/*<Grid item xs={12}>*/}
+                    {/*  <MainCard title="Skills">*/}
+                    {/*    <Box*/}
+                    {/*      sx={{*/}
+                    {/*        display: 'flex',*/}
+                    {/*        flexWrap: 'wrap',*/}
+                    {/*        listStyle: 'none',*/}
+                    {/*        p: 0.5,*/}
+                    {/*        m: 0*/}
+                    {/*      }}*/}
+                    {/*      component="ul"*/}
+                    {/*    >*/}
+                    {/*      {customer.skills.map((skill, index) => (*/}
+                    {/*        <ListItem disablePadding key={index} sx={{ width: 'auto', pr: 0.75, pb: 0.75 }}>*/}
+                    {/*          <Chip color="secondary" variant="outlined" size="small" label={skill} />*/}
+                    {/*        </ListItem>*/}
+                    {/*      ))}*/}
+                    {/*    </Box>*/}
+                    {/*  </MainCard>*/}
+                    {/*</Grid>*/}
                   </Grid>
                 </Grid>
                 <Grid item xs={12} sm={4} xl={3}>
                   <MainCard>
                     <Stack spacing={2}>
                       <Stack spacing={0.5}>
-                        <Typography color="secondary">Father Name</Typography>
+                        <Typography color="secondary">Customer Name</Typography>
                         <Typography>
-                          Mr. {customer.firstName} {customer.lastName}
+                          Mr. {customer.name} {customer.name}
                         </Typography>
                       </Stack>
                       <Stack spacing={0.5}>
-                        <Typography color="secondary">Email</Typography>
-                        <Typography>{customer.email}</Typography>
+                        <Typography color="secondary">Age</Typography>
+                        <Typography>{customer.age}</Typography>
                       </Stack>
                       <Stack spacing={0.5}>
                         <Typography color="secondary">Contact</Typography>
                         <Typography>
-                          <PatternFormat displayType="text" format="+1 (###) ###-####" mask="_" defaultValue={customer.contact} />
+                          <PatternFormat displayType="text" format="+1 (###) ###-####" mask="_" defaultValue={customer.phone} />
                         </Typography>
                       </Stack>
                       <Stack spacing={0.5}>
@@ -258,8 +270,8 @@ export default function CustomerPreview({ customer, open, onClose }) {
                       </Stack>
                       <Stack spacing={0.5}>
                         <Typography color="secondary">Website</Typography>
-                        <Link href="https://google.com" target="_blank" sx={{ textTransform: 'lowercase' }}>
-                          https://{customer.firstName}.en
+                        <Link href={customer.web} target="_blank" sx={{ textTransform: 'lowercase' }}>
+                          {customer.web}
                         </Link>
                       </Stack>
                     </Stack>
@@ -289,7 +301,7 @@ export default function CustomerPreview({ customer, open, onClose }) {
         <AddCustomer customer={customer} onCancel={handleAdd} />
       </Dialog>
 
-      <AlertCustomerDelete title={customer.fatherName} open={openAlert} handleClose={handleClose} />
+      <AlertCustomerDelete customerId={customer._id} title={customer.name} open={openAlert} handleClose={handleClose} />
     </>
   );
 }

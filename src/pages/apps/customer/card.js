@@ -28,6 +28,8 @@ import usePagination from 'hooks/usePagination';
 
 // assets
 import { PlusOutlined } from '@ant-design/icons';
+import {dispatch, useSelector} from "../../../store";
+import {getCustomers} from "../../../store/reducers/customers";
 
 // ==============================|| CUSTOMER - CARD ||============================== //
 
@@ -72,6 +74,12 @@ const CustomerCardPage = () => {
   const [customer, setCustomer] = useState(null);
   const [userCard, setUserCard] = useState([]);
   const [page, setPage] = useState(1);
+
+  const { customers: {
+    customers,
+    total,
+  }, action } = useSelector((state) => state.customers);
+
   const handleChange = (event) => {
     setSortBy(event.target.value);
   };
@@ -82,87 +90,95 @@ const CustomerCardPage = () => {
   };
 
   // search
-  useEffect(() => {
-    const newData = data.filter((value) => {
-      if (globalFilter) {
-        return value.fatherName.toLowerCase().includes(globalFilter.toLowerCase());
-      } else {
-        return value;
-      }
-    });
-    setUserCard(newData);
-  }, [globalFilter, data]);
+  // useEffect(() => {
+  //   const newData = data.filter((value) => {
+  //     if (globalFilter) {
+  //       return value.fatherName.toLowerCase().includes(globalFilter.toLowerCase());
+  //     } else {
+  //       return value;
+  //     }
+  //   });
+  //   setUserCard(newData);
+  // }, [globalFilter, data]);
 
   const PER_PAGE = 6;
 
-  const count = Math.ceil(userCard.length / PER_PAGE);
-  const _DATA = usePagination(userCard, PER_PAGE);
+  // const count = Math.ceil(userCard.length / PER_PAGE);
+  // const _DATA = usePagination(userCard, PER_PAGE);
 
   const handleChangePage = (e, p) => {
     setPage(p);
-    _DATA.jump(p);
+    // _DATA.jump(p);
   };
+
+  useEffect(() => {
+    dispatch(getCustomers(page - 1, PER_PAGE, ''));
+  }, [page, action])
 
   return (
     <>
-      <Box sx={{ position: 'relative', marginBottom: 3 }}>
-        <Stack direction="row" alignItems="center">
-          <Stack
-            direction={matchDownSM ? 'column' : 'row'}
-            sx={{ width: '100%' }}
-            spacing={1}
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <GlobalFilter preGlobalFilteredRows={data} globalFilter={globalFilter} setGlobalFilter={setGlobalFilter} />
-            <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
-              <FormControl sx={{ m: 1, minWidth: 120 }}>
-                <Select
-                  value={sortBy}
-                  onChange={handleChange}
-                  displayEmpty
-                  inputProps={{ 'aria-label': 'Without label' }}
-                  renderValue={(selected) => {
-                    if (!selected) {
-                      return <Typography variant="subtitle1">Sort By</Typography>;
-                    }
+      {/*<Box sx={{ position: 'relative', marginBottom: 3 }}>*/}
+      {/*  <Stack direction="row" alignItems="center">*/}
+      {/*    <Stack*/}
+      {/*      direction={matchDownSM ? 'column' : 'row'}*/}
+      {/*      sx={{ width: '100%' }}*/}
+      {/*      spacing={1}*/}
+      {/*      justifyContent="space-between"*/}
+      {/*      alignItems="center"*/}
+      {/*    >*/}
+      {/*      /!*Search & Filter*!/*/}
+      {/*      <GlobalFilter preGlobalFilteredRows={data} globalFilter={globalFilter} setGlobalFilter={setGlobalFilter} />*/}
+      {/*      /!*End of Search & Filter*!/*/}
+      {/*      <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>*/}
+      {/*        <FormControl sx={{ m: 1, minWidth: 120 }}>*/}
+      {/*          <Select*/}
+      {/*            value={sortBy}*/}
+      {/*            onChange={handleChange}*/}
+      {/*            displayEmpty*/}
+      {/*            inputProps={{ 'aria-label': 'Without label' }}*/}
+      {/*            renderValue={(selected) => {*/}
+      {/*              if (!selected) {*/}
+      {/*                return <Typography variant="subtitle1">Sort By</Typography>;*/}
+      {/*              }*/}
+      
+      {/*              return <Typography variant="subtitle2">Sort by ({sortBy})</Typography>;*/}
+      {/*            }}*/}
+      {/*          >*/}
+      {/*            {allColumns.map((column) => {*/}
+      {/*              return (*/}
+      {/*                <MenuItem key={column.id} value={column.header}>*/}
+      {/*                  {column.header}*/}
+      {/*                </MenuItem>*/}
+      {/*              );*/}
+      {/*            })}*/}
+      {/*          </Select>*/}
+      {/*        </FormControl>*/}
+      {/*        <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAdd}>*/}
+      {/*          Add Customer*/}
+      {/*        </Button>*/}
+      {/*      </Stack>*/}
+      {/*    </Stack>*/}
+      {/*  </Stack>*/}
+      {/*</Box>*/}
 
-                    return <Typography variant="subtitle2">Sort by ({sortBy})</Typography>;
-                  }}
-                >
-                  {allColumns.map((column) => {
-                    return (
-                      <MenuItem key={column.id} value={column.header}>
-                        {column.header}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl>
-              <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAdd}>
-                Add Customer
-              </Button>
-            </Stack>
-          </Stack>
-        </Stack>
-      </Box>
+      {/*Content Cards*/}
       <Grid container spacing={3}>
-        {userCard.length > 0 ? (
-          _DATA
-            .currentData()
-            .sort(function (a, b) {
-              if (sortBy === 'Customer Name') return a.fatherName.localeCompare(b.fatherName);
-              if (sortBy === 'Email') return a.email.localeCompare(b.email);
-              if (sortBy === 'Contact') return a.contact.localeCompare(b.contact);
-              if (sortBy === 'Age') return b.age < a.age ? 1 : -1;
-              if (sortBy === 'Country') return a.country.localeCompare(b.country);
-              if (sortBy === 'Status') return a.status.localeCompare(b.status);
-              return a;
-            })
-            .map((user, index) => (
+        {customers.length > 0 ? (
+          // _DATA
+          //   .currentData()
+          //   .sort(function (a, b) {
+          //     if (sortBy === 'Customer Name') return a.fatherName.localeCompare(b.fatherName);
+          //     if (sortBy === 'Email') return a.email.localeCompare(b.email);
+          //     if (sortBy === 'Contact') return a.contact.localeCompare(b.contact);
+          //     if (sortBy === 'Age') return b.age < a.age ? 1 : -1;
+          //     if (sortBy === 'Country') return a.country.localeCompare(b.country);
+          //     if (sortBy === 'Status') return a.status.localeCompare(b.status);
+          //     return a;
+          //   })
+            customers.map((customer, index) => (
               <Slide key={index} direction="up" in={true} timeout={50}>
                 <Grid item xs={12} sm={6} lg={4}>
-                  <CustomerCard customer={user} />
+                  <CustomerCard customer={customer} />
                 </Grid>
               </Slide>
             ))
@@ -172,7 +188,7 @@ const CustomerCardPage = () => {
       </Grid>
       <Stack spacing={2} sx={{ p: 2.5 }} alignItems="flex-end">
         <Pagination
-          count={count}
+          count={Math.ceil(total / PER_PAGE)}
           size="medium"
           page={page}
           showFirstButton
