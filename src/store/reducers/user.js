@@ -74,6 +74,141 @@ export function getUsers(pageIndex = 0, pageSize = 10, query) {
     };
 }
 
+export function createUser(values) {
+    return async () => {
+        try {
+            const response = await axios.post('/api/v1/user', {
+                ...values,
+                start_date: values.startdate,
+                role_id: values.role,
+                job_role: values.jobrole,
+                photo: values.imageUrl,
+                document: values.imageUrl, // TODO: replace document
+            });
+
+            if (response.status === 200) {
+
+                setActionUser();
+
+                dispatch(
+                    openSnackbar({
+                        open: true,
+                        message: 'User crated successfully.',
+                        variant: 'alert',
+                        alert: {
+                            color: 'success'
+                        },
+                        close: false
+                    })
+                );
+            }
+
+
+        } catch (err) {
+            dispatch(
+                openSnackbar({
+                    open: true,
+                    message: 'User could not create.',
+                    variant: 'alert',
+                    alert: {
+                        color: 'error'
+                    },
+                    close: false
+                })
+            );
+            dispatch(users.actions.hasError(err));
+        }
+    }
+}
+
+export function updateUser(userId, values) {
+    return async () => {
+        try {
+            const response = await axios.put(`/api/v1/user/${userId}/update`, {
+                ...values,
+                start_date: values.startdate,
+                role_id: values.role,
+                job_role: values.jobrole,
+                photo: values.imageUrl,
+                document: values.imageUrl, // TODO: replace document
+            });
+
+            if (response.status === 200) {
+
+                setActionUser();
+
+                dispatch(
+                    openSnackbar({
+                        open: true,
+                        message: 'User updated successfully.',
+                        variant: 'alert',
+                        alert: {
+                            color: 'success'
+                        },
+                        close: false
+                    })
+                );
+            }
+
+
+        } catch (err) {
+            dispatch(
+                openSnackbar({
+                    open: true,
+                    message: 'User could not update.',
+                    variant: 'alert',
+                    alert: {
+                        color: 'error'
+                    },
+                    close: false
+                })
+            );
+            dispatch(users.actions.hasError(err));
+        }
+    }
+}
+
+export function deleteUser(userId) {
+    return async () => {
+        try {
+            const response = await axios.delete(`/api/v1/user/${userId}/delete`);
+
+            if (response.status === 200) {
+
+                dispatch(users.actions.deleteUserSuccess(response.data));
+
+                setActionUser();
+
+                dispatch(
+                    openSnackbar({
+                        open: true,
+                        message: 'User deleted successfully.',
+                        variant: 'alert',
+                        alert: {
+                            color: 'success'
+                        },
+                        close: false
+                    })
+                );
+            }
+
+        } catch (error) {
+            dispatch(
+                openSnackbar({
+                    open: true,
+                    message: 'User deleted failed.',
+                    variant: 'alert',
+                    alert: {
+                        color: 'error'
+                    },
+                    close: false
+                })
+            );
+            dispatch(users.actions.hasError(error));
+        }
+    };
+}
+
 export const uploadUserImage = createAsyncThunk('', async (image) => {
     try {
 

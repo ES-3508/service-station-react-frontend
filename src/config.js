@@ -35,6 +35,13 @@ export const ProjectStatus = {
   REJECTED: 'Rejected',
 }
 
+export const UserRoles = [
+  {
+    value: "6536a8d18b07acc8d7258ad4",
+    label: "Admin",
+  }
+]
+
 // ==============================|| THEME CONFIG  ||============================== //
 
 const config = {
