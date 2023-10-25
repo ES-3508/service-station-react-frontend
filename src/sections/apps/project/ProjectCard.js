@@ -26,23 +26,25 @@ import { PatternFormat } from 'react-number-format';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 
 // project import
-import CustomerPreview from 'sections/apps/customer/CustomerPreview';
-import AlertCustomerDelete from 'sections/apps/customer/AlertCustomerDelete';
-import AddCustomer from 'sections/apps/customer/AddCustomer';
+import ProjectPreview from 'sections/apps/project/ProjectPreview';
+import AlertProjectDelete from 'sections/apps/project/AlertProjectDelete';
+import AddProject from 'sections/apps/project/AddProject';
 import MainCard from 'components/MainCard';
 import Avatar from 'components/@extended/Avatar';
 import IconButton from 'components/@extended/IconButton';
 import { PopupTransition } from 'components/@extended/Transitions';
 import ListSmallCard from 'sections/apps/customer/exportpdf/ListSmallCard';
+import { Link as RouterLink } from "react-router-dom";
 
 // assets
 import { EnvironmentOutlined, LinkOutlined, MailOutlined, MoreOutlined, PhoneOutlined } from '@ant-design/icons';
+import { format, parseISO } from "date-fns";
 
-const avatarImage = require.context('assets/images/users', true);
+// const avatarImage = require.context('assets/images/users', true);
 
 // ==============================|| CUSTOMER - CARD ||============================== //
 
-const CustomerCard = ({ customer }) => {
+const ProjectCard = ({ project }) => {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -87,14 +89,14 @@ const CustomerCard = ({ customer }) => {
                   </IconButton>
                 }
               >
-                <ListItemAvatar>
+                {/* <ListItemAvatar>
                   <Avatar alt={customer.fatherName} src={avatarImage(`./avatar-${!customer.avatar ? 1 : customer.avatar}.png`)} />
-                </ListItemAvatar>
+                </ListItemAvatar> */}
                 <ListItemText
-                  primary={<Typography variant="subtitle1">{customer.fatherName}</Typography>}
+                  primary={<Typography variant="subtitle1">{project.projectName}</Typography>}
                   secondary={
                     <Typography variant="caption" color="secondary">
-                      {customer.role}
+                      {project.clientName}
                     </Typography>
                   }
                 />
@@ -118,14 +120,14 @@ const CustomerCard = ({ customer }) => {
                 horizontal: 'right'
               }}
             >
-              <MenuItem sx={{ a: { textDecoration: 'none', color: 'inherit' } }}>
+              {/* <MenuItem sx={{ a: { textDecoration: 'none', color: 'inherit' } }}>
                 <>
                   {' '}
                   <PDFDownloadLink document={<ListSmallCard customer={customer} />} fileName={`Customer-${customer.fatherName}.pdf`}>
                     Export PDF
                   </PDFDownloadLink>
                 </>
-              </MenuItem>
+              </MenuItem> */}
               <MenuItem onClick={handleAdd}>Edit</MenuItem>
               <MenuItem onClick={handleAlertClose}>Delete</MenuItem>
             </Menu>
@@ -134,7 +136,7 @@ const CustomerCard = ({ customer }) => {
             <Divider />
           </Grid>
           <Grid item xs={12}>
-            <Typography>Hello, {customer.about}</Typography>
+            {/* <Typography>{project.description}</Typography> */}
           </Grid>
           <Grid item xs={12}>
             <Grid container spacing={1}>
@@ -144,7 +146,7 @@ const CustomerCard = ({ customer }) => {
                     <ListItemIcon>
                       <MailOutlined />
                     </ListItemIcon>
-                    <ListItemText primary={<Typography color="secondary">{customer.email}</Typography>} />
+                    {/* <ListItemText primary={<Typography color="secondary">{project.clientName}</Typography>} /> */}
                   </ListItem>
                   <ListItem>
                     <ListItemIcon>
@@ -153,7 +155,7 @@ const CustomerCard = ({ customer }) => {
                     <ListItemText
                       primary={
                         <Typography color="secondary">
-                          <PatternFormat displayType="text" format="+1 (###) ###-####" mask="_" defaultValue={customer.contact} />
+                          {/* <PatternFormat displayType="text" format="+1 (###) ###-####" mask="_" defaultValue={project.clientName} /> */}
                         </Typography>
                       }
                     />
@@ -166,7 +168,7 @@ const CustomerCard = ({ customer }) => {
                     <ListItemIcon>
                       <EnvironmentOutlined />
                     </ListItemIcon>
-                    <ListItemText primary={<Typography color="secondary">{customer.country}</Typography>} />
+                    {/* <ListItemText primary={<Typography color="secondary">{project.clientName}</Typography>} /> */}
                   </ListItem>
                   <ListItem>
                     <ListItemIcon>
@@ -175,7 +177,7 @@ const CustomerCard = ({ customer }) => {
                     <ListItemText
                       primary={
                         <Link href="https://google.com" target="_blank" sx={{ textTransform: 'lowercase' }}>
-                          https://{customer.firstName}.en
+                          {/* https://{project.clientName}.en */}
                         </Link>
                       }
                     />
@@ -184,7 +186,7 @@ const CustomerCard = ({ customer }) => {
               </Grid>
             </Grid>
           </Grid>
-          <Grid item xs={12}>
+          {/* <Grid item xs={12}>
             <Box>
               <Box
                 sx={{
@@ -203,7 +205,7 @@ const CustomerCard = ({ customer }) => {
                 ))}
               </Box>
             </Box>
-          </Grid>
+          </Grid> */}
         </Grid>
         <Stack
           direction="row"
@@ -214,11 +216,13 @@ const CustomerCard = ({ customer }) => {
           sx={{ mt: 'auto', mb: 0, pt: 2.25 }}
         >
           <Typography variant="caption" color="secondary">
-            Updated in {customer.time}
+            {/* Created at {format(parseISO(project.created), "M/d/yyyy")} */}
           </Typography>
-          <Button variant="outlined" size="small" onClick={handleClickOpen}>
-            Preview
-          </Button>
+          <RouterLink to={`/apps/project/${project._id}/kanban/board`}>
+            <Button variant="outlined" size="small" >
+              Preview
+            </Button>
+          </RouterLink>
         </Stack>
       </MainCard>
 
@@ -231,16 +235,16 @@ const CustomerCard = ({ customer }) => {
         open={add}
         sx={{ '& .MuiDialog-paper': { p: 0 } }}
       >
-        <AddCustomer customer={customer} onCancel={handleAdd} />
+        <AddProject project={project} onCancel={handleAdd} />
       </Dialog>
-      <CustomerPreview customer={customer} open={open} onClose={handleClose} />
-      <AlertCustomerDelete title={customer.fatherName} open={openAlert} handleClose={handleAlertClose} />
+      <ProjectPreview project={project} open={open} onClose={handleClose} />
+      <AlertProjectDelete title={project.projectName} open={openAlert} handleClose={handleAlertClose} />
     </>
   );
 };
 
-CustomerCard.propTypes = {
-  customer: PropTypes.object
+ProjectCard.propTypes = {
+  project: PropTypes.object
 };
 
-export default CustomerCard;
+export default ProjectCard;

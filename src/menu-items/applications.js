@@ -106,12 +106,12 @@ const applications = {
           type: 'item',
           url: '/apps/project/project-list'
         },
-        {
-          id: 'project-card',
-          title: <FormattedMessage id="cards" />,
-          type: 'item',
-          url: '/apps/project/project-card'
-        }
+        // {
+        //   id: 'project-card',
+        //   title: <FormattedMessage id="cards" />,
+        //   type: 'item',
+        //   url: '/apps/project/project-card'
+        // }
       ]
     },
     // {

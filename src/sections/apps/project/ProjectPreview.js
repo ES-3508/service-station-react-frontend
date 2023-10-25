@@ -27,8 +27,8 @@ import { PatternFormat } from 'react-number-format';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 
 // project import
-import AddCustomer from './AddCustomer';
-import AlertCustomerDelete from './AlertCustomerDelete';
+// import AddCustomer from './AddCustomer';
+// import AlertCustomerDelete from './AlertCustomerDelete';
 import MainCard from 'components/MainCard';
 import Avatar from 'components/@extended/Avatar';
 import IconButton from 'components/@extended/IconButton';
@@ -286,10 +286,10 @@ export default function CustomerPreview({ customer, open, onClose }) {
         open={add}
         sx={{ '& .MuiDialog-paper': { p: 0 } }}
       >
-        <AddCustomer customer={customer} onCancel={handleAdd} />
+        {/* <AddCustomer customer={customer} onCancel={handleAdd} /> */}
       </Dialog>
 
-      <AlertCustomerDelete title={customer.fatherName} open={openAlert} handleClose={handleClose} />
+      {/* <AlertCustomerDelete title={customer.fatherName} open={openAlert} handleClose={handleClose} /> */}
     </>
   );
 }
