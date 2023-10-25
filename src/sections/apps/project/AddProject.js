@@ -152,7 +152,7 @@ const AddProject = ({ project, onCancel }) => {
                 }
               })
           } else {
-            dispatch(updateCustomer(project._id, {
+            dispatch(updateProject(project._id, {
               ...values,
               imageUrl: project.imageUrl,
             }));
