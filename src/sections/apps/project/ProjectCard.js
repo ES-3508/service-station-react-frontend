@@ -37,12 +37,24 @@ import ListSmallCard from 'sections/apps/customer/exportpdf/ListSmallCard';
 import { Link as RouterLink } from "react-router-dom";
 
 // assets
-import { EnvironmentOutlined, LinkOutlined, MailOutlined, MoreOutlined, PhoneOutlined } from '@ant-design/icons';
+import { CalendarOutlined, MoreOutlined } from '@ant-design/icons';
 import { format, parseISO } from "date-fns";
 
 // const avatarImage = require.context('assets/images/users', true);
 
-// ==============================|| CUSTOMER - CARD ||============================== //
+const StatusCell = ({ value }) => {
+  switch (value) {
+    case 'Rejected':
+      return <Chip color="error" label="Rejected" size="small" variant="light" />;
+    case 'Verified':
+      return <Chip color="success" label="Verified" size="small" variant="light" />;
+    case 'Pending':
+    default:
+      return <Chip color="info" label="Pending" size="small" variant="light" />;
+  }
+};
+
+// ==============================|| PROJECT - CARD ||============================== //
 
 const ProjectCard = ({ project }) => {
   const [open, setOpen] = useState(false);
@@ -93,7 +105,7 @@ const ProjectCard = ({ project }) => {
                   <Avatar alt={customer.fatherName} src={avatarImage(`./avatar-${!customer.avatar ? 1 : customer.avatar}.png`)} />
                 </ListItemAvatar> */}
                 <ListItemText
-                  primary={<Typography variant="subtitle1">{project.projectName}</Typography>}
+                  primary={<Typography variant="subtitle1">{project.projectName}{' '} {StatusCell(project.status)}</Typography>}
                   secondary={
                     <Typography variant="caption" color="secondary">
                       {project.clientName}
@@ -136,39 +148,39 @@ const ProjectCard = ({ project }) => {
             <Divider />
           </Grid>
           <Grid item xs={12}>
-            {/* <Typography>{project.description}</Typography> */}
+            <Typography>{project.description}</Typography>
           </Grid>
           <Grid item xs={12}>
             <Grid container spacing={1}>
-              <Grid item xs={6}>
+              <Grid item xs={12}>
                 <List sx={{ p: 0, overflow: 'hidden', '& .MuiListItem-root': { px: 0, py: 0.5 } }}>
                   <ListItem>
                     <ListItemIcon>
-                      <MailOutlined />
+                      <CalendarOutlined />
                     </ListItemIcon>
-                    {/* <ListItemText primary={<Typography color="secondary">{project.clientName}</Typography>} /> */}
+                    <ListItemText primary={<Typography color="secondary">Start Date: {format(parseISO(project.startDate), "M/d/yyyy")}</Typography>} />
                   </ListItem>
                   <ListItem>
                     <ListItemIcon>
-                      <PhoneOutlined />
+                      <CalendarOutlined />
                     </ListItemIcon>
                     <ListItemText
                       primary={
                         <Typography color="secondary">
-                          {/* <PatternFormat displayType="text" format="+1 (###) ###-####" mask="_" defaultValue={project.clientName} /> */}
+                          <ListItemText primary={<Typography color="secondary"> End Date: {format(parseISO(project.endDate), "M/d/yyyy")}</Typography>} />
                         </Typography>
                       }
                     />
                   </ListItem>
                 </List>
               </Grid>
-              <Grid item xs={6}>
+              {/* <Grid item xs={6}>
                 <List sx={{ p: 0, overflow: 'hidden', '& .MuiListItem-root': { px: 0, py: 0.5 } }}>
                   <ListItem>
                     <ListItemIcon>
                       <EnvironmentOutlined />
                     </ListItemIcon>
-                    {/* <ListItemText primary={<Typography color="secondary">{project.clientName}</Typography>} /> */}
+                    <ListItemText primary={<Typography color="secondary">{project.clientName}</Typography>} />
                   </ListItem>
                   <ListItem>
                     <ListItemIcon>
@@ -177,13 +189,13 @@ const ProjectCard = ({ project }) => {
                     <ListItemText
                       primary={
                         <Link href="https://google.com" target="_blank" sx={{ textTransform: 'lowercase' }}>
-                          {/* https://{project.clientName}.en */}
+                          https://{project.clientName}.en
                         </Link>
                       }
                     />
                   </ListItem>
                 </List>
-              </Grid>
+              </Grid> */}
             </Grid>
           </Grid>
           {/* <Grid item xs={12}>
@@ -216,7 +228,7 @@ const ProjectCard = ({ project }) => {
           sx={{ mt: 'auto', mb: 0, pt: 2.25 }}
         >
           <Typography variant="caption" color="secondary">
-            {/* Created at {format(parseISO(project.created), "M/d/yyyy")} */}
+            Created at {format(parseISO(project.created), "M/d/yyyy")}
           </Typography>
           <RouterLink to={`/apps/project/${project._id}/kanban/board`}>
             <Button variant="outlined" size="small" >
@@ -237,8 +249,8 @@ const ProjectCard = ({ project }) => {
       >
         <AddProject project={project} onCancel={handleAdd} />
       </Dialog>
-      <ProjectPreview project={project} open={open} onClose={handleClose} />
-      <AlertProjectDelete title={project.projectName} open={openAlert} handleClose={handleAlertClose} />
+      {/* <ProjectPreview project={project} open={open} onClose={handleClose} /> */}
+      <AlertProjectDelete title={project.projectName} projectId={project._id} open={openAlert} handleClose={handleAlertClose} />
     </>
   );
 };
