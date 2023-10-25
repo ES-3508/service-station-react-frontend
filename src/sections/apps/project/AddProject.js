@@ -137,13 +137,12 @@ const AddProject = ({ project, onCancel }) => {
     initialValues: defaultValues,
     validationSchema: ProjectSchema,
     onSubmit: async (values, { setSubmitting }) => {
-      console.log(values);
       try {
 
         if (project) {
 
-          if (values.attachments) {
-            dispatch(uploadProjectAttachment(values.attachments[0]))
+          if (values.files) {
+            dispatch(uploadProjectAttachment(values.files[0]))
               .then((fileUrl) => {
                 if (fileUrl) {
                   dispatch(updateProject(project._id, {
@@ -161,8 +160,8 @@ const AddProject = ({ project, onCancel }) => {
           resetForm();
         } else {
 
-          if (values.attachments) {
-            dispatch(uploadProjectAttachment(values.attachments[0]))
+          if (values.files) {
+            dispatch(uploadProjectAttachment(values.files[0]))
               .then((fileUrl) => {
                 if (fileUrl) {
                   dispatch(createProject({
@@ -187,7 +186,7 @@ const AddProject = ({ project, onCancel }) => {
     }
   });
 
-  const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue, resetForm, values } = formik;
+  const {  errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue, resetForm, values } = formik;
 
   return (
     <>

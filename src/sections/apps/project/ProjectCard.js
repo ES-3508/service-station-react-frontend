@@ -42,17 +42,7 @@ import { format, parseISO } from "date-fns";
 
 // const avatarImage = require.context('assets/images/users', true);
 
-const StatusCell = ({ value }) => {
-  switch (value) {
-    case 'Rejected':
-      return <Chip color="error" label="Rejected" size="small" variant="light" />;
-    case 'Verified':
-      return <Chip color="success" label="Verified" size="small" variant="light" />;
-    case 'Pending':
-    default:
-      return <Chip color="info" label="Pending" size="small" variant="light" />;
-  }
-};
+
 
 // ==============================|| PROJECT - CARD ||============================== //
 
@@ -87,6 +77,18 @@ const ProjectCard = ({ project }) => {
     setAdd(!add);
   };
 
+  const ProjectStatus = ({ value }) => {
+    switch (value) {
+      case 'Rejected':
+        return <Chip color="error" label="Rejected" size="small" variant="light" />;
+      case 'Verified':
+        return <Chip color="success" label="Verified" size="small" variant="light" />;
+      case 'Pending':
+      default:
+        return <Chip color="info" label="Pending" size="small" variant="light" />;
+    }
+  };
+
   return (
     <>
       <MainCard sx={{ height: 1, '& .MuiCardContent-root': { height: 1, display: 'flex', flexDirection: 'column' } }}>
@@ -105,7 +107,7 @@ const ProjectCard = ({ project }) => {
                   <Avatar alt={customer.fatherName} src={avatarImage(`./avatar-${!customer.avatar ? 1 : customer.avatar}.png`)} />
                 </ListItemAvatar> */}
                 <ListItemText
-                  primary={<Typography variant="subtitle1">{project.projectName}{' '} {StatusCell(project.status)}</Typography>}
+                  primary={<Typography variant="subtitle1">{project.projectName}{' '} <ProjectStatus value={project.status} /></Typography>}
                   secondary={
                     <Typography variant="caption" color="secondary">
                       {project.clientName}

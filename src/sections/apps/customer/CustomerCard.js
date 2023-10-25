@@ -104,7 +104,7 @@ const CustomerCard = ({ customer }) => {
                   <Avatar alt={customer.name} src={customer?.imageUrl} />
                 </ListItemAvatar>
                 <ListItemText
-                  primary={<Typography variant="subtitle1">{customer.name}{' '} {StatusCell(customer.accountStatus)}</Typography>}
+                  primary={<Typography variant="subtitle1">{customer.name}{' '} <StatusCell value={customer.accountStatus} /></Typography>}
                   secondary={
                     <Typography variant="caption" color="secondary">
                       {customer.email}
