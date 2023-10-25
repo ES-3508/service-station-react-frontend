@@ -210,8 +210,6 @@ const AddCustomer = ({ customer, onCancel }) => {
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue, resetForm } = formik;
 
-  console.log(errors)
-
   return (
     <>
       <FormikProvider value={formik}>
