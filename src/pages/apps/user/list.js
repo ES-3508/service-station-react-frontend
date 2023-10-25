@@ -37,16 +37,16 @@ import {
   TableRowSelection
 } from 'components/third-party/ReactTable';
 
-import AddCustomer from 'sections/apps/customer/AddCustomer';
+import AddUser from 'sections/apps/user/AddUser';
 import CustomerView from 'sections/apps/customer/CustomerView';
-import AlertCustomerDelete from 'sections/apps/customer/AlertCustomerDelete';
+// import AlertCustomerDelete from 'sections/apps/customer/AlertCustomerDelete';
+import AlertUserDelete from 'sections/apps/user/AlertUserDelete';
 
 import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 
 // assets
 import { CloseOutlined, PlusOutlined, EyeTwoTone, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
 import { dispatch, useSelector } from 'store';
-import { getCustomers } from 'store/reducers/customers';
 import { getUsers } from 'store/reducers/user';
 
 // const avatarImage = require.context('assets/images/users', true);
@@ -90,7 +90,7 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
       columns,
       data: users,
       filterTypes,
-      initialState: { pageIndex: 0, pageSize: 10, hiddenColumns: ['age', 'address', 'imageUrl', 'zipCode', 'web', 'description'] },
+      initialState: { pageIndex: 0, pageSize: 10, hiddenColumns: ['photo', 'role._id', 'startDate', 'note', 'dateOfBirth'] },
       manualPagination: true,
       pageCount: Math.ceil(total / numOfPages),
       autoResetPage: false,
@@ -212,7 +212,7 @@ ReactTable.propTypes = {
   renderRowSubComponent: PropTypes.any
 };
 
-// ==============================|| CUSTOMER - LIST ||============================== //
+// ==============================|| USER - LIST ||============================== //
 
 // Section Cell and Header
 const SelectionCell = ({ row }) => <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />;
@@ -226,9 +226,10 @@ const IndexCell = ({ row, state }) => {
 
 const CustomCell = ({ row }) => {
   const { values } = row;
+
   return (
     <Stack direction="row" spacing={1.5} alignItems="center">
-      <Avatar alt="Avatar 1" size="sm" src={values.imageUrl} />
+      <Avatar alt="Avatar 1" size="sm" src={values.photo} />
       <Stack spacing={0}>
         <Typography variant="subtitle1">{values.name}</Typography>
         <Typography variant="caption" color="textSecondary">
@@ -253,7 +254,7 @@ const StatusCell = ({ value }) => {
   }
 };
 
-const ActionCell = (row, setCustomer, setCustomerDeleteId, handleAdd, handleClose, theme) => {
+const ActionCell = (row, setUser, setCustomerDeleteId, handleAdd, handleClose, theme) => {
   const collapseIcon = row.isExpanded ? (
     <CloseOutlined style={{ color: theme.palette.error.main }} />
   ) : (
@@ -277,14 +278,14 @@ const ActionCell = (row, setCustomer, setCustomerDeleteId, handleAdd, handleClos
           color="primary"
           onClick={(e) => {
             e.stopPropagation();
-            setCustomer(row.values);
+            setUser(row.values);
             handleAdd();
           }}
         >
           <EditTwoTone twoToneColor={theme.palette.primary.main} />
         </IconButton>
       </Tooltip>
-      <Tooltip title="Delete">
+      {/* <Tooltip title="Delete">
         <IconButton
           color="error"
           onClick={(e) => {
@@ -298,7 +299,7 @@ const ActionCell = (row, setCustomer, setCustomerDeleteId, handleAdd, handleClos
         >
           <DeleteTwoTone twoToneColor={theme.palette.error.main} />
         </IconButton>
-      </Tooltip>
+      </Tooltip> */}
     </Stack>
   );
 };
@@ -328,15 +329,15 @@ const UserListPage = () => {
 
   const [add, setAdd] = useState(false);
   const [open, setOpen] = useState(false);
-  const [customer, setCustomer] = useState();
-  const [deletingCustomer, setDeletingCustomer] = useState({
+  const [user, setUser] = useState();
+  const [deletingUser, setDeletingUser] = useState({
     _id: null,
     name: ''
   });
 
   const handleAdd = () => {
     setAdd(!add);
-    if (customer && !add) setCustomer(null);
+    if (user && !add) setUser(null);
   };
 
   const handleClose = () => {
@@ -378,17 +379,28 @@ const UserListPage = () => {
         Cell: NumberFormatCell
       },
       {
-        Header: 'Age',
-        accessor: 'age',
-        className: 'cell-right'
-      },
-      {
         Header: 'Job Role',
         accessor: 'jobRole'
       },
       {
         Header: 'Image',
-        accessor: 'imageUrl'
+        accessor: 'photo',
+      },
+      {
+        Header: 'Role',
+        accessor: 'role._id',
+      },
+      {
+        Header: 'Start Date',
+        accessor: 'startDate',
+      },
+      {
+        Header: 'Date of Birth',
+        accessor: 'dateOfBirth',
+      },
+      {
+        Header: 'Note',
+        accessor: 'note',
       },
       {
         Header: 'Status',
@@ -396,34 +408,15 @@ const UserListPage = () => {
         Cell: StatusCell
       },
       {
-        Header: 'Zip Code',
-        accessor: 'zipCode',
-      },
-      {
-        Header: 'Website',
-        accessor: 'web',
-      },
-      {
-        Header: 'Description',
-        accessor: 'description',
-      },
-      {
         Header: 'Actions',
         className: 'cell-center',
         disableSortBy: true,
-        Cell: ({ row }) => ActionCell(row, setCustomer, setDeletingCustomer, handleAdd, handleClose, theme)
+        Cell: ({ row }) => ActionCell(row, setUser, setDeletingUser, handleAdd, handleClose, theme)
       }
     ],
     // 
     [theme]
   );
-
-  // const renderRowSubComponent = useCallback(({ row }) => {
-  //   console.log('DEVELOPER ROW ', data.find((customer) => customer._id === row.values._id));
-  //   console.log('DEVELOPER ', data);
-  //   return null;
-  //   // return <CustomerView data={data[row._id]} />;
-  // }, [data]);
 
   return (
     <MainCard content={false}>
@@ -434,7 +427,7 @@ const UserListPage = () => {
           getHeaderProps={(column) => column.getSortByToggleProps()}
         />
       </ScrollX>
-      <AlertCustomerDelete title={deletingCustomer.name} customerId={deletingCustomer._id} open={open} handleClose={handleClose} />
+      <AlertUserDelete title={deletingUser.name} userId={deletingUser._id} open={open} handleClose={handleClose} />
       {/* add user dialog */}
       <Dialog
         maxWidth="sm"
@@ -446,7 +439,7 @@ const UserListPage = () => {
         sx={{ '& .MuiDialog-paper': { p: 0 }, transition: 'transform 225ms' }}
         aria-describedby="alert-dialog-slide-description"
       >
-        <AddCustomer customer={customer} onCancel={handleAdd} />
+        <AddUser user={user} onCancel={handleAdd} />
       </Dialog>
     </MainCard>
   );
