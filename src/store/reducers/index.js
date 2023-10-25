@@ -6,6 +6,7 @@ import storage from 'redux-persist/lib/storage';
 // project import
 import chat from './chat';
 import customers from './customers';
+import boards from './boards';
 import projects from './projects';
 import users from './user';
 import calendar from './calendar';
@@ -15,6 +16,7 @@ import productReducer from './product';
 import cartReducer from './cart';
 import kanban from './kanban';
 import invoice from './invoice';
+import tasks from './tasks';
 
 // ==============================|| COMBINE REDUCERS ||============================== //
 
@@ -22,7 +24,9 @@ const reducers = combineReducers({
   chat,
   customers,
   projects,
-  users,
+    boards,
+    users,
+    tasks,
   calendar,
   menu,
   snackbar,

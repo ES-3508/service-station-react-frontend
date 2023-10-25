@@ -173,20 +173,20 @@ const MainRoutes = {
               path: 'calendar',
               element: <AppCalendar />
             },
-            {
-              path: 'kanban',
-              element: <AppKanban />,
-              children: [
-                {
-                  path: 'backlogs',
-                  element: <AppKanbanBacklogs />
-                },
-                {
-                  path: 'board',
-                  element: <AppKanbanBoard />
-                }
-              ]
-            },
+            // {
+            //   path: 'kanban',
+            //   element: <AppKanban />,
+            //   children: [
+            //     {
+            //       path: 'backlogs',
+            //       element: <AppKanbanBacklogs />
+            //     },
+            //     {
+            //       path: 'board',
+            //       element: <AppKanbanBoard />
+            //     }
+            //   ]
+            // },
             {
               path: 'customer',
               children: [
@@ -210,6 +210,25 @@ const MainRoutes = {
                 {
                   path: 'project-card',
                   element: <AppProjectCard />
+                },
+                {
+                  path: ':id',
+                  children: [
+                    {
+                      path: 'kanban',
+                      element: <AppKanban />,
+                      children: [
+                        {
+                          path: 'backlogs',
+                          element: <AppKanbanBacklogs />
+                        },
+                        {
+                          path: 'board',
+                          element: <AppKanbanBoard />
+                        }
+                      ]
+                    },
+                  ]
                 }
               ]
             },

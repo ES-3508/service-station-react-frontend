@@ -281,14 +281,14 @@ const AddStory = ({ open, handleDrawerOpen }) => {
                           type="STANDARD"
                           showList={true}
                           setFieldValue={formik.setFieldValue}
-                          files={formik.values.files}
-                          error={formik.touched.files && !!formik.errors.files}
+                          files={formik.values.attachments}
+                          error={formik.touched.attachments && !!formik.errors.attachments}
                         />
                       </Grid>
-                      {formik.touched.files && formik.errors.files && (
+                      {formik.touched.attachments && formik.errors.attachments && (
                         <Grid item xs={12}>
                           <FormHelperText error id="standard-weight-helper-text-password-login">
-                            {formik.errors.files}
+                            {formik.errors.attachments}
                           </FormHelperText>
                         </Grid>
                       )}
