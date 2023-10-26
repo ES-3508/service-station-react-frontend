@@ -45,7 +45,16 @@ import AlertProjectDelete from 'sections/apps/project/AlertProjectDelete';
 import { GlobalFilter, renderFilterTypes } from 'utils/react-table';
 
 // assets
-import { CloseOutlined, DeleteTwoTone, EditTwoTone, EyeTwoTone, PlusOutlined, UnorderedListOutlined, AppstoreOutlined } from '@ant-design/icons';
+import {
+    CloseOutlined,
+    DeleteTwoTone,
+    EditTwoTone,
+    EyeTwoTone,
+    PlusOutlined,
+    UnorderedListOutlined,
+    AppstoreOutlined,
+    BuildOutlined
+} from '@ant-design/icons';
 import { format, parseISO } from 'date-fns';
 import { dispatch, useSelector } from 'store';
 import { getProjects } from 'store/reducers/projects';
@@ -267,34 +276,45 @@ const StatusCell = ({ value }) => {
 };
 
 const ActionCell = (row, setProject, setProjectDeleteId, handleAdd, handleClose, theme) => {
-  // const collapseIcon = row.isExpanded ? (
-  //   <CloseOutlined style={{ color: theme.palette.error.main }} />
-  // ) : (
-  //   <EyeTwoTone twoToneColor={theme.palette.secondary.main} />
-  // );
+  const collapseIcon = row.isExpanded ? (
+    <CloseOutlined style={{ color: theme.palette.error.main }} />
+  ) : (
+    <EyeTwoTone twoToneColor={theme.palette.secondary.main} />
+  );
   return (
     <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
-      <Tooltip title="View">
+      <Tooltip title="Kanban">
         <Link to={`/apps/project/${row.values._id}/kanban/board`}>
           <IconButton
-            color="secondary"
+            color="primary"
           >
-            <EyeTwoTone twoToneColor={theme.palette.secondary.main} />
+            <BuildOutlined twoToneColor={theme.palette.secondary.main} />
           </IconButton>
         </Link>
       </Tooltip>
-      <Tooltip title="Edit">
-        <IconButton
-          color="primary"
-          onClick={(e) => {
-            e.stopPropagation();
-            setProject(row.values);
-            handleAdd();
-          }}
-        >
-          <EditTwoTone twoToneColor={theme.palette.primary.main} />
-        </IconButton>
+      <Tooltip title="View">
+          <IconButton
+              color="secondary"
+              onClick={(e) => {
+                  e.stopPropagation();
+                  row.toggleRowExpanded();
+              }}
+          >
+              {collapseIcon}
+          </IconButton>
       </Tooltip>
+        <Tooltip title="Edit">
+            <IconButton
+                color="primary"
+                onClick={(e) => {
+                    e.stopPropagation();
+                    setProject(row.values);
+                    handleAdd();
+                }}
+            >
+                <EditTwoTone twoToneColor={theme.palette.primary.main} />
+            </IconButton>
+        </Tooltip>
       <Tooltip title="Delete">
         <IconButton
           color="error"
@@ -337,7 +357,7 @@ SelectionHeader.propTypes = {
 const ProjectListPage = () => {
   const theme = useTheme();
 
-  const [mode, setMode] = useState('TABLE')
+  const [mode, setMode] = useState('CARD')
 
   const [add, setAdd] = useState(false);
   const [open, setOpen] = useState(false);

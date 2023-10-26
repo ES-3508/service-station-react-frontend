@@ -28,14 +28,17 @@ import Transitions from 'components/@extended/Transitions';
 
 // assets
 import { EnvironmentOutlined, LinkOutlined, MailOutlined, PhoneOutlined } from '@ant-design/icons';
+import {format, parseISO} from "date-fns";
 
 const avatarImage = require.context('assets/images/users', true);
 
 // ==============================|| CUSTOMER - VIEW ||============================== //
 
-const CustomerView = ({ data }) => {
+const ProjectView = ({ data }) => {
   const theme = useTheme();
   const matchDownMD = useMediaQuery(theme.breakpoints.down('md'));
+
+  console.log('ProjectView', data);
 
   return (
     <TableRow sx={{ '&:hover': { bgcolor: `transparent !important` }, overflow: 'hidden' }}>
@@ -45,7 +48,7 @@ const CustomerView = ({ data }) => {
             <Grid item xs={12} sm={5} md={4} lg={4} xl={3}>
               <MainCard>
                 <Chip
-                  label={data.accountStatus}
+                  label={data.status}
                   size="small"
                   color="primary"
                   sx={{
@@ -60,90 +63,102 @@ const CustomerView = ({ data }) => {
                     <Stack spacing={2.5} alignItems="center">
                       <Avatar alt="Avatar 1" size="xl" src={data.imageUrl} />
                       <Stack spacing={0.5} alignItems="center">
-                        <Typography variant="h5">{data.name}</Typography>
-                        <Typography color="secondary">{data.email}</Typography>
+                        <Typography variant="h5">{data.projectName}</Typography>
+                        <Typography color="secondary">Client: {data.clientName}</Typography>
                       </Stack>
                     </Stack>
                   </Grid>
+                  {/*<Grid item xs={12}>*/}
+                  {/*  <Divider />*/}
+                  {/*</Grid>*/}
+                  {/*<Grid item xs={12}>*/}
+                  {/*  <Stack direction="row" justifyContent="space-around" alignItems="center">*/}
+                  {/*    <Stack spacing={0.5} alignItems="center">*/}
+                  {/*      <Typography variant="h5">{data.age}</Typography>*/}
+                  {/*      <Typography color="secondary">Age</Typography>*/}
+                  {/*    </Stack>*/}
+                  {/*    <Divider orientation="vertical" flexItem />*/}
+                  {/*    <Stack spacing={0.5} alignItems="center">*/}
+                  {/*      <Typography variant="h5">{99}%</Typography>*/}
+                  {/*      <Typography color="secondary">Progress</Typography>*/}
+                  {/*    </Stack>*/}
+                  {/*    <Divider orientation="vertical" flexItem />*/}
+                  {/*    <Stack spacing={0.5} alignItems="center">*/}
+                  {/*      <Typography variant="h5">{'3M'}</Typography>*/}
+                  {/*      <Typography color="secondary">Visits</Typography>*/}
+                  {/*    </Stack>*/}
+                  {/*  </Stack>*/}
+                  {/*</Grid>*/}
                   <Grid item xs={12}>
                     <Divider />
                   </Grid>
                   <Grid item xs={12}>
-                    <Stack direction="row" justifyContent="space-around" alignItems="center">
-                      <Stack spacing={0.5} alignItems="center">
-                        <Typography variant="h5">{data.age}</Typography>
-                        <Typography color="secondary">Age</Typography>
-                      </Stack>
-                      <Divider orientation="vertical" flexItem />
-                      <Stack spacing={0.5} alignItems="center">
-                        <Typography variant="h5">{99}%</Typography>
-                        <Typography color="secondary">Progress</Typography>
-                      </Stack>
-                      <Divider orientation="vertical" flexItem />
-                      <Stack spacing={0.5} alignItems="center">
-                        <Typography variant="h5">{'3M'}</Typography>
-                        <Typography color="secondary">Visits</Typography>
-                      </Stack>
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Divider />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <List component="nav" aria-label="main mailbox folders" sx={{ py: 0 }}>
-                      <ListItem>
-                        <ListItemIcon>
-                          <MailOutlined />
-                        </ListItemIcon>
-                        <ListItemSecondaryAction>
-                          <Typography align="right">{data.email}</Typography>
-                        </ListItemSecondaryAction>
-                      </ListItem>
-                      <ListItem>
-                        <ListItemIcon>
-                          <PhoneOutlined />
-                        </ListItemIcon>
-                        <ListItemSecondaryAction>
-                          <Typography align="right">
-                            <PatternFormat displayType="text" format="+1 (###) ###-####" mask="_" defaultValue={data.phone} />
-                          </Typography>
-                        </ListItemSecondaryAction>
-                      </ListItem>
-                      <ListItem>
-                        <ListItemIcon>
-                          <EnvironmentOutlined />
-                        </ListItemIcon>
-                        <ListItemSecondaryAction>
-                          <Typography align="right">{data.country}</Typography>
-                        </ListItemSecondaryAction>
-                      </ListItem>
-                      <ListItem>
-                        <ListItemIcon>
-                          <LinkOutlined />
-                        </ListItemIcon>
-                        <ListItemSecondaryAction>
-                          <Link align="right" href="https://google.com" target="_blank">
-                            {data.web}
-                          </Link>
-                        </ListItemSecondaryAction>
-                      </ListItem>
-                    </List>
+                    {/*<List component="nav" aria-label="main mailbox folders" sx={{ py: 0 }}>*/}
+                    {/*  <ListItem>*/}
+                    {/*    <ListItemIcon>*/}
+                    {/*      <MailOutlined />*/}
+                    {/*    </ListItemIcon>*/}
+                    {/*    <ListItemSecondaryAction>*/}
+                    {/*      <Typography align="right">{data.email}</Typography>*/}
+                    {/*    </ListItemSecondaryAction>*/}
+                    {/*  </ListItem>*/}
+                    {/*  <ListItem>*/}
+                    {/*    <ListItemIcon>*/}
+                    {/*      <PhoneOutlined />*/}
+                    {/*    </ListItemIcon>*/}
+                    {/*    <ListItemSecondaryAction>*/}
+                    {/*      <Typography align="right">*/}
+                    {/*        <PatternFormat displayType="text" format="+1 (###) ###-####" mask="_" defaultValue={data.phone} />*/}
+                    {/*      </Typography>*/}
+                    {/*    </ListItemSecondaryAction>*/}
+                    {/*  </ListItem>*/}
+                    {/*  <ListItem>*/}
+                    {/*    <ListItemIcon>*/}
+                    {/*      <EnvironmentOutlined />*/}
+                    {/*    </ListItemIcon>*/}
+                    {/*    <ListItemSecondaryAction>*/}
+                    {/*      <Typography align="right">{data.country}</Typography>*/}
+                    {/*    </ListItemSecondaryAction>*/}
+                    {/*  </ListItem>*/}
+                    {/*  <ListItem>*/}
+                    {/*    <ListItemIcon>*/}
+                    {/*      <LinkOutlined />*/}
+                    {/*    </ListItemIcon>*/}
+                    {/*    <ListItemSecondaryAction>*/}
+                    {/*      <Link align="right" href="https://google.com" target="_blank">*/}
+                    {/*        {data.web}*/}
+                    {/*      </Link>*/}
+                    {/*    </ListItemSecondaryAction>*/}
+                    {/*  </ListItem>*/}
+                    {/*</List>*/}
+                    <img src={data.imageUrl} alt={data.projectName} style={{width: '100%', height: 'auto', objectFit: 'contain'}} />
                   </Grid>
                 </Grid>
               </MainCard>
             </Grid>
             <Grid item xs={12} sm={7} md={8} lg={8} xl={9}>
               <Stack spacing={2.5}>
-                <MainCard title="Personal Details">
+                <MainCard title="Project Details">
                   <List sx={{ py: 0 }}>
-                    <ListItem divider={!matchDownMD}>
+                    <ListItem>
                       <Grid container spacing={3}>
-                        <Grid item xs={12} md={6}>
-                          <Stack spacing={0.5}>
-                            <Typography color="secondary">Full Name</Typography>
-                            <Typography>{data.name}</Typography>
+                        {/*<Grid item xs={12} md={6}>*/}
+                        {/*  <Stack spacing={0.5}>*/}
+                        {/*    <Typography color="secondary">Full Name</Typography>*/}
+                        {/*    <Typography>{data.name}</Typography>*/}
+                        {/*  </Stack>*/}
+                        {/*</Grid>*/}
+                        <Stack direction='row' spacing={3} alignItems={'center'} mt={2}>
+                          <Stack direction={'column'} alignItems={'center'}>
+                            <Typography variant={'caption'}>Start Date</Typography>
+                            <Typography>{format(parseISO(data.startDate), "M/d/yyyy")}</Typography>
                           </Stack>
-                        </Grid>
+                          <Typography>&#8594;</Typography>
+                          <Stack direction={'column'} alignItems={'center'}>
+                            <Typography variant={'caption'}>End Date</Typography>
+                            <Typography>{format(parseISO(data.endDate), "M/d/yyyy")}</Typography>
+                          </Stack>
+                        </Stack>
                         {/* <Grid item xs={12} md={6}>
                           <Stack spacing={0.5}>
                             <Typography color="secondary">Father Name</Typography>
@@ -154,31 +169,31 @@ const CustomerView = ({ data }) => {
                         </Grid> */}
                       </Grid>
                     </ListItem>
-                    <ListItem divider={!matchDownMD}>
-                      <Grid container spacing={3}>
-                        <Grid item xs={12} md={6}>
-                          <Stack spacing={0.5}>
-                            <Typography color="secondary">Country</Typography>
-                            <Typography>{data.country}</Typography>
-                          </Stack>
-                        </Grid>
-                        <Grid item xs={12} md={6}>
-                          <Stack spacing={0.5}>
-                            <Typography color="secondary">Zip Code</Typography>
-                            <Typography>
-                              {/* <PatternFormat displayType="text" format="### ###" mask="_" defaultValue={data.zipCode} /> */}
-                              <Typography>{data.zipCode}</Typography>
-                            </Typography>
-                          </Stack>
-                        </Grid>
-                      </Grid>
-                    </ListItem>
-                    <ListItem>
-                      <Stack spacing={0.5}>
-                        <Typography color="secondary">Address</Typography>
-                        <Typography>{data.address}</Typography>
-                      </Stack>
-                    </ListItem>
+                    {/*<ListItem divider={!matchDownMD}>*/}
+                    {/*  <Grid container spacing={3}>*/}
+                    {/*    <Grid item xs={12} md={6}>*/}
+                    {/*      <Stack spacing={0.5}>*/}
+                    {/*        <Typography color="secondary">Country</Typography>*/}
+                    {/*        <Typography>{data.country}</Typography>*/}
+                    {/*      </Stack>*/}
+                    {/*    </Grid>*/}
+                    {/*    <Grid item xs={12} md={6}>*/}
+                    {/*      <Stack spacing={0.5}>*/}
+                    {/*        <Typography color="secondary">Zip Code</Typography>*/}
+                    {/*        <Typography>*/}
+                    {/*          /!* <PatternFormat displayType="text" format="### ###" mask="_" defaultValue={data.zipCode} /> *!/*/}
+                    {/*          <Typography>{data.zipCode}</Typography>*/}
+                    {/*        </Typography>*/}
+                    {/*      </Stack>*/}
+                    {/*    </Grid>*/}
+                    {/*  </Grid>*/}
+                    {/*</ListItem>*/}
+                    {/*<ListItem>*/}
+                    {/*  <Stack spacing={0.5}>*/}
+                    {/*    <Typography color="secondary">Address</Typography>*/}
+                    {/*    <Typography>{data.address}</Typography>*/}
+                    {/*  </Stack>*/}
+                    {/*</ListItem>*/}
                   </List>
                 </MainCard>
                 {data?.description && (
@@ -197,8 +212,8 @@ const CustomerView = ({ data }) => {
   );
 };
 
-CustomerView.propTypes = {
+ProjectView.propTypes = {
   data: PropTypes.object
 };
 
-export default CustomerView;
+export default ProjectView;
