@@ -21,6 +21,8 @@ import IconButton from 'components/@extended/IconButton';
 import {ClockCircleOutlined, ClusterOutlined, FallOutlined, MoreOutlined, RiseOutlined} from '@ant-design/icons';
 import {deleteTask, getTaskById, setSelectedTask} from "../../../../store/reducers/tasks";
 import {format, parseISO} from "date-fns";
+import {ThemeMode} from "../../../../config";
+import LinearWithLabel from "../../../../components/@extended/progress/LinearWithLabel";
 
 // const backImage = require.context('assets/images/profile', true);
 
@@ -209,6 +211,10 @@ const TaskItem = ({ item, index }) => {
                     {/*{backProfile && (*/}
                     {/*    <CardMedia component="img" image={backProfile} sx={{ width: '100%', borderRadius: 1, mt: 1.5 }} title="Slider5 image" />*/}
                     {/*)}*/}
+                    {item.subTaskOrders?.length > 0 && (
+                        <LinearWithLabel showValue={false} mt={1} value={item.progress} color="primary" />
+                    )}
+
                 </div>
             )}
         </Draggable>

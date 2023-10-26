@@ -26,8 +26,6 @@ export function GlobalFilter({ preGlobalFilteredRows, globalFilter, setGlobalFil
     setGlobalFilter(value || undefined);
   }, 200);
 
-    console.log('DEVELOPER COUNT ', separatedCount);
-
   return (
     <OutlinedInput
       value={value || ''}

@@ -9,7 +9,7 @@ import {
     FormControlLabel,
     FormHelperText,
     Grid,
-    InputLabel,
+    InputLabel, Menu,
     MenuItem, OutlinedInput,
     Radio,
     RadioGroup,
@@ -36,10 +36,21 @@ import AttachmentsPreview from "./AttachmentsPreview";
 import {useEffect, useState} from "react";
 import * as Yup from "yup";
 import {useTheme} from "@mui/material/styles";
-import {updateProject, uploadProjectAttachment} from "../../../../store/reducers/projects";
-import {updateTask, uploadTaskAttachments} from "../../../../store/reducers/tasks";
+import {updateProject, updateProjectBoardOrder, uploadProjectAttachment} from "../../../../store/reducers/projects";
+import {
+    clearSubTasksOrder,
+    updateSubTasksOrder,
+    updateTask,
+    uploadTaskAttachments
+} from "../../../../store/reducers/tasks";
 import IconButton from "../../../../components/@extended/IconButton";
-import {FileAddOutlined} from "@ant-design/icons";
+import {ClockCircleOutlined, FileAddOutlined, MoreOutlined} from "@ant-design/icons";
+import AlertItemDelete from "./AlertItemDelete";
+import {format, parseISO} from "date-fns";
+import {DragDropContext, Droppable} from "@hello-pangea/dnd";
+import SubTaskItem from "./SubTaskItem";
+import {ThemeMode} from "../../../../config";
+import AddSubTaskItem from "./AddSubTaskItem";
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -50,6 +61,19 @@ const MenuProps = {
         }
     }
 };
+
+const getDropWrapper = (isDraggingOver, theme, radius) => {
+    const bgcolor = theme.palette.mode === ThemeMode.DARK ? theme.palette.background.default : theme.palette.secondary.lighter;
+    const bgcolorDrop = theme.palette.mode === ThemeMode.DARK ? theme.palette.text.disabled : theme.palette.secondary.light + 65;
+
+    return {
+        background: isDraggingOver ? bgcolorDrop : bgcolor,
+        padding: '7px 8px 7px',
+        width: 'auto',
+        borderRadius: radius
+    };
+};
+
 // const avatarImage = require.context('assets/images/users', true);
 const validationSchema = yup.object({
     title: yup.string().required('Task title is required'),
@@ -75,9 +99,12 @@ function getStyles(name, personName, theme) {
 // ==============================|| KANBAN BOARD - ITEM EDIT ||============================== //
 
 const EditTaskItem = ({ item, profiles, columns, handleDrawerOpen }) => {
+
     const dispatch = useDispatch();
+    const { task: selectedTask } = useSelector((state) => state.tasks);
     const theme = useTheme();
     const { users: { users } } = useSelector((state) => state.users);
+    const { subTasksOrder } = useSelector((state) => state.tasks);
     // const itemUserStory = userStory.filter((story) => story.itemIds.filter((itemId) => itemId === item.id)[0])[0];
     const itemColumn = columns.filter((column) => column.itemIds.filter((itemId) => itemId === item.id)[0])[0];
 
@@ -152,7 +179,7 @@ const EditTaskItem = ({ item, profiles, columns, handleDrawerOpen }) => {
             }
 
             handleDrawerOpen();
-
+            dispatch(clearSubTasksOrder());
 
             // console.log({
             //     ...values,
@@ -197,17 +224,33 @@ const EditTaskItem = ({ item, profiles, columns, handleDrawerOpen }) => {
         );
     };
 
+    const onDragEnd = (result) => {
+
+        // let newColumn;
+        const { source, destination, type } = result;
+
+        if (!destination) return;
+        if (destination.droppableId === source.droppableId && destination.index === source.index) return;
+
+        if (type === "subTask") {
+            dispatch(updateSubTasksOrder(item.project, item.board, item._id, {
+                sourceIndex: source.index,
+                destinationIndex: destination.index
+            }, subTasksOrder));
+        }
+    }
+
     return (
         <form onSubmit={formik.handleSubmit}>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <Grid container spacing={2.5}>
 
                     {/*Progress*/}
-                    {formik.values.subTaskOrders?.length > 0 && (
+                    {subTasksOrder?.length > 0 && (
                         <Grid item xs={12}>
                             <Stack spacing={1}>
                                 <InputLabel>Progress</InputLabel>
-                                <LinearWithLabel value={formik.values.progress} color="primary" />
+                                <LinearWithLabel value={selectedTask.progress} color="primary" />
                             </Stack>
                         </Grid>
                     )}
@@ -312,6 +355,32 @@ const EditTaskItem = ({ item, profiles, columns, handleDrawerOpen }) => {
                         </Stack>
                     </Grid>
                     {/*End of Assignees*/}
+
+                    {/*Sub Tasks*/}
+                    <Grid item xs={12}>
+                        <Stack spacing={1}>
+                            <InputLabel>Sub Tasks</InputLabel>
+                            <DragDropContext onDragEnd={onDragEnd}>
+                                <Droppable droppableId={item._id} type="subTask">
+                                    {(providedDrop, snapshotDrop) => (
+                                        <div
+                                            ref={providedDrop.innerRef}
+                                            {...providedDrop.droppableProps}
+                                            style={getDropWrapper(snapshotDrop.isDraggingOver, theme, `4px`)}
+                                        >
+                                            {subTasksOrder.map((subtask, index) => (
+                                                <SubTaskItem item={subtask} index={index} key={index} />
+                                            ))}
+                                            {providedDrop.placeholder}
+                                            <AddSubTaskItem task={item} subTasksOrders={subTasksOrder} />
+                                        </div>
+                                    )}
+
+                                </Droppable>
+                            </DragDropContext>
+                        </Stack>
+                    </Grid>
+                    {/*End of Sub tasks*/}
 
                     {/*Prioritize*/}
                     <Grid item xs={12}>

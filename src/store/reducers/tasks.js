@@ -2,6 +2,8 @@ import { dispatch } from "store";
 import axios from "utils/axios";
 import { openSnackbar } from "./snackbar";
 import {createAsyncThunk} from "@reduxjs/toolkit";
+import {setActionProject} from "./projects";
+import {setActionBoard} from "./boards";
 
 const { createSlice } = require("@reduxjs/toolkit")
 
@@ -16,6 +18,7 @@ const initialState = {
         limit: null,
     },
     deletedTask: {},
+    subTasksOrder: [],
 }
 
 const tasks = createSlice({
@@ -42,6 +45,10 @@ const tasks = createSlice({
 
         setSelectedTaskAction(state, action) {
             state.task = action.payload;
+        },
+
+        setSubTasksOrder(state, action) {
+            state.subTasksOrder = action.payload;
         }
     }
 });
@@ -55,6 +62,12 @@ export function setActionTask() {
 export function setSelectedTask(task) {
     return async () => {
         dispatch(tasks.actions.setSelectedTaskAction(task))
+    }
+}
+
+export function clearSubTasksOrder() {
+    return async () => {
+        dispatch(tasks.actions.setSubTasksOrder([]))
     }
 }
 
@@ -112,6 +125,12 @@ export function getTaskById(projectId, boardId, taskId) {
 
             if (response.status === 200) {
                 dispatch(tasks.actions.setSelectedTaskAction(response.data.data));
+                dispatch(tasks.actions.setSubTasksOrder(
+                    response.data.data.subTaskOrders.map((task) => ({
+                        ...task,
+                        isPending: false,
+                    }))
+                ));
             }
 
         } catch (error) {
@@ -260,7 +279,7 @@ export const uploadTaskAttachments = createAsyncThunk('', async (images) => {
                 close: false
             })
         );
-        dispatch(customers.actions.hasError(err));
+        dispatch(tasks.actions.hasError(err));
     }
 });
 
@@ -276,6 +295,225 @@ export function deleteTask(projectId, boardId, taskId) {
                 dispatch(tasks.actions.deleteTaskSuccess(response.data));
 
                 setActionTask();
+
+                dispatch(
+                    openSnackbar({
+                        open: true,
+                        message: 'Task deleted successfully.',
+                        variant: 'alert',
+                        alert: {
+                            color: 'success'
+                        },
+                        close: false
+                    })
+                );
+            }
+
+        } catch (error) {
+            dispatch(
+                openSnackbar({
+                    open: true,
+                    message: 'Task deleted failed.',
+                    variant: 'alert',
+                    alert: {
+                        color: 'error'
+                    },
+                    close: false
+                })
+            );
+            dispatch(tasks.actions.hasError(error));
+        }
+    };
+}
+
+export function updateSubTasksOrder(projectId, boardId, taskId, values, subTasks = []) {
+    return async () => {
+
+        const { sourceIndex, destinationIndex } = values;
+
+        let newSubTasks = [...subTasks];
+
+        const [removedSubTaskId] = newSubTasks.splice(sourceIndex, 1);
+
+        newSubTasks.splice(destinationIndex, 0, removedSubTaskId);
+
+        dispatch(tasks.actions.setSubTasksOrder(newSubTasks));
+
+        try {
+            const response = await axios.put(`/api/v1/project/${projectId}/board/${boardId}/task/${taskId}/sub-task/order`, values);
+
+            if (response.status === 200) {
+
+                dispatch(
+                    openSnackbar({
+                        open: true,
+                        message: 'Task updated successfully',
+                        variant: 'alert',
+                        alert: {
+                            color: 'success'
+                        },
+                        close: false
+                    })
+                );
+            }
+
+
+        } catch (err) {
+            dispatch(
+                openSnackbar({
+                    open: true,
+                    message: 'Task could not update.',
+                    variant: 'alert',
+                    alert: {
+                        color: 'error'
+                    },
+                    close: false
+                })
+            );
+            dispatch(tasks.actions.hasError(err));
+        }
+    }
+}
+
+export function createSubTask(projectId, boardId, taskId, values, subTasks = [], parentTask) {
+    return async () => {
+
+        const newSubtasks = [...subTasks, { ...values, _id: 1, isPending: true }]
+        dispatch(tasks.actions.setSubTasksOrder(newSubtasks))
+
+        const doneSubtasks = newSubtasks.filter(subtask => subtask.status === "Done");
+        const progress = (doneSubtasks.length / newSubtasks.length) * 100;
+
+        dispatch(tasks.actions.setSelectedTaskAction({
+            ...parentTask,
+            progress
+        }))
+
+        try {
+            const response = await axios.post(`/api/v1/project/${projectId}/board/${boardId}/task/${taskId}/sub-task`, values);
+
+            if (response.status === 200) {
+
+                dispatch(tasks.actions.setSubTasksOrder([...subTasks, { ...response.data.data, isPending: false }]))
+
+                setActionTask();
+
+                dispatch(
+                    openSnackbar({
+                        open: true,
+                        message: 'Sub Task created successfully.',
+                        variant: 'alert',
+                        alert: {
+                            color: 'success'
+                        },
+                        close: false
+                    })
+                );
+            }
+
+        } catch (err) {
+            dispatch(
+                openSnackbar({
+                    open: true,
+                    message: 'Sub Task could not create.',
+                    variant: 'alert',
+                    alert: {
+                        color: 'error'
+                    },
+                    close: false
+                })
+            );
+            dispatch(tasks.actions.hasError(err));
+        }
+    }
+}
+
+export function updateSubTask(projectId, boardId, taskId, subTaskId, values, subTasks = [], parentTask) {
+    return async () => {
+
+        const currentSubTasks = [...subTasks];
+
+        const subTasksUpdated = currentSubTasks.map((subTask) => {
+            if (subTask._id === subTaskId) {
+
+                const updatingSubTask = {...subTask};
+
+                updatingSubTask.status = values.status;
+
+                return updatingSubTask;
+            }
+
+            return subTask;
+        })
+
+        dispatch(tasks.actions.setSubTasksOrder(subTasksUpdated))
+
+        const doneSubtasks = subTasksUpdated.filter(subtask => subtask.status === "Done");
+        const progress = (doneSubtasks.length / subTasksUpdated.length) * 100;
+
+        dispatch(tasks.actions.setSelectedTaskAction({
+            ...parentTask,
+            progress
+        }))
+
+        try {
+            const response = await axios.put(`/api/v1/project/${projectId}/board/${boardId}/task/${taskId}/sub-task/${subTaskId}/update`, values);
+
+            if (response.status === 200) {
+
+                setActionTask();
+
+                dispatch(
+                    openSnackbar({
+                        open: true,
+                        message: 'Sub Task updated successfully.',
+                        variant: 'alert',
+                        alert: {
+                            color: 'success'
+                        },
+                        close: false
+                    })
+                );
+            }
+
+        } catch (err) {
+            dispatch(
+                openSnackbar({
+                    open: true,
+                    message: 'Sub Task could not update.',
+                    variant: 'alert',
+                    alert: {
+                        color: 'error'
+                    },
+                    close: false
+                })
+            );
+            dispatch(tasks.actions.hasError(err));
+        }
+    }
+}
+
+export function deleteSubTask(projectId, boardId, taskId, subTaskId, subTasks = [], parentTask) {
+    return async () => {
+
+        try {
+            const response = await axios.delete(`/api/v1/project/${projectId}/board/${boardId}/task/${taskId}/sub-task/${subTaskId}/delete`);
+
+            if (response.status === 200) {
+
+                setActionTask();
+
+                const newSubTasks = subTasks.filter((subtask) => subtask._id !== subTaskId)
+
+                dispatch(tasks.actions.setSubTasksOrder(newSubTasks))
+
+                const doneSubtasks = newSubTasks.filter(subtask => subtask.status === "Done");
+                const progress = (doneSubtasks.length / newSubTasks.length) * 100;
+
+                dispatch(tasks.actions.setSelectedTaskAction({
+                    ...parentTask,
+                    progress
+                }))
 
                 dispatch(
                     openSnackbar({
