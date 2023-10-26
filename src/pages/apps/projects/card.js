@@ -69,14 +69,14 @@ const allColumns = [
 ];
 
 const ProductCardPage = () => {
-  const data = useMemo(() => makeData(12), []);
+  // const data = useMemo(() => makeData(12), []);
   const matchDownSM = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
   const [sortBy, setSortBy] = useState('Default');
   const [globalFilter, setGlobalFilter] = useState('');
   const [add, setAdd] = useState(false);
   const [project, setProject] = useState(null);
-  const [userCard, setUserCard] = useState([]);
+  // const [userCard, setUserCard] = useState([]);
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState('')
 
@@ -132,7 +132,7 @@ const ProductCardPage = () => {
             alignItems="center"
           >
             {/*Search & Filter*/}
-            <GlobalFilter preGlobalFilteredRows={projects} globalFilter={globalFilter} setGlobalFilter={(value) => {
+            <GlobalFilter preGlobalFilteredRows={projects} separatedCount={total} globalFilter={globalFilter} setGlobalFilter={(value) => {
               if (value !== undefined) {
                 setQuery(value);
               } else {

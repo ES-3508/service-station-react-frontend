@@ -19,12 +19,14 @@ import IconButton from 'components/@extended/IconButton';
 // assets
 import { CloseOutlined, LineOutlined, SearchOutlined } from '@ant-design/icons';
 
-export function GlobalFilter({ preGlobalFilteredRows, globalFilter, setGlobalFilter, ...other }) {
+export function GlobalFilter({ preGlobalFilteredRows, globalFilter, setGlobalFilter, separatedCount = null, ...other }) {
   const count = preGlobalFilteredRows.length;
   const [value, setValue] = useState(globalFilter);
   const onChange = useAsyncDebounce((value) => {
     setGlobalFilter(value || undefined);
   }, 200);
+
+    console.log('DEVELOPER COUNT ', separatedCount);
 
   return (
     <OutlinedInput
@@ -33,7 +35,7 @@ export function GlobalFilter({ preGlobalFilteredRows, globalFilter, setGlobalFil
         setValue(e.target.value);
         onChange(e.target.value);
       }}
-      placeholder={`Search ${count} records...`}
+      placeholder={`Search ${separatedCount !== null ? separatedCount : count} records...`}
       id="start-adornment-email"
       startAdornment={<SearchOutlined />}
       {...other}

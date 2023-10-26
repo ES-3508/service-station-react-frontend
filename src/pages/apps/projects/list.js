@@ -3,19 +3,19 @@ import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 
 // material-ui
 import {
-  Box,
-  Button,
-  Chip,
-  Dialog,
-  Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Tooltip,
-  Typography,
-  useMediaQuery
+    Box,
+    Button,
+    Chip,
+    Dialog, Grid,
+    Stack,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+    Tooltip,
+    Typography,
+    useMediaQuery
 } from '@mui/material';
 import { alpha, useTheme } from '@mui/material/styles';
 
@@ -45,12 +45,22 @@ import AlertProjectDelete from 'sections/apps/project/AlertProjectDelete';
 import { GlobalFilter, renderFilterTypes } from 'utils/react-table';
 
 // assets
-import { CloseOutlined, DeleteTwoTone, EditTwoTone, EyeTwoTone, PlusOutlined, UnorderedListOutlined, AppstoreOutlined } from '@ant-design/icons';
+import {
+    CloseOutlined,
+    DeleteTwoTone,
+    EditTwoTone,
+    EyeTwoTone,
+    PlusOutlined,
+    UnorderedListOutlined,
+    AppstoreOutlined,
+    BuildOutlined, EyeOutlined
+} from '@ant-design/icons';
 import { format, parseISO } from 'date-fns';
 import { dispatch, useSelector } from 'store';
-import { getProjects } from 'store/reducers/projects';
+import {getProjectAnalytics, getProjects} from 'store/reducers/projects';
 import { Link } from "react-router-dom";
 import ProjectCardPage from './card';
+import ReportCard from "../../../components/cards/statistics/ReportCard";
 
 // const avatarImage = require.context('assets/images/users', true);
 
@@ -137,6 +147,7 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
         >
           <GlobalFilter
             preGlobalFilteredRows={preGlobalFilteredRows}
+            separatedCount={total}
             globalFilter={globalFilter}
             setGlobalFilter={(value) => {
               if (value !== undefined) {
@@ -267,34 +278,45 @@ const StatusCell = ({ value }) => {
 };
 
 const ActionCell = (row, setProject, setProjectDeleteId, handleAdd, handleClose, theme) => {
-  // const collapseIcon = row.isExpanded ? (
-  //   <CloseOutlined style={{ color: theme.palette.error.main }} />
-  // ) : (
-  //   <EyeTwoTone twoToneColor={theme.palette.secondary.main} />
-  // );
+  const collapseIcon = row.isExpanded ? (
+    <CloseOutlined style={{ color: theme.palette.error.main }} />
+  ) : (
+    <EyeTwoTone twoToneColor={theme.palette.secondary.main} />
+  );
   return (
     <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
-      <Tooltip title="View">
+      <Tooltip title="Kanban">
         <Link to={`/apps/project/${row.values._id}/kanban/board`}>
           <IconButton
-            color="secondary"
+            color="primary"
           >
-            <EyeTwoTone twoToneColor={theme.palette.secondary.main} />
+            <BuildOutlined twoToneColor={theme.palette.secondary.main} />
           </IconButton>
         </Link>
       </Tooltip>
-      <Tooltip title="Edit">
-        <IconButton
-          color="primary"
-          onClick={(e) => {
-            e.stopPropagation();
-            setProject(row.values);
-            handleAdd();
-          }}
-        >
-          <EditTwoTone twoToneColor={theme.palette.primary.main} />
-        </IconButton>
+      <Tooltip title="View">
+          <IconButton
+              color="secondary"
+              onClick={(e) => {
+                  e.stopPropagation();
+                  row.toggleRowExpanded();
+              }}
+          >
+              {collapseIcon}
+          </IconButton>
       </Tooltip>
+        <Tooltip title="Edit">
+            <IconButton
+                color="primary"
+                onClick={(e) => {
+                    e.stopPropagation();
+                    setProject(row.values);
+                    handleAdd();
+                }}
+            >
+                <EditTwoTone twoToneColor={theme.palette.primary.main} />
+            </IconButton>
+        </Tooltip>
       <Tooltip title="Delete">
         <IconButton
           color="error"
@@ -337,7 +359,9 @@ SelectionHeader.propTypes = {
 const ProjectListPage = () => {
   const theme = useTheme();
 
-  const [mode, setMode] = useState('TABLE')
+    const { analytics, projects: { total: totalProjects } } = useSelector((state) => state.projects);
+
+  const [mode, setMode] = useState('CARD')
 
   const [add, setAdd] = useState(false);
   const [open, setOpen] = useState(false);
@@ -421,8 +445,22 @@ const ProjectListPage = () => {
   //   // return <CustomerView data={data[row._id]} />;
   // }, [data]);
 
+    useEffect(() => {
+        dispatch(getProjectAnalytics());
+    }, [])
+
   return (
     <>
+        <Grid container spacing={3}>
+            <Grid item xs={12} lg={3} sm={6}>
+                <ReportCard primary={totalProjects} secondary="Total Projects" color={theme.palette.secondary.main} iconPrimary={EyeOutlined} />
+            </Grid>
+            {Object.keys(analytics).map((key, index) => (
+                <Grid key={key} item xs={12} lg={3} sm={6}>
+                    <ReportCard primary={analytics[key]} secondary={`${key.length === 0 ? key : key.charAt(0).toUpperCase() + key.slice(1)} Projects`} color={theme.palette.secondary.main} iconPrimary={EyeOutlined} />
+                </Grid>
+            ))}
+        </Grid>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.5 }}>
         <IconButton size="large" color={mode === "TABLE" ? "primary" : "secondary"} onClick={() => setMode("TABLE")}>
           <UnorderedListOutlined />
