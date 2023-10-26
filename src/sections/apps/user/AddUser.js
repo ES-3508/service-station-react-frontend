@@ -56,6 +56,9 @@ const AddUser = ({ user, onCancel }) => {
   const [openAlert, setOpenAlert] = useState(false);
 
   const { uploadedImageUrl } = useSelector((state) => state.users);
+  const { roles: {
+    roles,
+  }} = useSelector((state) => state.roles);
 
   const [deletingUser, setDeletingUser] = useState({
     _id: null,
@@ -359,21 +362,21 @@ const AddUser = ({ user, onCancel }) => {
                                 return <Typography variant="subtitle1">Select User Role</Typography>;
                               }
 
-                              let roleObj = UserRoles.find(role => role.value === selected);
+                              let roleObj = roles.find(role => role._id === selected);
 
-                              return <Typography variant="subtitle2">{ roleObj.label }</Typography>;
+                              return <Typography variant="subtitle2">{ roleObj.name }</Typography>;
                             }}
                           >
-                            {UserRoles.map((column) => (
-                              <MenuItem key={column.value} value={column.value}>
-                                <ListItemText primary={column.label} />
+                            {roles.map((column) => (
+                              <MenuItem key={column._id} value={column._id}>
+                                <ListItemText primary={column.name} />
                               </MenuItem>
                             ))}
                           </Select>
                         </FormControl>
-                        {touched.orderStatus && errors.orderStatus && (
+                        {touched.role && errors.role && (
                           <FormHelperText error id="standard-weight-helper-text-email-login" sx={{ pl: 1.75 }}>
-                            {errors.orderStatus}
+                            {errors.role}
                           </FormHelperText>
                         )}
                       </Stack>

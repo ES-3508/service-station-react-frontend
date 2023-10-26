@@ -137,5 +137,6 @@
   "widgets": "Widgets",
   "More Items": "More Items",
   "users": "Users",
-  "permission": "Permissions"
+  "permission": "Permissions",
+  "role": "User Roles"
 }

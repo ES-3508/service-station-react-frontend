@@ -9,6 +9,7 @@ import customers from './customers';
 import boards from './boards';
 import projects from './projects';
 import users from './user';
+import roles from './role';
 import calendar from './calendar';
 import menu from './menu';
 import snackbar from './snackbar';
@@ -40,7 +41,8 @@ const reducers = combineReducers({
   ),
   product: productReducer,
   kanban,
-  invoice
+  invoice,
+  roles,
 });
 
 export default reducers;

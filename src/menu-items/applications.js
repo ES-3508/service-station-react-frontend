@@ -58,7 +58,7 @@ const applications = {
       id: 'users',
       title: <FormattedMessage id="users" />,
       type: 'collapse',
-      icon: icons.CustomerServiceOutlined,
+      icon: icons.UserOutlined,
       children: [
         {
           id: 'user-list',
@@ -66,12 +66,12 @@ const applications = {
           type: 'item',
           url: '/apps/user/user-list'
         },
-        // {
-        //   id: 'permission-list',
-        //   title: <FormattedMessage id="permission" />,
-        //   type: 'item',
-        //   url: '/apps/permission/permission-list'
-        // },
+        {
+          id: 'role-list',
+          title: <FormattedMessage id="role" />,
+          type: 'item',
+          url: '/apps/user/role-list'
+        },
       ]
     },
     {

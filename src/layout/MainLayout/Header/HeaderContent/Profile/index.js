@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 
 // material-ui
@@ -50,6 +50,15 @@ const Profile = () => {
   const navigate = useNavigate();
 
   const { logout, user } = useAuth();
+  const [userImage, setUserImage] = useState(avatar1);
+
+  useEffect(() => {
+    if (user.photo) {
+      setUserImage(user.photo);
+    }
+  }, [user])
+
+
   const handleLogout = async () => {
     try {
       await logout();
@@ -145,11 +154,11 @@ const Profile = () => {
                     <Grid container justifyContent="space-between" alignItems="center">
                       <Grid item>
                         <Stack direction="row" spacing={1.25} alignItems="center">
-                          <Avatar alt="profile user" src={avatar1} sx={{ width: 32, height: 32 }} />
+                          <Avatar alt="profile user" src={userImage} sx={{ width: 32, height: 32 }} />
                           <Stack>
                             <Typography variant="h6">{user?.name}</Typography>
                             <Typography variant="body2" color="textSecondary">
-                              UI/UX Designer
+                              {user?.role?.name}
                             </Typography>
                           </Stack>
                         </Stack>

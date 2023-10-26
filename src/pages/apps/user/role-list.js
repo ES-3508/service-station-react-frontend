@@ -37,9 +37,8 @@ import {
   TableRowSelection
 } from 'components/third-party/ReactTable';
 
-import AddUser from 'sections/apps/user/AddUser';
-import UserView from 'sections/apps/user/UserView';
-// import AlertCustomerDelete from 'sections/apps/customer/AlertCustomerDelete';
+import AddRole from 'sections/apps/user/AddRole';
+import RoleView from 'sections/apps/user/RoleView';
 import AlertUserDelete from 'sections/apps/user/AlertUserDelete';
 
 import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
@@ -47,10 +46,8 @@ import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 // assets
 import { CloseOutlined, PlusOutlined, EyeTwoTone, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
 import { dispatch, useSelector } from 'store';
-import { getUsers } from 'store/reducers/user';
-import { getRoles } from 'store/reducers/role';
-
-// const avatarImage = require.context('assets/images/users', true);
+// import { getUsers } from 'store/reducers/user';
+import { getRoles, getPermissions } from 'store/reducers/role';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -64,17 +61,16 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
   const [query, setQuery] = useState('')
   const [numOfPages, setNumOfPages] = useState(10)
 
-  const { users: {
-    users,
+  const { roles: {
+    roles,
     total,
-  }, action } = useSelector((state) => state.users);
+  }, action } = useSelector((state) => state.roles);
 
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     prepareRow,
-    // setHiddenColumns,
     allColumns,
     visibleColumns,
     rows,
@@ -83,13 +79,12 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
     setPageSize,
     state: { globalFilter, selectedRowIds, pageIndex, pageSize, expanded },
     preGlobalFilteredRows,
-    // setGlobalFilter,
     setSortBy,
     selectedFlatRows,
   } = useTable(
     {
       columns,
-      data: users,
+      data: roles,
       filterTypes,
       initialState: { pageIndex: 0, pageSize: 10, hiddenColumns: ['photo', 'role._id', 'startDate', 'note', 'dateOfBirth'] },
       manualPagination: true,
@@ -106,21 +101,12 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
 
   useEffect(() => {
     dispatch(getRoles(pageIndex, pageSize, query));
-    dispatch(getUsers(pageIndex, pageSize, query));
+    dispatch(getPermissions(pageIndex, pageSize, query));
   }, [pageIndex, pageSize, query, action])
 
-  // useEffect(() => {
-  //   if (matchDownSM) {
-  //     setHiddenColumns(['age', 'phone', 'visits', 'email', 'accountStatus', 'imageUrl']);
-  //   } else {
-  //     setHiddenColumns(['age', 'address', 'imageUrl', 'accountStatus']);
-  //   }
-  //   // eslint-disable-next-line
-  // }, [matchDownSM]);
-
   const renderRowSubComponent = useCallback(({ row }) => {
-    return <UserView data={users.find((user) => user._id === row.values._id)} />;
-  }, [users]);
+    return <RoleView data={roles.find((role) => role._id === row.values._id)} />;
+  }, [roles]);
 
 
   return (
@@ -149,9 +135,9 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
           <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
             <SortingSelect sortBy={sortBy.id} setSortBy={setSortBy} allColumns={allColumns} />
             <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAdd} size="small">
-              Add User
+              Add Role
             </Button>
-            <CSVExport data={selectedFlatRows.length > 0 ? selectedFlatRows.map((d) => d.original) : users} filename={'user-list.csv'} />
+            <CSVExport data={selectedFlatRows.length > 0 ? selectedFlatRows.map((d) => d.original) : roles} filename={'user-list.csv'} />
           </Stack>
         </Stack>
 
@@ -231,12 +217,8 @@ const CustomCell = ({ row }) => {
 
   return (
     <Stack direction="row" spacing={1.5} alignItems="center">
-      <Avatar alt="Avatar 1" size="sm" src={values.photo} />
       <Stack spacing={0}>
         <Typography variant="subtitle1">{values.name}</Typography>
-        <Typography variant="caption" color="textSecondary">
-          {values.email}
-        </Typography>
       </Stack>
     </Stack>
   );
@@ -256,7 +238,7 @@ const StatusCell = ({ value }) => {
   }
 };
 
-const ActionCell = (row, setUser, setCustomerDeleteId, handleAdd, handleClose, theme) => {
+const ActionCell = (row, setRole, setCustomerDeleteId, handleAdd, handleClose, theme) => {
   const collapseIcon = row.isExpanded ? (
     <CloseOutlined style={{ color: theme.palette.error.main }} />
   ) : (
@@ -280,28 +262,13 @@ const ActionCell = (row, setUser, setCustomerDeleteId, handleAdd, handleClose, t
           color="primary"
           onClick={(e) => {
             e.stopPropagation();
-            setUser(row.values);
+            setRole(row.values);
             handleAdd();
           }}
         >
           <EditTwoTone twoToneColor={theme.palette.primary.main} />
         </IconButton>
       </Tooltip>
-      {/* <Tooltip title="Delete">
-        <IconButton
-          color="error"
-          onClick={(e) => {
-            e.stopPropagation();
-            handleClose();
-            setCustomerDeleteId({
-              _id: row.values._id,
-              name: row.values.name
-            });
-          }}
-        >
-          <DeleteTwoTone twoToneColor={theme.palette.error.main} />
-        </IconButton>
-      </Tooltip> */}
     </Stack>
   );
 };
@@ -326,12 +293,12 @@ SelectionHeader.propTypes = {
   getToggleAllPageRowsSelectedProps: PropTypes.func
 };
 
-const UserListPage = () => {
+const RoleListPage = () => {
   const theme = useTheme();
 
   const [add, setAdd] = useState(false);
   const [open, setOpen] = useState(false);
-  const [user, setUser] = useState();
+  const [role, setRole] = useState();
   const [deletingUser, setDeletingUser] = useState({
     _id: null,
     name: ''
@@ -339,7 +306,7 @@ const UserListPage = () => {
 
   const handleAdd = () => {
     setAdd(!add);
-    if (user && !add) setUser(null);
+    if (role && !add) setRole(null);
   };
 
   const handleClose = () => {
@@ -367,53 +334,10 @@ const UserListPage = () => {
         Cell: CustomCell
       },
       {
-        Header: 'Address',
-        accessor: 'address',
-        disableSortBy: true
-      },
-      {
-        Header: 'Email',
-        accessor: 'email'
-      },
-      {
-        Header: 'Contact',
-        accessor: 'phone',
-        Cell: NumberFormatCell
-      },
-      {
-        Header: 'Job Role',
-        accessor: 'jobRole'
-      },
-      {
-        Header: 'Image',
-        accessor: 'photo',
-      },
-      {
-        Header: 'Role',
-        accessor: 'role._id',
-      },
-      {
-        Header: 'Start Date',
-        accessor: 'startDate',
-      },
-      {
-        Header: 'Date of Birth',
-        accessor: 'dateOfBirth',
-      },
-      {
-        Header: 'Note',
-        accessor: 'note',
-      },
-      {
-        Header: 'Status',
-        accessor: 'accountStatus',
-        Cell: StatusCell
-      },
-      {
         Header: 'Actions',
         className: 'cell-center',
         disableSortBy: true,
-        Cell: ({ row }) => ActionCell(row, setUser, setDeletingUser, handleAdd, handleClose, theme)
+        Cell: ({ row }) => ActionCell(row, setRole, setDeletingUser, handleAdd, handleClose, theme)
       }
     ],
     // 
@@ -441,10 +365,10 @@ const UserListPage = () => {
         sx={{ '& .MuiDialog-paper': { p: 0 }, transition: 'transform 225ms' }}
         aria-describedby="alert-dialog-slide-description"
       >
-        <AddUser user={user} onCancel={handleAdd} />
+        <AddRole role={role} onCancel={handleAdd} />
       </Dialog>
     </MainCard>
   );
 };
 
-export default UserListPage;
+export default RoleListPage;
