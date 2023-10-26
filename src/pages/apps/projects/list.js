@@ -3,19 +3,19 @@ import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 
 // material-ui
 import {
-  Box,
-  Button,
-  Chip,
-  Dialog,
-  Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Tooltip,
-  Typography,
-  useMediaQuery
+    Box,
+    Button,
+    Chip,
+    Dialog, Grid,
+    Stack,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+    Tooltip,
+    Typography,
+    useMediaQuery
 } from '@mui/material';
 import { alpha, useTheme } from '@mui/material/styles';
 
@@ -53,13 +53,14 @@ import {
     PlusOutlined,
     UnorderedListOutlined,
     AppstoreOutlined,
-    BuildOutlined
+    BuildOutlined, EyeOutlined
 } from '@ant-design/icons';
 import { format, parseISO } from 'date-fns';
 import { dispatch, useSelector } from 'store';
-import { getProjects } from 'store/reducers/projects';
+import {getProjectAnalytics, getProjects} from 'store/reducers/projects';
 import { Link } from "react-router-dom";
 import ProjectCardPage from './card';
+import ReportCard from "../../../components/cards/statistics/ReportCard";
 
 // const avatarImage = require.context('assets/images/users', true);
 
@@ -146,6 +147,7 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
         >
           <GlobalFilter
             preGlobalFilteredRows={preGlobalFilteredRows}
+            separatedCount={total}
             globalFilter={globalFilter}
             setGlobalFilter={(value) => {
               if (value !== undefined) {
@@ -357,6 +359,8 @@ SelectionHeader.propTypes = {
 const ProjectListPage = () => {
   const theme = useTheme();
 
+    const { analytics, projects: { total: totalProjects } } = useSelector((state) => state.projects);
+
   const [mode, setMode] = useState('CARD')
 
   const [add, setAdd] = useState(false);
@@ -441,8 +445,22 @@ const ProjectListPage = () => {
   //   // return <CustomerView data={data[row._id]} />;
   // }, [data]);
 
+    useEffect(() => {
+        dispatch(getProjectAnalytics());
+    }, [])
+
   return (
     <>
+        <Grid container spacing={3}>
+            <Grid item xs={12} lg={3} sm={6}>
+                <ReportCard primary={totalProjects} secondary="Total Projects" color={theme.palette.secondary.main} iconPrimary={EyeOutlined} />
+            </Grid>
+            {Object.keys(analytics).map((key, index) => (
+                <Grid key={key} item xs={12} lg={3} sm={6}>
+                    <ReportCard primary={analytics[key]} secondary={`${key.length === 0 ? key : key.charAt(0).toUpperCase() + key.slice(1)} Projects`} color={theme.palette.secondary.main} iconPrimary={EyeOutlined} />
+                </Grid>
+            ))}
+        </Grid>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.5 }}>
         <IconButton size="large" color={mode === "TABLE" ? "primary" : "secondary"} onClick={() => setMode("TABLE")}>
           <UnorderedListOutlined />

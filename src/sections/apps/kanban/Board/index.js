@@ -35,7 +35,7 @@ const Board = () => {
 
   const { id } = useParams()
 
-  const { columns, columnsOrder } = useSelector((state) => state.kanban);
+  // const { columns, columnsOrder } = useSelector((state) => state.kanban);
 
   const { boards: {
     boards,
@@ -50,9 +50,7 @@ const Board = () => {
   const onDragEnd = (result) => {
 
     // let newColumn;
-    const { source, destination, draggableId, type } = result;
-
-    console.log(result)
+    const { source, destination, type } = result;
 
     if (!destination) return;
     if (destination.droppableId === source.droppableId && destination.index === source.index) return;

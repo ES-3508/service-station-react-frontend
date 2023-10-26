@@ -132,7 +132,7 @@ const ProductCardPage = () => {
             alignItems="center"
           >
             {/*Search & Filter*/}
-            <GlobalFilter preGlobalFilteredRows={projects} globalFilter={globalFilter} setGlobalFilter={(value) => {
+            <GlobalFilter preGlobalFilteredRows={projects} separatedCount={total} globalFilter={globalFilter} setGlobalFilter={(value) => {
               if (value !== undefined) {
                 setQuery(value);
               } else {
