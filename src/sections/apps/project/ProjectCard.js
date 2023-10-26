@@ -17,7 +17,7 @@ import {
   ListItemText,
   Menu,
   MenuItem,
-  Stack,
+  Stack, Tooltip,
   Typography
 } from '@mui/material';
 
@@ -37,8 +37,9 @@ import ListSmallCard from 'sections/apps/customer/exportpdf/ListSmallCard';
 import { Link as RouterLink } from "react-router-dom";
 
 // assets
-import { CalendarOutlined, MoreOutlined } from '@ant-design/icons';
+import {BuildOutlined, CalendarOutlined, MoreOutlined} from '@ant-design/icons';
 import { format, parseISO } from "date-fns";
+import {useTheme} from "@mui/material/styles";
 
 // const avatarImage = require.context('assets/images/users', true);
 
@@ -48,6 +49,7 @@ import { format, parseISO } from "date-fns";
 
 const ProjectCard = ({ project }) => {
   const [open, setOpen] = useState(false);
+  const theme = useTheme();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -232,11 +234,21 @@ const ProjectCard = ({ project }) => {
           <Typography variant="caption" color="secondary">
             Created at {format(parseISO(project.created), "M/d/yyyy")}
           </Typography>
-          <RouterLink to={`/apps/project/${project._id}/kanban/board`}>
-            <Button variant="outlined" size="small" >
+          <Stack direction={'row'} spacing={2}>
+            <Tooltip title="Kanban">
+              <RouterLink to={`/apps/project/${project._id}/kanban/board`}>
+                <IconButton
+                    color="primary"
+                >
+                  <BuildOutlined twoToneColor={theme.palette.secondary.main} />
+                </IconButton>
+              </RouterLink>
+            </Tooltip>
+
+            <Button variant="outlined" size="small" onClick={handleClickOpen}>
               Preview
             </Button>
-          </RouterLink>
+          </Stack>
         </Stack>
       </MainCard>
 
@@ -251,7 +263,7 @@ const ProjectCard = ({ project }) => {
       >
         <AddProject project={project} onCancel={handleAdd} />
       </Dialog>
-      {/* <ProjectPreview project={project} open={open} onClose={handleClose} /> */}
+       <ProjectPreview project={project} open={open} onClose={handleClose} />
       <AlertProjectDelete title={project.projectName} projectId={project._id} open={openAlert} handleClose={handleAlertClose} />
     </>
   );

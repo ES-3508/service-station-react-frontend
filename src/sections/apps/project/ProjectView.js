@@ -38,8 +38,6 @@ const ProjectView = ({ data }) => {
   const theme = useTheme();
   const matchDownMD = useMediaQuery(theme.breakpoints.down('md'));
 
-  console.log('ProjectView', data);
-
   return (
     <TableRow sx={{ '&:hover': { bgcolor: `transparent !important` }, overflow: 'hidden' }}>
       <TableCell colSpan={8} sx={{ p: 2.5, overflow: 'hidden' }}>
