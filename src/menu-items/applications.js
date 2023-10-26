@@ -10,7 +10,7 @@ import {
   MessageOutlined,
   ShoppingCartOutlined,
   UserOutlined,
-  AppstoreAddOutlined
+  AppstoreAddOutlined,
 } from '@ant-design/icons';
 
 // icons
@@ -47,13 +47,13 @@ const applications = {
     //   url: '/apps/calendar',
     //   icon: icons.CalendarOutlined
     // },
-    {
-      id: 'kanban',
-      title: 'Manage Projects',
-      type: 'item',
-      icon: BuildOutlined,
-      url: '/apps/kanban/board'
-    },
+    // {
+    //   id: 'kanban',
+    //   title: 'Manage Projects',
+    //   type: 'item',
+    //   icon: BuildOutlined,
+    //   url: '/apps/kanban/board'
+    // },
     {
       id: 'users',
       title: <FormattedMessage id="users" />,
@@ -78,7 +78,7 @@ const applications = {
       id: 'customer',
       title: <FormattedMessage id="customer" />,
       type: 'collapse',
-      icon: icons.CustomerServiceOutlined,
+      icon: icons.UserOutlined,
       children: [
         {
           id: 'customer-list',
@@ -98,7 +98,7 @@ const applications = {
       id: 'project',
       title: <FormattedMessage id="Projects" />,
       type: 'collapse',
-      icon: icons.CustomerServiceOutlined,
+      icon: icons.BuildOutlined,
       children: [
         {
           id: 'project-list',

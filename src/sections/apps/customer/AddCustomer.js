@@ -300,6 +300,7 @@ const AddCustomer = ({ customer, onCancel }) => {
                         <InputLabel htmlFor="customer-phone">Phone Number</InputLabel>
                         <TextField
                           fullWidth
+                          type='tel'
                           id="customer-phone"
                           placeholder="Enter Phone Number"
                           {...getFieldProps('phone')}
