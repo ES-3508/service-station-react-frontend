@@ -130,16 +130,16 @@ const AddItem = ({ columnId }) => {
                     error={isTitle}
                   />
                 </Grid>
-                <Grid item>
-                  <IconButton>
-                    <TeamOutlined />
-                  </IconButton>
-                </Grid>
-                <Grid item>
-                  <IconButton>
-                    <CalculatorOutlined />
-                  </IconButton>
-                </Grid>
+                {/*<Grid item>*/}
+                {/*  <IconButton>*/}
+                {/*    <TeamOutlined />*/}
+                {/*  </IconButton>*/}
+                {/*</Grid>*/}
+                {/*<Grid item>*/}
+                {/*  <IconButton>*/}
+                {/*    <CalculatorOutlined />*/}
+                {/*  </IconButton>*/}
+                {/*</Grid>*/}
                 <Grid item xs zeroMinWidth />
                 <Grid item>
                   <Stack direction="row" alignItems="center" spacing={1}>

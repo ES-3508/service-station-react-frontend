@@ -78,24 +78,24 @@ const BoardTask = ({ board, index }) => {
     };
 
     const [open, setOpen] = useState(false);
-    // const handleClose = (status) => {
-    //     setOpen(false);
-    //     if (status) {
-    //         dispatch(deleteColumn(column.id, columnsOrder, columns));
-    //         dispatch(
-    //             openSnackbar({
-    //                 open: true,
-    //                 message: 'Column deleted successfully',
-    //                 anchorOrigin: { vertical: 'top', horizontal: 'right' },
-    //                 variant: 'alert',
-    //                 alert: {
-    //                     color: 'success'
-    //                 },
-    //                 close: false
-    //             })
-    //         );
-    //     }
-    // };
+    const handleClose = (status) => {
+        setOpen(false);
+        // if (status) {
+        //     dispatch(deleteColumn(column.id, columnsOrder, columns));
+        //     dispatch(
+        //         openSnackbar({
+        //             open: true,
+        //             message: 'Column deleted successfully',
+        //             anchorOrigin: { vertical: 'top', horizontal: 'right' },
+        //             variant: 'alert',
+        //             alert: {
+        //                 color: 'success'
+        //             },
+        //             close: false
+        //         })
+        //     );
+        // }
+    };
 
     // useEffect(() => {
     //     dispatch(getTasks(id, board._id,0, 100, null));
@@ -127,7 +127,7 @@ const BoardTask = ({ board, index }) => {
                                                 <DeleteOutlined />
                                             </IconButton>
                                         </Tooltip>
-                                        <AlertBoardDelete title={board.boardName} boardId={board._id} open={open} handleClose={() => {}} />
+                                        <AlertBoardDelete title={board.boardName} boardId={board._id} open={open} handleClose={handleClose} />
                                     </Grid>
                                 </Grid>
                                 {tasks.filter(task => board.taskOrders.includes(task._id)).sort((a, b) => {
