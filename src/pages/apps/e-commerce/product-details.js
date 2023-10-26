@@ -70,8 +70,6 @@ const ProductDetails = () => {
     if (cart.checkout.step > 2) {
       dispatch(resetCart());
     }
-
-    // 
   }, [id]);
 
   return (

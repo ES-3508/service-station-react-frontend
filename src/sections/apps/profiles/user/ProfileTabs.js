@@ -131,7 +131,7 @@ const ProfileTabs = ({ focusInput }) => {
               placeholder="Outlined"
               variant="outlined"
               sx={{ display: 'none' }}
-              onChange={(e) => setSelectedImage(e.target.files?.[0])}
+              onChange={(e) => setSelectedImage(e.target.attachments?.[0])}
             />
             <Stack spacing={0.5} alignItems="center">
               <Typography variant="h5">Stebin Ben</Typography>

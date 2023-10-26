@@ -17,7 +17,7 @@ import {
   ListItemText,
   Menu,
   MenuItem,
-  Stack,
+  Stack, Tooltip,
   Typography
 } from '@mui/material';
 
@@ -26,24 +26,30 @@ import { PatternFormat } from 'react-number-format';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 
 // project import
-import CustomerPreview from 'sections/apps/customer/CustomerPreview';
-import AlertCustomerDelete from 'sections/apps/customer/AlertCustomerDelete';
-import AddCustomer from 'sections/apps/customer/AddCustomer';
+import ProjectPreview from 'sections/apps/project/ProjectPreview';
+import AlertProjectDelete from 'sections/apps/project/AlertProjectDelete';
+import AddProject from 'sections/apps/project/AddProject';
 import MainCard from 'components/MainCard';
 import Avatar from 'components/@extended/Avatar';
 import IconButton from 'components/@extended/IconButton';
 import { PopupTransition } from 'components/@extended/Transitions';
 import ListSmallCard from 'sections/apps/customer/exportpdf/ListSmallCard';
+import { Link as RouterLink } from "react-router-dom";
 
 // assets
-import { EnvironmentOutlined, LinkOutlined, MailOutlined, MoreOutlined, PhoneOutlined } from '@ant-design/icons';
+import {BuildOutlined, CalendarOutlined, MoreOutlined} from '@ant-design/icons';
+import { format, parseISO } from "date-fns";
+import {useTheme} from "@mui/material/styles";
 
-const avatarImage = require.context('assets/images/users', true);
+// const avatarImage = require.context('assets/images/users', true);
 
-// ==============================|| CUSTOMER - CARD ||============================== //
 
-const CustomerCard = ({ customer }) => {
+
+// ==============================|| PROJECT - CARD ||============================== //
+
+const ProjectCard = ({ project }) => {
   const [open, setOpen] = useState(false);
+  const theme = useTheme();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -73,6 +79,18 @@ const CustomerCard = ({ customer }) => {
     setAdd(!add);
   };
 
+  const ProjectStatus = ({ value }) => {
+    switch (value) {
+      case 'Rejected':
+        return <Chip color="error" label="Rejected" size="small" variant="light" />;
+      case 'Verified':
+        return <Chip color="success" label="Verified" size="small" variant="light" />;
+      case 'Pending':
+      default:
+        return <Chip color="info" label="Pending" size="small" variant="light" />;
+    }
+  };
+
   return (
     <>
       <MainCard sx={{ height: 1, '& .MuiCardContent-root': { height: 1, display: 'flex', flexDirection: 'column' } }}>
@@ -87,14 +105,14 @@ const CustomerCard = ({ customer }) => {
                   </IconButton>
                 }
               >
-                <ListItemAvatar>
+                {/* <ListItemAvatar>
                   <Avatar alt={customer.fatherName} src={avatarImage(`./avatar-${!customer.avatar ? 1 : customer.avatar}.png`)} />
-                </ListItemAvatar>
+                </ListItemAvatar> */}
                 <ListItemText
-                  primary={<Typography variant="subtitle1">{customer.fatherName}</Typography>}
+                  primary={<Typography variant="subtitle1">{project.projectName}{' '} <ProjectStatus value={project.status} /></Typography>}
                   secondary={
                     <Typography variant="caption" color="secondary">
-                      {customer.role}
+                      {project.clientName}
                     </Typography>
                   }
                 />
@@ -118,14 +136,14 @@ const CustomerCard = ({ customer }) => {
                 horizontal: 'right'
               }}
             >
-              <MenuItem sx={{ a: { textDecoration: 'none', color: 'inherit' } }}>
+              {/* <MenuItem sx={{ a: { textDecoration: 'none', color: 'inherit' } }}>
                 <>
                   {' '}
                   <PDFDownloadLink document={<ListSmallCard customer={customer} />} fileName={`Customer-${customer.fatherName}.pdf`}>
                     Export PDF
                   </PDFDownloadLink>
                 </>
-              </MenuItem>
+              </MenuItem> */}
               <MenuItem onClick={handleAdd}>Edit</MenuItem>
               <MenuItem onClick={handleAlertClose}>Delete</MenuItem>
             </Menu>
@@ -134,39 +152,39 @@ const CustomerCard = ({ customer }) => {
             <Divider />
           </Grid>
           <Grid item xs={12}>
-            <Typography>Hello, {customer.about}</Typography>
+            <Typography>{project.description}</Typography>
           </Grid>
           <Grid item xs={12}>
             <Grid container spacing={1}>
-              <Grid item xs={6}>
+              <Grid item xs={12}>
                 <List sx={{ p: 0, overflow: 'hidden', '& .MuiListItem-root': { px: 0, py: 0.5 } }}>
                   <ListItem>
                     <ListItemIcon>
-                      <MailOutlined />
+                      <CalendarOutlined />
                     </ListItemIcon>
-                    <ListItemText primary={<Typography color="secondary">{customer.email}</Typography>} />
+                    <ListItemText primary={<Typography color="secondary">Start Date: {format(parseISO(project.startDate), "M/d/yyyy")}</Typography>} />
                   </ListItem>
                   <ListItem>
                     <ListItemIcon>
-                      <PhoneOutlined />
+                      <CalendarOutlined />
                     </ListItemIcon>
                     <ListItemText
                       primary={
                         <Typography color="secondary">
-                          <PatternFormat displayType="text" format="+1 (###) ###-####" mask="_" defaultValue={customer.contact} />
+                          <ListItemText primary={<Typography color="secondary"> End Date: {format(parseISO(project.endDate), "M/d/yyyy")}</Typography>} />
                         </Typography>
                       }
                     />
                   </ListItem>
                 </List>
               </Grid>
-              <Grid item xs={6}>
+              {/* <Grid item xs={6}>
                 <List sx={{ p: 0, overflow: 'hidden', '& .MuiListItem-root': { px: 0, py: 0.5 } }}>
                   <ListItem>
                     <ListItemIcon>
                       <EnvironmentOutlined />
                     </ListItemIcon>
-                    <ListItemText primary={<Typography color="secondary">{customer.country}</Typography>} />
+                    <ListItemText primary={<Typography color="secondary">{project.clientName}</Typography>} />
                   </ListItem>
                   <ListItem>
                     <ListItemIcon>
@@ -175,16 +193,16 @@ const CustomerCard = ({ customer }) => {
                     <ListItemText
                       primary={
                         <Link href="https://google.com" target="_blank" sx={{ textTransform: 'lowercase' }}>
-                          https://{customer.firstName}.en
+                          https://{project.clientName}.en
                         </Link>
                       }
                     />
                   </ListItem>
                 </List>
-              </Grid>
+              </Grid> */}
             </Grid>
           </Grid>
-          <Grid item xs={12}>
+          {/* <Grid item xs={12}>
             <Box>
               <Box
                 sx={{
@@ -203,7 +221,7 @@ const CustomerCard = ({ customer }) => {
                 ))}
               </Box>
             </Box>
-          </Grid>
+          </Grid> */}
         </Grid>
         <Stack
           direction="row"
@@ -214,11 +232,23 @@ const CustomerCard = ({ customer }) => {
           sx={{ mt: 'auto', mb: 0, pt: 2.25 }}
         >
           <Typography variant="caption" color="secondary">
-            Updated in {customer.time}
+            Created at {format(parseISO(project.created), "M/d/yyyy")}
           </Typography>
-          <Button variant="outlined" size="small" onClick={handleClickOpen}>
-            Preview
-          </Button>
+          <Stack direction={'row'} spacing={2}>
+            <Tooltip title="Kanban">
+              <RouterLink to={`/apps/project/${project._id}/kanban/board`}>
+                <IconButton
+                    color="primary"
+                >
+                  <BuildOutlined twoToneColor={theme.palette.secondary.main} />
+                </IconButton>
+              </RouterLink>
+            </Tooltip>
+
+            <Button variant="outlined" size="small" onClick={handleClickOpen}>
+              Preview
+            </Button>
+          </Stack>
         </Stack>
       </MainCard>
 
@@ -231,16 +261,16 @@ const CustomerCard = ({ customer }) => {
         open={add}
         sx={{ '& .MuiDialog-paper': { p: 0 } }}
       >
-        <AddCustomer customer={customer} onCancel={handleAdd} />
+        <AddProject project={project} onCancel={handleAdd} />
       </Dialog>
-      <CustomerPreview customer={customer} open={open} onClose={handleClose} />
-      <AlertCustomerDelete title={customer.fatherName} open={openAlert} handleClose={handleAlertClose} />
+       <ProjectPreview project={project} open={open} onClose={handleClose} />
+      <AlertProjectDelete title={project.projectName} projectId={project._id} open={openAlert} handleClose={handleAlertClose} />
     </>
   );
 };
 
-CustomerCard.propTypes = {
-  customer: PropTypes.object
+ProjectCard.propTypes = {
+  project: PropTypes.object
 };
 
-export default CustomerCard;
+export default ProjectCard;

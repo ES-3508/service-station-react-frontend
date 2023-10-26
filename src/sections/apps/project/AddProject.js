@@ -137,7 +137,6 @@ const AddProject = ({ project, onCancel }) => {
     initialValues: defaultValues,
     validationSchema: ProjectSchema,
     onSubmit: async (values, { setSubmitting }) => {
-      console.log(values);
       try {
 
         if (project) {
@@ -152,7 +151,7 @@ const AddProject = ({ project, onCancel }) => {
                 }
               })
           } else {
-            dispatch(updateCustomer(project._id, {
+            dispatch(updateProject(project._id, {
               ...values,
               imageUrl: project.imageUrl,
             }));
@@ -187,9 +186,7 @@ const AddProject = ({ project, onCancel }) => {
     }
   });
 
-  const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue, resetForm, values } = formik;
-
-  console.log(errors)
+  const {  errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue, resetForm, values } = formik;
 
   return (
     <>

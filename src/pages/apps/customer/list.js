@@ -4,18 +4,19 @@ import { useCallback, useEffect, useMemo, useState, Fragment } from 'react';
 // material-ui
 import { alpha, useTheme } from '@mui/material/styles';
 import {
-  Button,
-  Chip,
-  Dialog,
-  Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Tooltip,
-  Typography,
-  useMediaQuery
+    Box,
+    Button,
+    Chip,
+    Dialog,
+    Stack,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+    Tooltip,
+    Typography,
+    useMediaQuery
 } from '@mui/material';
 
 // third-party
@@ -44,9 +45,10 @@ import AlertCustomerDelete from 'sections/apps/customer/AlertCustomerDelete';
 import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 
 // assets
-import { CloseOutlined, PlusOutlined, EyeTwoTone, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
+import {CloseOutlined, PlusOutlined, EyeTwoTone, EditTwoTone, DeleteTwoTone, PhoneOutlined, UnorderedListOutlined, AppstoreOutlined} from '@ant-design/icons';
 import { dispatch, useSelector } from 'store';
 import { getCustomers } from 'store/reducers/customers';
+import CustomerCardPage from "./card";
 
 // const avatarImage = require.context('assets/images/users', true);
 
@@ -325,6 +327,8 @@ SelectionHeader.propTypes = {
 const CustomerListPage = () => {
   const theme = useTheme();
 
+  const [mode, setMode] = useState('TABLE')
+
   const [add, setAdd] = useState(false);
   const [open, setOpen] = useState(false);
   const [customer, setCustomer] = useState();
@@ -425,29 +429,45 @@ const CustomerListPage = () => {
   // }, [data]);
 
   return (
-    <MainCard content={false}>
-      <ScrollX>
-        <ReactTable
-          columns={columns}
-          handleAdd={handleAdd}
-          getHeaderProps={(column) => column.getSortByToggleProps()}
-        />
-      </ScrollX>
-      <AlertCustomerDelete title={deletingCustomer.name} customerId={deletingCustomer._id} open={open} handleClose={handleClose} />
-      {/* add user dialog */}
-      <Dialog
-        maxWidth="sm"
-        TransitionComponent={PopupTransition}
-        keepMounted
-        fullWidth
-        onClose={handleAdd}
-        open={add}
-        sx={{ '& .MuiDialog-paper': { p: 0 }, transition: 'transform 225ms' }}
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <AddCustomer customer={customer} onCancel={handleAdd} />
-      </Dialog>
-    </MainCard>
+    <>
+        <Box sx={{display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.5 }}>
+            <IconButton size="large" color={mode === "TABLE" ? "primary" : "secondary"} onClick={() => setMode("TABLE")}>
+                <UnorderedListOutlined />
+            </IconButton>
+            <IconButton size="large" color={mode === "CARD" ? "primary" : "secondary"} onClick={() => setMode("CARD")}>
+                <AppstoreOutlined />
+            </IconButton>
+        </Box>
+
+        {mode === "TABLE" ? (
+            <MainCard content={false}>
+                <ScrollX>
+                    <ReactTable
+                        columns={columns}
+                        handleAdd={handleAdd}
+                        getHeaderProps={(column) => column.getSortByToggleProps()}
+                    />
+                </ScrollX>
+                <AlertCustomerDelete title={deletingCustomer.name} customerId={deletingCustomer._id} open={open} handleClose={handleClose} />
+                {/* add user dialog */}
+                <Dialog
+                    maxWidth="sm"
+                    TransitionComponent={PopupTransition}
+                    keepMounted
+                    fullWidth
+                    onClose={handleAdd}
+                    open={add}
+                    sx={{ '& .MuiDialog-paper': { p: 0 }, transition: 'transform 225ms' }}
+                    aria-describedby="alert-dialog-slide-description"
+                >
+                    <AddCustomer customer={customer} onCancel={handleAdd} />
+                </Dialog>
+            </MainCard>
+    ) : (
+        <CustomerCardPage />
+    )}
+
+    </>
   );
 };
 

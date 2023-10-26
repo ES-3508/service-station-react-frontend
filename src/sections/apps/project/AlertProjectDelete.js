@@ -47,7 +47,7 @@ export default function AlertProjectDelete({ title, projectId, open, handleClose
                 {' '}
                 &quot;{title}&quot;{' '}
               </Typography>
-              user, all task assigned to that user will also be deleted.
+              project, all boards and tasks in this project will also be deleted.
             </Typography>
           </Stack>
 

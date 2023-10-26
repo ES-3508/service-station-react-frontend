@@ -75,7 +75,6 @@ const Payment = ({ checkout, onBack, onNext, editAddress }) => {
     if (checkout.step > 2) {
       setComplete(true);
     }
-    // 
   }, []);
 
   useEffect(() => {

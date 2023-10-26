@@ -10,7 +10,7 @@ import {
   MessageOutlined,
   ShoppingCartOutlined,
   UserOutlined,
-  AppstoreAddOutlined
+  AppstoreAddOutlined,
 } from '@ant-design/icons';
 
 // icons
@@ -47,29 +47,42 @@ const applications = {
     //   url: '/apps/calendar',
     //   icon: icons.CalendarOutlined
     // },
-    {
-      id: 'kanban',
-      title: 'Manage Projects',
-      type: 'item',
-      icon: BuildOutlined,
-      url: '/apps/kanban/board'
-    },
+    // {
+    //   id: 'kanban',
+    //   title: 'Manage Projects',
+    //   type: 'item',
+    //   icon: BuildOutlined,
+    //   url: '/apps/kanban/board'
+    // },
     {
       id: 'users',
-      title: 'Users',
-      type: 'item',
-      icon: icons.CustomerServiceOutlined,
-      url: '/apps/customer/customer-list'
+      title: <FormattedMessage id="users" />,
+      type: 'collapse',
+      icon: icons.UserOutlined,
+      children: [
+        {
+          id: 'user-list',
+          title: <FormattedMessage id="list" />,
+          type: 'item',
+          url: '/apps/user/user-list'
+        },
+        {
+          id: 'role-list',
+          title: <FormattedMessage id="role" />,
+          type: 'item',
+          url: '/apps/user/role-list'
+        },
+      ]
     },
     {
       id: 'customer',
       title: <FormattedMessage id="customer" />,
       type: 'collapse',
-      icon: icons.CustomerServiceOutlined,
+      icon: icons.UserOutlined,
       children: [
         {
           id: 'customer-list',
-          title: <FormattedMessage id="list" />,
+          title: <FormattedMessage id="All Customers" />,
           type: 'item',
           url: '/apps/customer/customer-list'
         },
@@ -82,23 +95,23 @@ const applications = {
       ]
     },
     {
-      id: 'projects',
-      title: <FormattedMessage id="project" />,
+      id: 'project',
+      title: <FormattedMessage id="Projects" />,
       type: 'collapse',
-      icon: icons.CustomerServiceOutlined,
+      icon: icons.BuildOutlined,
       children: [
         {
           id: 'project-list',
-          title: <FormattedMessage id="list" />,
+          title: <FormattedMessage id="All Projects" />,
           type: 'item',
           url: '/apps/project/project-list'
         },
-        {
-          id: 'project-card',
-          title: <FormattedMessage id="cards" />,
-          type: 'item',
-          url: '/apps/project/project-card'
-        }
+        // {
+        //   id: 'project-card',
+        //   title: <FormattedMessage id="cards" />,
+        //   type: 'item',
+        //   url: '/apps/project/project-card'
+        // }
       ]
     },
     // {

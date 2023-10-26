@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useResolvedPath } from 'react-router-dom';
 
 // material-ui
 import MuiBreadcrumbs from '@mui/material/Breadcrumbs';
@@ -35,6 +35,13 @@ const Breadcrumbs = ({
   const [item, setItem] = useState();
 
   let currentPath = location.pathname;
+
+  // const resolvedPath = useResolvedPath('/apps/project/:id/kanban/board');
+  // const shouldRenderBreadcrumbs = location.pathname !== resolvedPath.pathname;
+  //
+  // if (!shouldRenderBreadcrumbs) {
+  //   return null;
+  // }
 
   // only used for component demo breadcrumbs
   if (currentPath.includes('/components-overview/breadcrumbs')) {

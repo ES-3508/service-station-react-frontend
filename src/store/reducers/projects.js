@@ -2,6 +2,7 @@ import { dispatch } from "store";
 import axios from "utils/axios";
 import axiosClient from "axios";
 import { openSnackbar } from "./snackbar";
+import {setActionBoard} from "./boards";
 
 const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit")
 
@@ -16,6 +17,11 @@ const initialState = {
         limit: null,
     },
     deletedProject: {},
+    analytics: {
+        rejected: null,
+        verified: null,
+        pending: null
+    }
 }
 
 const projects = createSlice({
@@ -30,6 +36,14 @@ const projects = createSlice({
         // GET PROJECTS
         getProjectsSuccess(state, action) {
             state.projects = action.payload;
+        },
+
+        getProjectSuccess(state, action) {
+            state.project = action.payload;
+        },
+
+        getProjectAnalyticsSuccess(state, action) {
+            state.analytics = action.payload;
         },
 
         deleteProjectSuccess(state, action) {
@@ -62,6 +76,42 @@ export function getProjects(pageIndex = 0, pageSize = 10, query) {
 
             if (response.status === 200) {
                 dispatch(projects.actions.getProjectsSuccess(response.data.data));
+            }
+
+        } catch (error) {
+            dispatch(projects.actions.hasError(error));
+        }
+    };
+}
+
+export function getProjectAnalytics() {
+    return async () => {
+        try {
+
+            let requestUrl = `/api/v1/project/analytics`;
+
+            const response = await axios.get(requestUrl);
+
+            if (response.status === 200) {
+                dispatch(projects.actions.getProjectAnalyticsSuccess(response.data.data));
+            }
+
+        } catch (error) {
+            dispatch(projects.actions.hasError(error));
+        }
+    };
+}
+
+export function getProjectById(projectId) {
+    return async () => {
+        try {
+
+            let requestUrl = `/api/v1/project/${projectId}`;
+
+            const response = await axios.get(requestUrl);
+
+            if (response.status === 200) {
+                dispatch(projects.actions.getProjectSuccess(response.data.data));
             }
 
         } catch (error) {
@@ -146,6 +196,47 @@ export function updateProject(projectId, values) {
                 })
             );
             dispatch(projects.actions.hasError(err));
+        }
+    }
+}
+
+export function updateProjectBoardOrder(projectId, values) {
+    return async () => {
+        try {
+            const response = await axios.put(`/api/v1/project/${projectId}/update/board`, values);
+
+            if (response.status === 200) {
+
+                dispatch(setActionBoard());
+                setActionProject();
+
+                dispatch(
+                    openSnackbar({
+                        open: true,
+                        message: 'Board updated successfully',
+                        variant: 'alert',
+                        alert: {
+                            color: 'success'
+                        },
+                        close: false
+                    })
+                );
+            }
+
+
+        } catch (err) {
+            // dispatch(
+            //     openSnackbar({
+            //         open: true,
+            //         message: 'Board could not update.',
+            //         variant: 'alert',
+            //         alert: {
+            //             color: 'error'
+            //         },
+            //         close: false
+            //     })
+            // );
+            // dispatch(projects.actions.hasError(err));
         }
     }
 }

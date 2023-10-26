@@ -3,18 +3,19 @@ import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 
 // material-ui
 import {
-  Button,
-  Chip,
-  Dialog,
-  Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Tooltip,
-  Typography,
-  useMediaQuery
+    Box,
+    Button,
+    Chip,
+    Dialog, Grid,
+    Stack,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+    Tooltip,
+    Typography,
+    useMediaQuery
 } from '@mui/material';
 import { alpha, useTheme } from '@mui/material/styles';
 
@@ -37,17 +38,29 @@ import {
   TableRowSelection
 } from 'components/third-party/ReactTable';
 
-import CustomerView from 'sections/apps/customer/CustomerView';
+import AddProject from 'sections/apps/project/AddProject';
+import ProjectView from 'sections/apps/project/ProjectView';
+import AlertProjectDelete from 'sections/apps/project/AlertProjectDelete';
 
 import { GlobalFilter, renderFilterTypes } from 'utils/react-table';
 
 // assets
-import { CloseOutlined, DeleteTwoTone, EditTwoTone, EyeTwoTone, PlusOutlined } from '@ant-design/icons';
+import {
+    CloseOutlined,
+    DeleteTwoTone,
+    EditTwoTone,
+    EyeTwoTone,
+    PlusOutlined,
+    UnorderedListOutlined,
+    AppstoreOutlined,
+    BuildOutlined, EyeOutlined
+} from '@ant-design/icons';
 import { format, parseISO } from 'date-fns';
-import AddProject from 'sections/apps/project/AddProject';
-import AlertProjectDelete from 'sections/apps/project/AlertProjectDelete';
 import { dispatch, useSelector } from 'store';
-import { getProjects } from 'store/reducers/projects';
+import {getProjectAnalytics, getProjects} from 'store/reducers/projects';
+import { Link } from "react-router-dom";
+import ProjectCardPage from './card';
+import ReportCard from "../../../components/cards/statistics/ReportCard";
 
 // const avatarImage = require.context('assets/images/users', true);
 
@@ -117,7 +130,7 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
   // }, [matchDownSM]);
 
   const renderRowSubComponent = useCallback(({ row }) => {
-    return <CustomerView data={projects.find((project) => project._id === row.values._id)} />;
+    return <ProjectView data={projects.find((project) => project._id === row.values._id)} />;
   }, [projects]);
 
 
@@ -134,6 +147,7 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
         >
           <GlobalFilter
             preGlobalFilteredRows={preGlobalFilteredRows}
+            separatedCount={total}
             globalFilter={globalFilter}
             setGlobalFilter={(value) => {
               if (value !== undefined) {
@@ -149,7 +163,7 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
             <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAdd} size="small">
               Add Project
             </Button>
-            <CSVExport data={selectedFlatRows.length > 0 ? selectedFlatRows.map((d) => d.original) : projects} filename={'customer-list.csv'} />
+            {/* <CSVExport data={selectedFlatRows.length > 0 ? selectedFlatRows.map((d) => d.original) : projects} filename={'customer-list.csv'} /> */}
           </Stack>
         </Stack>
 
@@ -271,29 +285,38 @@ const ActionCell = (row, setProject, setProjectDeleteId, handleAdd, handleClose,
   );
   return (
     <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
+      <Tooltip title="Kanban">
+        <Link to={`/apps/project/${row.values._id}/kanban/board`}>
+          <IconButton
+            color="primary"
+          >
+            <BuildOutlined twoToneColor={theme.palette.secondary.main} />
+          </IconButton>
+        </Link>
+      </Tooltip>
       <Tooltip title="View">
-        <IconButton
-          color="secondary"
-          onClick={(e) => {
-            e.stopPropagation();
-            row.toggleRowExpanded();
-          }}
-        >
-          {collapseIcon}
-        </IconButton>
+          <IconButton
+              color="secondary"
+              onClick={(e) => {
+                  e.stopPropagation();
+                  row.toggleRowExpanded();
+              }}
+          >
+              {collapseIcon}
+          </IconButton>
       </Tooltip>
-      <Tooltip title="Edit">
-        <IconButton
-          color="primary"
-          onClick={(e) => {
-            e.stopPropagation();
-            setProject(row.values);
-            handleAdd();
-          }}
-        >
-          <EditTwoTone twoToneColor={theme.palette.primary.main} />
-        </IconButton>
-      </Tooltip>
+        <Tooltip title="Edit">
+            <IconButton
+                color="primary"
+                onClick={(e) => {
+                    e.stopPropagation();
+                    setProject(row.values);
+                    handleAdd();
+                }}
+            >
+                <EditTwoTone twoToneColor={theme.palette.primary.main} />
+            </IconButton>
+        </Tooltip>
       <Tooltip title="Delete">
         <IconButton
           color="error"
@@ -335,6 +358,10 @@ SelectionHeader.propTypes = {
 
 const ProjectListPage = () => {
   const theme = useTheme();
+
+    const { analytics, projects: { total: totalProjects } } = useSelector((state) => state.projects);
+
+  const [mode, setMode] = useState('CARD')
 
   const [add, setAdd] = useState(false);
   const [open, setOpen] = useState(false);
@@ -418,30 +445,61 @@ const ProjectListPage = () => {
   //   // return <CustomerView data={data[row._id]} />;
   // }, [data]);
 
+    useEffect(() => {
+        dispatch(getProjectAnalytics());
+    }, [])
+
   return (
-    <MainCard content={false}>
-      <ScrollX>
-        <ReactTable
-          columns={columns}
-          handleAdd={handleAdd}
-          getHeaderProps={(column) => column.getSortByToggleProps()}
-        />
-      </ScrollX>
-      <AlertProjectDelete title={deletingProject.name} projectId={deletingProject._id} open={open} handleClose={handleClose} />
-      {/* add user dialog */}
-      <Dialog
-        maxWidth="sm"
-        TransitionComponent={PopupTransition}
-        keepMounted
-        fullWidth
-        onClose={handleAdd}
-        open={add}
-        sx={{ '& .MuiDialog-paper': { p: 0 }, transition: 'transform 225ms' }}
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <AddProject project={project} onCancel={handleAdd} />
-      </Dialog>
-    </MainCard>
+    <>
+        <Grid container spacing={3}>
+            <Grid item xs={12} lg={3} sm={6}>
+                <ReportCard primary={totalProjects} secondary="Total Projects" color={theme.palette.secondary.main} iconPrimary={EyeOutlined} />
+            </Grid>
+            {Object.keys(analytics).map((key, index) => (
+                <Grid key={key} item xs={12} lg={3} sm={6}>
+                    <ReportCard primary={analytics[key]} secondary={`${key.length === 0 ? key : key.charAt(0).toUpperCase() + key.slice(1)} Projects`} color={theme.palette.secondary.main} iconPrimary={EyeOutlined} />
+                </Grid>
+            ))}
+        </Grid>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.5 }}>
+        <IconButton size="large" color={mode === "TABLE" ? "primary" : "secondary"} onClick={() => setMode("TABLE")}>
+          <UnorderedListOutlined />
+        </IconButton>
+        <IconButton size="large" color={mode === "CARD" ? "primary" : "secondary"} onClick={() => setMode("CARD")}>
+          <AppstoreOutlined />
+        </IconButton>
+      </Box>
+
+      {mode === "TABLE" ? (
+        <MainCard content={false}>
+          <ScrollX>
+            <ReactTable
+              columns={columns}
+              handleAdd={handleAdd}
+              getHeaderProps={(column) => column.getSortByToggleProps()}
+            />
+          </ScrollX>
+          <AlertProjectDelete title={deletingProject.name} projectId={deletingProject._id} open={open} handleClose={handleClose} />
+          {/* add user dialog */}
+          <Dialog
+            maxWidth="sm"
+            TransitionComponent={PopupTransition}
+            keepMounted
+            fullWidth
+            onClose={handleAdd}
+            open={add}
+            sx={{ '& .MuiDialog-paper': { p: 0 }, transition: 'transform 225ms' }}
+            aria-describedby="alert-dialog-slide-description"
+          >
+            <AddProject project={project} onCancel={handleAdd} />
+          </Dialog>
+        </MainCard>
+      ) : (
+        <ProjectCardPage />
+      )}
+
+    </>
+
   );
 };
 

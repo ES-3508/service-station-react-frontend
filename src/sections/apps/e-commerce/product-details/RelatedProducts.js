@@ -130,7 +130,6 @@ const RelatedProducts = ({ id }) => {
 
   useEffect(() => {
     dispatch(getRelatedProducts(id));
-    // 
   }, []);
 
   let productResult = <></>;

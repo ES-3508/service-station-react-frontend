@@ -91,7 +91,6 @@ const Create = () => {
 
   useEffect(() => {
     dispatch(getInvoiceSingleList(Number(id))).then(() => setLoading(false));
-    // 
   }, [id]);
 
   const invoiceSingleList = {

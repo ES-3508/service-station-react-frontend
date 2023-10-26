@@ -93,7 +93,6 @@ const Checkout = () => {
 
   useEffect(() => {
     dispatch(getAddresses());
-    // 
   }, []);
 
   const editBillingAddress = (addressEdit) => {
@@ -107,7 +106,6 @@ const Checkout = () => {
 
   useEffect(() => {
     setValue(cart.checkout.step > 2 ? 2 : cart.checkout.step);
-    // 
   }, [cart.checkout.step]);
 
   const removeCartProduct = (id) => {

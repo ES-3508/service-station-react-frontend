@@ -19,8 +19,8 @@ import {
 // project import
 import { PopupTransition } from 'components/@extended/Transitions';
 import EmptyUserCard from 'components/cards/skeleton/EmptyUserCard';
-import CustomerCard from 'sections/apps/customer/CustomerCard';
-import AddCustomer from 'sections/apps/customer/AddCustomer';
+import ProjectCard from 'sections/apps/project/ProjectCard';
+import AddProject from 'sections/apps/project/AddProject';
 
 import makeData from 'data/react-table';
 import { GlobalFilter } from 'utils/react-table';
@@ -28,80 +28,97 @@ import usePagination from 'hooks/usePagination';
 
 // assets
 import { PlusOutlined } from '@ant-design/icons';
+import { dispatch, useSelector } from "../../../store";
+import { getProjects } from "../../../store/reducers/projects";
 
 // ==============================|| CUSTOMER - CARD ||============================== //
 
 const allColumns = [
   {
     id: 1,
-    header: 'Default'
+    header: '#'
   },
   {
     id: 2,
-    header: 'Customer Name'
+    header: 'Project Name'
   },
   {
     id: 3,
-    header: 'Email'
+    header: 'Client Name'
   },
   {
     id: 4,
-    header: 'Contact'
+    header: 'Start Date'
   },
   {
     id: 5,
-    header: 'Age'
+    header: 'End Date'
   },
   {
     id: 6,
-    header: 'Country'
+    header: 'Attachment'
   },
   {
     id: 7,
     header: 'Status'
+  },
+  {
+    id: 8,
+    header: 'Description'
   }
 ];
 
-const CustomerCardPage = () => {
-  const data = useMemo(() => makeData(12), []);
+const ProductCardPage = () => {
+  // const data = useMemo(() => makeData(12), []);
   const matchDownSM = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
   const [sortBy, setSortBy] = useState('Default');
   const [globalFilter, setGlobalFilter] = useState('');
   const [add, setAdd] = useState(false);
-  const [customer, setCustomer] = useState(null);
-  const [userCard, setUserCard] = useState([]);
+  const [project, setProject] = useState(null);
+  // const [userCard, setUserCard] = useState([]);
   const [page, setPage] = useState(1);
+  const [query, setQuery] = useState('')
+
+  const { projects: {
+    projects,
+    total,
+  }, action } = useSelector((state) => state.projects);
+
   const handleChange = (event) => {
     setSortBy(event.target.value);
   };
 
   const handleAdd = () => {
     setAdd(!add);
-    if (customer && !add) setCustomer(null);
+    if (project && !add) setProject(null);
   };
 
   // search
-  useEffect(() => {
-    const newData = data.filter((value) => {
-      if (globalFilter) {
-        return value.fatherName.toLowerCase().includes(globalFilter.toLowerCase());
-      } else {
-        return value;
-      }
-    });
-    setUserCard(newData);
-  }, [globalFilter, data]);
+  // useEffect(() => {
+  //   const newData = data.filter((value) => {
+  //     if (globalFilter) {
+  //       return value.fatherName.toLowerCase().includes(globalFilter.toLowerCase());
+  //     } else {
+  //       return value;
+  //     }
+  //   });
+  //   setUserCard(newData);
+  // }, [globalFilter, data]);
 
   const PER_PAGE = 6;
 
-  const count = Math.ceil(userCard.length / PER_PAGE);
-  const _DATA = usePagination(userCard, PER_PAGE);
+  // const count = Math.ceil(userCard.length / PER_PAGE);
+  // const _DATA = usePagination(userCard, PER_PAGE);
 
   const handleChangePage = (e, p) => {
     setPage(p);
-    _DATA.jump(p);
+    // _DATA.jump(p);
   };
+
+  useEffect(() => {
+    dispatch(getProjects(page - 1, PER_PAGE, query));
+  }, [page, action, query])
 
   return (
     <>
@@ -114,7 +131,15 @@ const CustomerCardPage = () => {
             justifyContent="space-between"
             alignItems="center"
           >
-            <GlobalFilter preGlobalFilteredRows={data} globalFilter={globalFilter} setGlobalFilter={setGlobalFilter} />
+            {/*Search & Filter*/}
+            <GlobalFilter preGlobalFilteredRows={projects} separatedCount={total} globalFilter={globalFilter} setGlobalFilter={(value) => {
+              if (value !== undefined) {
+                setQuery(value);
+              } else {
+                setQuery('');
+              }
+            }} />
+            {/*End of Search & Filter*/}
             <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
               <FormControl sx={{ m: 1, minWidth: 120 }}>
                 <Select
@@ -140,39 +165,41 @@ const CustomerCardPage = () => {
                 </Select>
               </FormControl>
               <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAdd}>
-                Add Customer
+                Add Project
               </Button>
             </Stack>
           </Stack>
         </Stack>
       </Box>
+
+      {/*Content Cards*/}
       <Grid container spacing={3}>
-        {userCard.length > 0 ? (
-          _DATA
-            .currentData()
-            .sort(function (a, b) {
-              if (sortBy === 'Customer Name') return a.fatherName.localeCompare(b.fatherName);
-              if (sortBy === 'Email') return a.email.localeCompare(b.email);
-              if (sortBy === 'Contact') return a.contact.localeCompare(b.contact);
-              if (sortBy === 'Age') return b.age < a.age ? 1 : -1;
-              if (sortBy === 'Country') return a.country.localeCompare(b.country);
-              if (sortBy === 'Status') return a.status.localeCompare(b.status);
-              return a;
-            })
-            .map((user, index) => (
-              <Slide key={index} direction="up" in={true} timeout={50}>
-                <Grid item xs={12} sm={6} lg={4}>
-                  <CustomerCard customer={user} />
-                </Grid>
-              </Slide>
-            ))
+        {projects.length > 0 ? (
+          // _DATA
+          //   .currentData()
+          //   .sort(function (a, b) {
+          //     if (sortBy === 'Customer Name') return a.fatherName.localeCompare(b.fatherName);
+          //     if (sortBy === 'Email') return a.email.localeCompare(b.email);
+          //     if (sortBy === 'Contact') return a.contact.localeCompare(b.contact);
+          //     if (sortBy === 'Age') return b.age < a.age ? 1 : -1;
+          //     if (sortBy === 'Country') return a.country.localeCompare(b.country);
+          //     if (sortBy === 'Status') return a.status.localeCompare(b.status);
+          //     return a;
+          //   })
+          projects.map((project, index) => (
+            <Slide key={index} direction="up" in={true} timeout={50}>
+              <Grid item xs={12} sm={6} lg={4}>
+                <ProjectCard project={project} />
+              </Grid>
+            </Slide>
+          ))
         ) : (
-          <EmptyUserCard title={'You have not created any customer yet.'} />
+          <EmptyUserCard title={'You have not created any Project yet.'} />
         )}
       </Grid>
       <Stack spacing={2} sx={{ p: 2.5 }} alignItems="flex-end">
         <Pagination
-          count={count}
+          count={Math.ceil(total / PER_PAGE)}
           size="medium"
           page={page}
           showFirstButton
@@ -183,7 +210,7 @@ const CustomerCardPage = () => {
         />
       </Stack>
 
-      {/* add customer dialog */}
+      {/* add project dialog */}
       <Dialog
         maxWidth="sm"
         fullWidth
@@ -192,10 +219,10 @@ const CustomerCardPage = () => {
         open={add}
         sx={{ '& .MuiDialog-paper': { p: 0 } }}
       >
-        <AddCustomer customer={customer} onCancel={handleAdd} />
+        <AddProject project={project} onCancel={handleAdd} />
       </Dialog>
     </>
   );
 };
 
-export default CustomerCardPage;
+export default ProductCardPage;
