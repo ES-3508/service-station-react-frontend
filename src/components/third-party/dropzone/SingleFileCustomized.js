@@ -25,13 +25,13 @@ const DropzoneWrapper = styled('div')(({ theme }) => ({
 
 // ==============================|| UPLOAD - SINGLE FILE ||============================== //
 
-const SingleFileUpload = ({ error, file, setFieldValue, sx }) => {
+const SingleFilCustomized = ({ error, file, setFieldValue, sx }) => {
   const theme = useTheme();
 
   const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
     accept: {
-      'image/*': []
-      // 'file/*':[]
+      // 'image/*': []
+      'file/*':[]
     },
     multiple: false,
     onDrop: (acceptedFiles) => {
@@ -73,7 +73,7 @@ const SingleFileUpload = ({ error, file, setFieldValue, sx }) => {
   };
 
   return (
-    <Box sx={{ width: '100%', ...sx }}>
+    <Box sx={{paddingTop:'20px' ,  width: '100%', ...sx }}>
       <DropzoneWrapper
         {...getRootProps()}
         sx={{
@@ -106,11 +106,11 @@ const SingleFileUpload = ({ error, file, setFieldValue, sx }) => {
   );
 };
 
-SingleFileUpload.propTypes = {
+SingleFilCustomized.propTypes = {
   error: PropTypes.bool,
   file: PropTypes.array,
   setFieldValue: PropTypes.func,
   sx: PropTypes.object
 };
 
-export default SingleFileUpload;
+export default SingleFilCustomized;
