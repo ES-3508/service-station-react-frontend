@@ -58,8 +58,6 @@ const Calendar = () => {
       calendarApi.changeView(newView);
       dispatch(updateCalendarView(newView));
     }
-
-    // 
   }, [matchDownSM]);
 
   const [date, setDate] = useState(new Date());

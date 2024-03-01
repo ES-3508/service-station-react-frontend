@@ -178,12 +178,10 @@ const Chat = () => {
     // hide left drawer when email app opens
     dispatch(openDrawer(false));
     dispatch(getUser(1));
-    // 
   }, []);
 
   useEffect(() => {
     dispatch(getUserChats(user.name));
-    // 
   }, [user]);
 
   return (

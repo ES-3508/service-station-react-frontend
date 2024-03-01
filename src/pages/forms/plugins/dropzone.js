@@ -56,10 +56,10 @@ const DropzonePage = () => {
                       <UploadMultiFile
                         showList={list}
                         setFieldValue={setFieldValue}
-                        files={values.files}
-                        error={touched.files && !!errors.files}
+                        files={values.attachments}
+                        error={touched.attachments && !!errors.attachments}
                       />
-                      {touched.files && errors.files && (
+                      {touched.attachments && errors.attachments && (
                         <FormHelperText error id="standard-weight-helper-text-password-login">
                           {errors.files}
                         </FormHelperText>
@@ -89,8 +89,8 @@ const DropzonePage = () => {
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
                     <Stack spacing={1.5} alignItems="center">
-                      <UploadSingleFile setFieldValue={setFieldValue} file={values.files} error={touched.files && !!errors.files} />
-                      {touched.files && errors.files && (
+                      <UploadSingleFile setFieldValue={setFieldValue} file={values.attachments} error={touched.attachments && !!errors.attachments} />
+                      {touched.attachments && errors.attachments && (
                         <FormHelperText error id="standard-weight-helper-text-password-login">
                           {errors.files}
                         </FormHelperText>
@@ -120,8 +120,8 @@ const DropzonePage = () => {
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
                     <Stack spacing={1.5} alignItems="center">
-                      <UploadAvatar setFieldValue={setFieldValue} file={values.files} error={touched.files && !!errors.files} />
-                      {touched.files && errors.files && (
+                      <UploadAvatar setFieldValue={setFieldValue} file={values.attachments} error={touched.attachments && !!errors.attachments} />
+                      {touched.attachments && errors.attachments && (
                         <FormHelperText error id="standard-weight-helper-text-password-login">
                           {errors.files}
                         </FormHelperText>

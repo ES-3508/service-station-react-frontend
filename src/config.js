@@ -29,6 +29,19 @@ export const CustomerStatus = {
   REJECTED: 'Rejected',
 }
 
+export const ProjectStatus = {
+  PENDING: 'Pending',
+  VERIFIED: 'Verified',
+  REJECTED: 'Rejected',
+}
+
+export const UserRoles = [
+  {
+    value: "6536a8d18b07acc8d7258ad4",
+    label: "Admin",
+  }
+]
+
 // ==============================|| THEME CONFIG  ||============================== //
 
 const config = {

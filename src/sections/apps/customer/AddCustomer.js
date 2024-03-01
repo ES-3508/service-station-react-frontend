@@ -210,8 +210,6 @@ const AddCustomer = ({ customer, onCancel }) => {
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue, resetForm } = formik;
 
-  console.log(errors)
-
   return (
     <>
       <FormikProvider value={formik}>
@@ -302,6 +300,7 @@ const AddCustomer = ({ customer, onCancel }) => {
                         <InputLabel htmlFor="customer-phone">Phone Number</InputLabel>
                         <TextField
                           fullWidth
+                          type='tel'
                           id="customer-phone"
                           placeholder="Enter Phone Number"
                           {...getFieldProps('phone')}

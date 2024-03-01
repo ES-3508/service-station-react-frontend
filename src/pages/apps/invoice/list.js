@@ -326,7 +326,6 @@ const List = () => {
     if (lists.length === 0) {
       dispatch(getInvoiceList());
     }
-    // 
   }, []);
 
   const [list, setList] = useState([]);
@@ -419,7 +418,6 @@ const List = () => {
         Cell: ({ row }) => ActionCell(row, setGetInvoiceId, setInvoiceId, navigation, theme)
       }
     ],
-    // 
     []
   );
 

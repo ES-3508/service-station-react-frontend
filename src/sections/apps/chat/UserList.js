@@ -27,7 +27,6 @@ function UserList({ setUser, search }) {
 
   useEffect(() => {
     dispatch(getUsers());
-    // 
   }, []);
 
   useEffect(() => {
@@ -58,7 +57,6 @@ function UserList({ setUser, search }) {
     } else {
       setData(users);
     }
-    // 
   }, [search]);
 
   return (
