@@ -49,6 +49,8 @@ import { createCustomer, deleteCustomer, updateCustomer, uploadCustomerImage } f
 import { CustomerStatus } from 'config';
 import { useSelector } from 'store';
 
+import SingleFilCustomized from 'components/third-party/dropzone/SingleFileCustomized';
+
 // const avatarImage = require.context('assets/images/users', true);
 
 // constant
@@ -538,6 +540,17 @@ const AddCustomer = ({ customer, onCancel }) => {
                         />
                       </Stack>
                     </Grid>
+
+                  {/* <Grid container spacing={3} >
+                    <Grid item xs={12}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="customer-priority-level">Upload File</InputLabel>
+                        <SingleFilCustomized />
+                        
+                      </Stack>
+                    </Grid>
+                    </Grid> */}
+
                   </Grid>
                 </Grid>
               </Grid>
