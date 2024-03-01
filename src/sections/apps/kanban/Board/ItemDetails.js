@@ -19,7 +19,7 @@ import { CloseOutlined, DeleteFilled } from '@ant-design/icons';
 
 import IconButton from 'components/@extended/IconButton';
 import AlertTaskItemDelete from "./AlertTaskItemDelete";
-import {deleteTask, setSelectedTask} from "../../../../store/reducers/tasks";
+import {clearSubTasksOrder, deleteTask, setSelectedTask} from "../../../../store/reducers/tasks";
 import EditTaskItem from "./EditTaskItem";
 
 // ==============================|| KANBAN BOARD - ITEM DETAILS ||============================== //
@@ -39,6 +39,7 @@ const ItemDetails = () => {
   const handleDrawerOpen = () => {
     setOpen((prevState) => !prevState);
     dispatch(setSelectedTask(null));
+    dispatch(clearSubTasksOrder());
   };
 
   useEffect(() => {
