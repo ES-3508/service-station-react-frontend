@@ -114,40 +114,40 @@ const applications = {
         // }
       ]
     },
-    // {
-    //   id: 'invoice',
-    //   title: <FormattedMessage id="invoice" />,
-    //   url: '/apps/invoice/dashboard',
-    //   type: 'collapse',
-    //   icon: icons.FileTextOutlined,
-    //   breadcrumbs: true,
-    //   children: [
-    //     {
-    //       id: 'create',
-    //       title: <FormattedMessage id="create" />,
-    //       type: 'item',
-    //       url: '/apps/invoice/create'
-    //     },
-    //     {
-    //       id: 'details',
-    //       title: <FormattedMessage id="details" />,
-    //       type: 'item',
-    //       url: '/apps/invoice/details/1'
-    //     },
-    //     {
-    //       id: 'list',
-    //       title: <FormattedMessage id="list" />,
-    //       type: 'item',
-    //       url: '/apps/invoice/list'
-    //     },
-    //     {
-    //       id: 'edit',
-    //       title: <FormattedMessage id="edit" />,
-    //       type: 'item',
-    //       url: '/apps/invoice/edit/1'
-    //     }
-    //   ]
-    // },
+    {
+      id: 'invoice',
+      title: <FormattedMessage id="invoice" />,
+      url: '/apps/invoice/dashboard',
+      type: 'collapse',
+      icon: icons.FileTextOutlined,
+      breadcrumbs: true,
+      children: [
+        {
+          id: 'create',
+          title: <FormattedMessage id="create" />,
+          type: 'item',
+          url: '/apps/invoice/create'
+        },
+        {
+          id: 'details',
+          title: <FormattedMessage id="details" />,
+          type: 'item',
+          url: '/apps/invoice/details/1'
+        },
+        {
+          id: 'list',
+          title: <FormattedMessage id="list" />,
+          type: 'item',
+          url: '/apps/invoice/list'
+        },
+        {
+          id: 'edit',
+          title: <FormattedMessage id="edit" />,
+          type: 'item',
+          url: '/apps/invoice/edit/1'
+        }
+      ]
+    },
     // {
     //   id: 'profile',
     //   title: <FormattedMessage id="profile" />,
@@ -170,46 +170,46 @@ const applications = {
     //     }
     //   ]
     // },
-    // {
-    //   id: 'e-commerce',
-    //   title: <FormattedMessage id="e-commerce" />,
-    //   type: 'collapse',
-    //   icon: icons.ShoppingCartOutlined,
-    //   children: [
-    //     {
-    //       id: 'products',
-    //       title: <FormattedMessage id="products" />,
-    //       type: 'item',
-    //       url: '/apps/e-commerce/products'
-    //     },
-    //     {
-    //       id: 'product-details',
-    //       title: <FormattedMessage id="product-details" />,
-    //       type: 'item',
-    //       url: '/apps/e-commerce/product-details/1',
-    //       breadcrumbs: false
-    //     },
-    //     {
-    //       id: 'product-list',
-    //       title: <FormattedMessage id="product-list" />,
-    //       type: 'item',
-    //       url: '/apps/e-commerce/product-list',
-    //       breadcrumbs: false
-    //     },
-    //     {
-    //       id: 'add-new-product',
-    //       title: <FormattedMessage id="add-new-product" />,
-    //       type: 'item',
-    //       url: '/apps/e-commerce/add-new-product'
-    //     },
-    //     {
-    //       id: 'checkout',
-    //       title: <FormattedMessage id="checkout" />,
-    //       type: 'item',
-    //       url: '/apps/e-commerce/checkout'
-    //     }
-    //   ]
-    // }
+    {
+      id: 'inventory',
+      title: <FormattedMessage id="Inventory" />,
+      type: 'collapse',
+      icon: icons.ShoppingCartOutlined,
+      children: [
+        // {
+        //   id: 'products',
+        //   title: <FormattedMessage id="products" />,
+        //   type: 'item',
+        //   url: '/apps/e-commerce/products'
+        // },
+        // {
+        //   id: 'product-details',
+        //   title: <FormattedMessage id="Item details" />,
+        //   type: 'item',
+        //   url: '/apps/e-commerce/product-details/1',
+        //   breadcrumbs: false
+        // },
+        {
+          id: 'product-list',
+          title: <FormattedMessage id="Material list" />,
+          type: 'item',
+          url: '/apps/e-commerce/product-list',
+          breadcrumbs: false
+        },
+        {
+          id: 'add-new-product',
+          title: <FormattedMessage id="Add material" />,
+          type: 'item',
+          url: '/apps/e-commerce/add-new-product'
+        },
+        // {
+        //   id: 'checkout',
+        //   title: <FormattedMessage id="checkout" />,
+        //   type: 'item',
+        //   url: '/apps/e-commerce/checkout'
+        // }
+      ]
+    }
   ]
 };
 
