@@ -35,7 +35,7 @@ import * as Yup from 'yup';
 import { useFormik, Form, FormikProvider } from 'formik';
 
 // project imports
-import AlertCustomerDelete from './AlertCustomerDelete';
+import AlertCustomerDelete from './AlertLeadDelete';
 import Avatar from 'components/@extended/Avatar';
 import IconButton from 'components/@extended/IconButton';
 
@@ -217,10 +217,11 @@ const AddCustomer = ({ customer, onCancel }) => {
       <FormikProvider value={formik}>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-            <DialogTitle>{customer ? 'Edit Contact' : 'New Contact'}</DialogTitle>
+            <DialogTitle>{customer ? 'Edit Lead' : 'New Lead'}</DialogTitle>
             <Divider />
             <DialogContent sx={{ p: 5.5 }}>
               <Grid container spacing={3}>
+
                 <Grid item xs={12}>
                   {/* <Stack direction="row" justifyContent="center" sx={{ mt: 3 }}>
                     <FormLabel
@@ -265,6 +266,7 @@ const AddCustomer = ({ customer, onCancel }) => {
                   </Stack>  */}
                 </Grid>
                 <Grid item xs={12}>
+                  <Typography variant='h4'> Contact information</Typography>
                   <Grid container spacing={3}>
                     {/* first name */}
                     <Grid item xs={12} sm={6}>

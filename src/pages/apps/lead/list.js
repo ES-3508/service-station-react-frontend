@@ -147,8 +147,8 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
           />
           <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
             <SortingSelect sortBy={sortBy.id} setSortBy={setSortBy} allColumns={allColumns} />
-            <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAdd} size="small">
-              Add Customer
+            <Button variant="contained" color='primary' startIcon={<PlusOutlined />} onClick={handleAdd} size="small">
+              Add Lead
             </Button>
             <CSVExport data={selectedFlatRows.length > 0 ? selectedFlatRows.map((d) => d.original) : customers} filename={'customer-list.csv'} />
           </Stack>
@@ -386,7 +386,7 @@ const CustomerListPage = () => {
         className: 'cell-right'
       },
       {
-        Header: 'Address',
+        Header: 'Country',
         accessor: 'country'
       },
       {

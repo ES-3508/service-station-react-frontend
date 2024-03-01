@@ -21,6 +21,10 @@ const AppCalendar = Loadable(lazy(() => import('pages/apps/calendar')));
 const AppCustomerList = Loadable(lazy(() => import('pages/apps/customer/list')));
 const AppCustomerCard = Loadable(lazy(() => import('pages/apps/customer/card')));
 
+const AppLeadList = Loadable(lazy(() => import('pages/apps/lead/list')));
+const AppLeadCard = Loadable(lazy(() => import('pages/apps/lead/card')));
+
+
 const AppProjectList = Loadable(lazy(() => import('pages/apps/projects/list')));
 const AppProjectCard = Loadable(lazy(() => import('pages/apps/projects/card')));
 
@@ -197,6 +201,33 @@ const MainRoutes = {
                 },
                 {
                   path: 'customer-card',
+                  element: <AppCustomerCard />
+                }
+              ]
+            },
+            {
+              path: 'lead',
+              children: [
+                {
+                  path: 'lead-list',
+                  element: <AppLeadList />
+                },
+                {
+                  path: 'lead-card',
+                  element: <AppLeadCard />
+                }
+              ]
+            },
+            {
+              path: 'lead',
+              children: [
+                {
+                  path: 'lead-list',
+                  element: <AppCustomerList /> 
+
+                },
+                {
+                  path: 'lead-card',
                   element: <AppCustomerCard />
                 }
               ]

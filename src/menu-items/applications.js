@@ -54,35 +54,38 @@ const applications = {
     //   icon: BuildOutlined,
     //   url: '/apps/kanban/board'
     // },
+    
+    
+
     {
-      id: 'users',
-      title: <FormattedMessage id="users" />,
+      id: 'Lead',
+      title: <FormattedMessage id="Lead" />,
       type: 'collapse',
       icon: icons.UserOutlined,
       children: [
         {
-          id: 'user-list',
-          title: <FormattedMessage id="list" />,
+          id: 'lead-list',
+          title: <FormattedMessage id="All Leads" />,
           type: 'item',
-          url: '/apps/user/user-list'
+          url: '/apps/lead/lead-list'
         },
-        {
-          id: 'role-list',
-          title: <FormattedMessage id="role" />,
-          type: 'item',
-          url: '/apps/user/role-list'
-        },
+        // {
+        //   id: 'customer-card',
+        //   title: <FormattedMessage id="cards" />,
+        //   type: 'item',
+        //   url: '/apps/customer/customer-card'
+        // }
       ]
     },
     {
-      id: 'customer',
-      title: <FormattedMessage id="customer" />,
+      id: 'Contact',
+      title: <FormattedMessage id="Contact" />,
       type: 'collapse',
       icon: icons.UserOutlined,
       children: [
         {
-          id: 'customer-list',
-          title: <FormattedMessage id="All Customers" />,
+          id: 'contact-list',
+          title: <FormattedMessage id="All Contacts" />,
           type: 'item',
           url: '/apps/customer/customer-list'
         },
@@ -209,7 +212,27 @@ const applications = {
         //   url: '/apps/e-commerce/checkout'
         // }
       ]
-    }
+    },
+    {
+      id: 'users',
+      title: <FormattedMessage id="users" />,
+      type: 'collapse',
+      icon: icons.UserOutlined,
+      children: [
+        {
+          id: 'user-list',
+          title: <FormattedMessage id="list" />,
+          type: 'item',
+          url: '/apps/user/user-list'
+        },
+        {
+          id: 'role-list',
+          title: <FormattedMessage id="role" />,
+          type: 'item',
+          url: '/apps/user/role-list'
+        },
+      ]
+    },
   ]
 };
 
