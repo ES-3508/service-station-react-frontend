@@ -488,9 +488,10 @@ const AddCustomer = ({ customer, onCancel }) => {
                     </Grid>
                     {/* end of age */}
 
-
+                    
                     {/* budget */}
                     <Grid item xs={6}>
+                      
                       <Stack spacing={1.25}>
                         <InputLabel htmlFor="budget">Budget</InputLabel>
                         <TextField
@@ -503,7 +504,7 @@ const AddCustomer = ({ customer, onCancel }) => {
                         />
                       </Stack>
                     </Grid>
-                    
+                    <Grid item xs={6}></Grid>
                     {/* end of age */}
 
                     {/* expected start date */}
