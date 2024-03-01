@@ -162,8 +162,10 @@ const ProjectCard = ({ project }) => {
                     <ListItemIcon>
                       <CalendarOutlined />
                     </ListItemIcon>
+                    {/*
                     <ListItemText primary={<Typography color="secondary">Start Date: {format(parseISO(project.startDate), "M/d/yyyy")}</Typography>} />
-                  </ListItem>
+            */}
+                    </ListItem>
                   <ListItem>
                     <ListItemIcon>
                       <CalendarOutlined />
@@ -171,8 +173,10 @@ const ProjectCard = ({ project }) => {
                     <ListItemText
                       primary={
                         <Typography color="secondary">
+                          {/* 
                           <ListItemText primary={<Typography color="secondary"> End Date: {format(parseISO(project.endDate), "M/d/yyyy")}</Typography>} />
-                        </Typography>
+                        */}
+                          </Typography>
                       }
                     />
                   </ListItem>
@@ -231,9 +235,12 @@ const ProjectCard = ({ project }) => {
           justifyContent="space-between"
           sx={{ mt: 'auto', mb: 0, pt: 2.25 }}
         >
+          {/*
           <Typography variant="caption" color="secondary">
+
             Created at {format(parseISO(project.created), "M/d/yyyy")}
           </Typography>
+        */}
           <Stack direction={'row'} spacing={2}>
             <Tooltip title="Kanban">
               <RouterLink to={`/apps/project/${project._id}/kanban/board`}>

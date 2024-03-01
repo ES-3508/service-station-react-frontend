@@ -167,12 +167,13 @@ export default function ProjectPreview({ project, open, onClose }) {
                       <Stack direction='row' spacing={3} alignItems={'center'} mt={2}>
                         <Stack direction={'column'} alignItems={'center'}>
                           <Typography variant={'caption'}>Start Date</Typography>
-                          <Typography>{format(parseISO(project.startDate), "M/d/yyyy")}</Typography>
+
+                          {/* <Typography>{format(parseISO(project.startDate), "M/d/yyyy")}</Typography> */}
                         </Stack>
                         <Typography>&#8594;</Typography>
                         <Stack direction={'column'} alignItems={'center'}>
                           <Typography variant={'caption'}>End Date</Typography>
-                          <Typography>{format(parseISO(project.endDate), "M/d/yyyy")}</Typography>
+                          {/* <Typography>{format(parseISO(project.endDate), "M/d/yyyy")}</Typography> */}
                         </Stack>
                       </Stack>
                     </MainCard>

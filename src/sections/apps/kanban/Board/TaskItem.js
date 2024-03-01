@@ -184,12 +184,12 @@ const TaskItem = ({ item, index }) => {
                     <Stack direction="row" mt={1} justifyContent='space-between'>
                         <Stack direction="row" alignItems={'center'} gap={0.25}>
                             <ClockCircleOutlined style={iconSX} />
-                            <Typography variant='caption'>{format(parseISO(item.startDate), "M/d/yyyy")}</Typography>
+                            {/* <Typography variant='caption'>{format(parseISO(item.startDate), "M/d/yyyy")}</Typography> */}
                         </Stack>
                         <Typography variant='caption'>&#8594;</Typography>
                         <Stack direction="row" alignItems={'center'} gap={0.25}>
                             <ClockCircleOutlined style={iconSX} />
-                            <Typography variant='caption'>{format(parseISO(item.endDate), "M/d/yyyy")}</Typography>
+                            {/* <Typography variant='caption'>{format(parseISO(item.endDate), "M/d/yyyy")}</Typography> */}
                         </Stack>
 
                     </Stack>
