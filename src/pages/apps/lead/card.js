@@ -19,8 +19,8 @@ import {
 // project import
 import { PopupTransition } from 'components/@extended/Transitions';
 import EmptyUserCard from 'components/cards/skeleton/EmptyUserCard';
-import CustomerCard from 'sections/apps/customer/CustomerCard';
-import AddCustomer from 'sections/apps/customer/AddCustomer';
+import CustomerCard from 'sections/apps/lead/LeadCard';
+import AddCustomer from 'sections/apps/lead/AddLead';
 
 import makeData from 'data/react-table';
 import { GlobalFilter } from 'utils/react-table';
