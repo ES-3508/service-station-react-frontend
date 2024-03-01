@@ -219,7 +219,7 @@ const AddCustomer = ({ customer, onCancel }) => {
           <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
             <DialogTitle>{customer ? 'Edit Contact' : 'New Contact'}</DialogTitle>
             <Divider />
-            <DialogContent sx={{ p: 5.5 }}>
+            <DialogContent sx={{ p: 3.5 }}>
               <Grid container spacing={3}>
                 <Grid item xs={12}>
                   {/* <Stack direction="row" justifyContent="center" sx={{ mt: 3 }}>
@@ -264,9 +264,12 @@ const AddCustomer = ({ customer, onCancel }) => {
                     />
                   </Stack>  */}
                 </Grid>
+                <DialogTitle>Lead Information</DialogTitle>
                 <Grid item xs={12}>
                   <Grid container spacing={3}>
+                    
                     {/* first name */}
+
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
                         <InputLabel htmlFor="customer-first-name">First Name</InputLabel>
@@ -398,7 +401,9 @@ const AddCustomer = ({ customer, onCancel }) => {
                       </Stack>
                     </Grid>
                     {/* end of email */}
-
+                  
+                  <Divider />
+                  <DialogTitle>Lead Details</DialogTitle>
 
                   {/* Priority level */}
                   <Grid item xs={12}>
@@ -540,7 +545,8 @@ const AddCustomer = ({ customer, onCancel }) => {
                         />
                       </Stack>
                     </Grid>
-
+                    <Divider />
+                    <DialogTitle>Attachments</DialogTitle>
                   {/* <Grid container spacing={3} >
                     <Grid item xs={12}>
                       <Stack spacing={1.25}>
