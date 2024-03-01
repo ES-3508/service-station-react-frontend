@@ -88,7 +88,7 @@ const AddCustomer = ({ customer, onCancel }) => {
 
   const [openAlert, setOpenAlert] = useState(false);
 
-  const { uploadedImageUrl } = useSelector((state) => state.customers);
+  // const { uploadedImageUrl } = useSelector((state) => state.customers);
 
   const [deletingCustomer, setDeletingCustomer] = useState({
     _id: null,
@@ -217,10 +217,10 @@ const AddCustomer = ({ customer, onCancel }) => {
           <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
             <DialogTitle>{customer ? 'Edit Customer' : 'New Customer'}</DialogTitle>
             <Divider />
-            <DialogContent sx={{ p: 2.5 }}>
+            <DialogContent sx={{ p: 5.5 }}>
               <Grid container spacing={3}>
-                <Grid item xs={12} md={3}>
-                  <Stack direction="row" justifyContent="center" sx={{ mt: 3 }}>
+                <Grid item xs={12}>
+                  {/* <Stack direction="row" justifyContent="center" sx={{ mt: 3 }}>
                     <FormLabel
                       htmlFor="change-avtar"
                       sx={{
@@ -260,25 +260,127 @@ const AddCustomer = ({ customer, onCancel }) => {
                       sx={{ display: 'none' }}
                       onChange={(e) => setSelectedImage(e.target.files?.[0])}
                     />
-                  </Stack>
+                  </Stack>  */}
                 </Grid>
-                <Grid item xs={12} md={8}>
+                <Grid item xs={12}>
                   <Grid container spacing={3}>
-                    {/* name */}
-                    <Grid item xs={12}>
+                    {/* first name */}
+                    <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="customer-name">Name</InputLabel>
+                        <InputLabel htmlFor="customer-first-name">First Name</InputLabel>
                         <TextField
                           fullWidth
-                          id="customer-name"
-                          placeholder="Enter Customer Name"
+                          id="customer-first-name"
+                          placeholder="Enter Customer First Name"
                           {...getFieldProps('name')}
                           error={Boolean(touched.name && errors.name)}
                           helperText={touched.name && errors.name}
                         />
                       </Stack>
                     </Grid>
-                    {/* end of name */}
+                    {/* end of firts name */}
+
+                   {/* last name */}
+                   <Grid item xs={12} sm={6}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="customer-last-name">Last Name</InputLabel>
+                        <TextField
+                          fullWidth
+                          id="customer-last-name"
+                          placeholder="Enter Customer Last Name"
+                          {...getFieldProps('name')}
+                          error={Boolean(touched.name && errors.name)}
+                          helperText={touched.name && errors.name}
+                        />
+                      </Stack>
+                    </Grid>
+
+
+                    {/* company name */}
+                   <Grid item xs={12}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="customer-company-name">Company Name</InputLabel>
+                        <TextField
+                          fullWidth
+                          id="customer-company-name"
+                          placeholder="Enter Customer Company Name"
+                          {...getFieldProps('name')}
+                          error={Boolean(touched.name && errors.name)}
+                          helperText={touched.name && errors.name}
+                        />
+                      </Stack>
+                    </Grid>
+
+                    {/* Industry Category */}
+                    <Grid item xs={12}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="customer-industry-category">Industry Category</InputLabel>
+                        <Select 
+                          labelId='customer-insdustry-category'
+                          id='category'
+                          placeholder='Select category'
+                          {...getFieldProps('status')}
+                          onChange={(event) => setFieldValue('category', event.target.value)}
+                        >
+                          <MenuItem value={'Consulting'}>Consulting</MenuItem>
+                          <MenuItem value={'Analyst'}>Analyst</MenuItem>
+                          <MenuItem value={'Developer'}>Developer</MenuItem>
+                          <MenuItem value={'Qa'}>Quality Assurance</MenuItem>
+                        </Select>
+                      </Stack>
+                    </Grid>
+
+
+                    {/* address */}
+                   <Grid item xs={12}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="customer-address">Address</InputLabel>
+                        <TextField
+                          fullWidth
+                          id="customer-address"
+                          placeholder="Enter Customer Adderess"
+                          {...getFieldProps('name')}
+                          error={Boolean(touched.name && errors.name)}
+                          helperText={touched.name && errors.name}
+                        />
+                      </Stack>
+                    </Grid>
+
+                     {/* phone 1*/}
+                     <Grid item xs={12} sm={6}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="customer-phone 1">Phone Number 1</InputLabel>
+                        <TextField
+                          fullWidth
+                          type='tel'
+                          id="customer-phone 1"
+                          placeholder="Enter Phone Number 1"
+                          {...getFieldProps('phone')}
+                          error={Boolean(touched.phone && errors.phone)}
+                          helperText={touched.phone && errors.phone}
+                        />
+                      </Stack>
+                    </Grid>
+                    {/* end of phone */}
+
+                    {/* phone 2*/}
+                    <Grid item xs={12} sm={6}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="customer-phone 2">Phone Number 2</InputLabel>
+                        <TextField
+                          fullWidth
+                          type='tel'
+                          id="customer-phone 2"
+                          placeholder="Enter Phone Number 2"
+                          {...getFieldProps('phone')}
+                          error={Boolean(touched.phone && errors.phone)}
+                          helperText={touched.phone && errors.phone}
+                        />
+                      </Stack>
+                    </Grid>
+                    {/* end of phone 2*/}
+
+
                     {/* email */}
                     <Grid item xs={12}>
                       <Stack spacing={1.25}>
@@ -294,30 +396,90 @@ const AddCustomer = ({ customer, onCancel }) => {
                       </Stack>
                     </Grid>
                     {/* end of email */}
-                    {/* phone */}
-                    <Grid item xs={12}>
+
+
+                  {/* Priority level */}
+                  <Grid item xs={12}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="customer-phone">Phone Number</InputLabel>
+                        <InputLabel htmlFor="customer-priority-level">Priority Level</InputLabel>
+                        <Select 
+                          labelId='customer-priority-level'
+                          id='priority'
+                          placeholder='Select priority'
+                          {...getFieldProps('status')}
+                          onChange={(event) => setFieldValue('category', event.target.value)}
+                        >
+                          <MenuItem value={'Critical'}>Critical</MenuItem>
+                          <MenuItem value={'High'}>High</MenuItem>
+                          <MenuItem value={'Medium'}>Medium</MenuItem>
+                          <MenuItem value={'Low'}>Low</MenuItem>
+                        </Select>
+                      </Stack>
+                    </Grid>
+
+                    {/* Lead owner */}
+                  <Grid item xs={12} sm={6}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="lead-owner">Lead Owner</InputLabel>
+                        <Select 
+                          labelId='lead-owner'
+                          id='leadOwner'
+                          placeholder='Select Lead owner'
+                          {...getFieldProps('status')}
+                          onChange={(event) => setFieldValue('category', event.target.value)}
+                        >
+                          <MenuItem value={'Mr.X'}>Mr.X</MenuItem>
+                          <MenuItem value={'Mr.Y'}>Mr.Y</MenuItem>
+                          <MenuItem value={'Mr.Z'}>Mr.Z</MenuItem>
+                          <MenuItem value={'Mr.A'}>Mr.A</MenuItem>
+                        </Select>
+                      </Stack>
+                    </Grid>
+
+                    {/* lead creation date */}
+                    <Grid item xs={12} sm={6}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="lead-creationdate">Lead Creation Date</InputLabel>
                         <TextField
                           fullWidth
-                          type='tel'
-                          id="customer-phone"
-                          placeholder="Enter Phone Number"
-                          {...getFieldProps('phone')}
-                          error={Boolean(touched.phone && errors.phone)}
-                          helperText={touched.phone && errors.phone}
+                          type='date'
+                          id="lead-creationdate"
+                          placeholder="Enter Date"
+                          {...getFieldProps('startdate')}
+                          error={Boolean(touched.startdate && errors.startdate)}
+                          helperText={touched.startdate && errors.startdate}
                         />
                       </Stack>
                     </Grid>
-                    {/* end of phone */}
-                    {/* age */}
-                    <Grid item xs={12}>
+
+
+                    {/* Project Type */}
+                  <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="customer-age">Age</InputLabel>
+                        <InputLabel htmlFor="project-type">Project Type</InputLabel>
+                        <Select 
+                          labelId='project-type'
+                          id='project-type'
+                          placeholder='Select Project Type'
+                          {...getFieldProps('status')}
+                          onChange={(event) => setFieldValue('category', event.target.value)}
+                        >
+                          <MenuItem value={'Electrical'}>Electrical</MenuItem>
+                          <MenuItem value={'Civil'}>Civil</MenuItem>
+                          <MenuItem value={'Robotics'}>Robotics</MenuItem>
+                          <MenuItem value={'Network'}>Network</MenuItem>
+                        </Select>
+                      </Stack>
+                    </Grid>
+
+                     {/* project Scope */}
+                     <Grid item xs={12} sm={6}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="budget">Project Scope</InputLabel>
                         <TextField
                           fullWidth
-                          id="customer-age"
-                          placeholder="Enter Age"
+                          id="scope"
+                          placeholder="Project Scope"
                           {...getFieldProps('age')}
                           error={Boolean(touched.age && errors.age)}
                           helperText={touched.age && errors.age}
@@ -325,142 +487,56 @@ const AddCustomer = ({ customer, onCancel }) => {
                       </Stack>
                     </Grid>
                     {/* end of age */}
-                    {/* status */}
-                    <Grid item xs={12}>
-                      <Stack spacing={1.25}>
-                        <InputLabel htmlFor="customer-status">Status</InputLabel>
-                        <FormControl fullWidth>
-                          <Select
-                            id="column-hiding"
-                            displayEmpty
-                            {...getFieldProps('status')}
-                            onChange={(event) => setFieldValue('status', event.target.value)}
-                            input={<OutlinedInput id="select-column-hiding" placeholder="Sort by" />}
-                            renderValue={(selected) => {
-                              if (!selected) {
-                                return <Typography variant="subtitle1">Select Status</Typography>;
-                              }
 
-                              return <Typography variant="subtitle2">{selected}</Typography>;
-                            }}
-                          >
-                            {Object.values(CustomerStatus).map((column) => (
-                              <MenuItem key={column} value={column}>
-                                <ListItemText primary={column} />
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </FormControl>
-                        {touched.orderStatus && errors.orderStatus && (
-                          <FormHelperText error id="standard-weight-helper-text-email-login" sx={{ pl: 1.75 }}>
-                            {errors.orderStatus}
-                          </FormHelperText>
-                        )}
-                      </Stack>
-                    </Grid>
-                    {/* end of status */}
-                    {/* address */}
-                    <Grid item xs={12}>
+
+                    {/* budget */}
+                    <Grid item xs={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="customer-address">Address</InputLabel>
+                        <InputLabel htmlFor="budget">Budget</InputLabel>
                         <TextField
                           fullWidth
-                          id="customer-address"
-                          multiline
-                          rows={2}
-                          placeholder="Enter Address"
-                          {...getFieldProps('address')}
-                          error={Boolean(touched.address && errors.address)}
-                          helperText={touched.address && errors.address}
+                          id="budget"
+                          placeholder="Budget Estimate"
+                          {...getFieldProps('age')}
+                          error={Boolean(touched.age && errors.age)}
+                          helperText={touched.age && errors.age}
                         />
                       </Stack>
                     </Grid>
-                    {/* end of address */}
-                    {/* country */}
-                    <Grid item xs={12}>
+                    
+                    {/* end of age */}
+
+                    {/* expected start date */}
+                    <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="customer-country">Country</InputLabel>
+                        <InputLabel htmlFor="start-date">Expected Start Date</InputLabel>
                         <TextField
                           fullWidth
-                          id="customer-country"
-                          placeholder="Enter Country"
-                          {...getFieldProps('country')}
-                          error={Boolean(touched.country && errors.country)}
-                          helperText={touched.country && errors.country}
+                          type='date'
+                          id="startdate"
+                          placeholder="Enter Date"
+                          {...getFieldProps('startdate')}
+                          error={Boolean(touched.startdate && errors.startdate)}
+                          helperText={touched.startdate && errors.startdate}
                         />
                       </Stack>
                     </Grid>
-                    {/* end of country */}
-                    {/* zip code */}
-                    <Grid item xs={12}>
+
+                    {/* expected end date */}
+                    <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="customer-zip-code">Zip Code</InputLabel>
+                        <InputLabel htmlFor="start-date">Expected Compeltion Date</InputLabel>
                         <TextField
                           fullWidth
-                          id="customer-zip-code"
-                          placeholder="Enter Zip Code"
-                          {...getFieldProps('zipCode')}
-                          error={Boolean(touched.zipCode && errors.zipCode)}
-                          helperText={touched.zipCode && errors.zipCode}
+                          type='date'
+                          id="enddate"
+                          placeholder="Enter Date"
+                          {...getFieldProps('startdate')}
+                          error={Boolean(touched.startdate && errors.startdate)}
+                          helperText={touched.startdate && errors.startdate}
                         />
                       </Stack>
                     </Grid>
-                    {/* end of zip code */}
-                    {/* web */}
-                    <Grid item xs={12}>
-                      <Stack spacing={1.25}>
-                        <InputLabel htmlFor="customer-web">Website</InputLabel>
-                        <TextField
-                          fullWidth
-                          id="customer-web"
-                          placeholder="Enter Website"
-                          {...getFieldProps('web')}
-                          error={Boolean(touched.web && errors.web)}
-                          helperText={touched.web && errors.web}
-                        />
-                      </Stack>
-                    </Grid>
-                    {/* end of web */}
-                    {/* description */}
-                    <Grid item xs={12}>
-                      <Stack spacing={1.25}>
-                        <InputLabel htmlFor="customer-description">Description</InputLabel>
-                        <TextField
-                          fullWidth
-                          id="customer-description"
-                          multiline
-                          rows={2}
-                          placeholder="Enter Description"
-                          {...getFieldProps('description')}
-                          error={Boolean(touched.description && errors.description)}
-                          helperText={touched.description && errors.description}
-                        />
-                      </Stack>
-                    </Grid>
-                    {/* end of description */}
-                    {/* bottom content */}
-                    {/* <Grid item xs={12}>
-                      <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
-                        <Stack spacing={0.5}>
-                          <Typography variant="subtitle1">Make Contact Info Public</Typography>
-                          <Typography variant="caption" color="textSecondary">
-                            Means that anyone viewing your profile will be able to see your contacts details
-                          </Typography>
-                        </Stack>
-                        <FormControlLabel control={<Switch defaultChecked sx={{ mt: 0 }} />} label="" labelPlacement="start" />
-                      </Stack>
-                      <Divider sx={{ my: 2 }} />
-                      <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
-                        <Stack spacing={0.5}>
-                          <Typography variant="subtitle1">Available to hire</Typography>
-                          <Typography variant="caption" color="textSecondary">
-                            Toggling this will let your teammates know that you are available for acquiring new projects
-                          </Typography>
-                        </Stack>
-                        <FormControlLabel control={<Switch sx={{ mt: 0 }} />} label="" labelPlacement="start" />
-                      </Stack>
-                    </Grid> */}
-                    {/* end of bottom content */}
                   </Grid>
                 </Grid>
               </Grid>
