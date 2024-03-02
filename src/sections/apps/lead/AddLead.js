@@ -270,9 +270,9 @@ const AddCustomer = ({ customer, onCancel }) => {
                     />
                   </Stack>  */}
                 </Grid>
-                <Typography variant='h4'> Contact information</Typography>
+                <DialogTitle>Contact information </DialogTitle> 
+
                 <Grid item xs={12}>
-                  
                   <Grid container spacing={3}>
                     {/* first name */}
                     <Grid item xs={12} sm={6}>
