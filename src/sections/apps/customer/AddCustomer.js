@@ -217,9 +217,9 @@ const AddCustomer = ({ customer, onCancel }) => {
       <FormikProvider value={formik}>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-            <DialogTitle>{customer ? 'Edit Contact' : 'New Contact'}</DialogTitle>
+            <DialogTitle sx={{fontSize: 32, p:3.5}}>{customer ? 'Edit Lead' : 'Create Lead'}</DialogTitle>
             <Divider />
-            <DialogContent sx={{ p: 5.5 }}>
+            <DialogContent sx={{ pt: 0.8 }}>
               <Grid container spacing={3}>
                 <Grid item xs={12}>
                   {/* <Stack direction="row" justifyContent="center" sx={{ mt: 3 }}>
@@ -264,11 +264,16 @@ const AddCustomer = ({ customer, onCancel }) => {
                     />
                   </Stack>  */}
                 </Grid>
+                <DialogTitle>Lead Information</DialogTitle>
+                
                 <Grid item xs={12}>
                   <Grid container spacing={3}>
+                    
                     {/* first name */}
+
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
+                      
                         <InputLabel htmlFor="customer-first-name">First Name</InputLabel>
                         <TextField
                           fullWidth
@@ -299,7 +304,7 @@ const AddCustomer = ({ customer, onCancel }) => {
 
 
                     {/* company name */}
-                   <Grid item xs={12}>
+                   <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
                         <InputLabel htmlFor="customer-company-name">Company Name</InputLabel>
                         <TextField
@@ -314,7 +319,7 @@ const AddCustomer = ({ customer, onCancel }) => {
                     </Grid>
 
                     {/* Industry Category */}
-                    <Grid item xs={12}>
+                    <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
                         <InputLabel htmlFor="customer-industry-category">Industry Category</InputLabel>
                         <Select 
@@ -379,6 +384,7 @@ const AddCustomer = ({ customer, onCancel }) => {
                           helperText={touched.phone && errors.phone}
                         />
                       </Stack>
+
                     </Grid>
                     {/* end of phone 2*/}
 
@@ -396,12 +402,17 @@ const AddCustomer = ({ customer, onCancel }) => {
                           helperText={touched.email && errors.email}
                         />
                       </Stack>
+                     
                     </Grid>
                     {/* end of email */}
-
-
+                  
+                  <Grid item xs={12}>
+                    <Divider />
+                  </Grid>
+                  <DialogTitle>Lead Details</DialogTitle>
                   {/* Priority level */}
                   <Grid item xs={12}>
+                  
                       <Stack spacing={1.25}>
                         <InputLabel htmlFor="customer-priority-level">Priority Level</InputLabel>
                         <Select 
@@ -457,7 +468,7 @@ const AddCustomer = ({ customer, onCancel }) => {
 
 
                     {/* Project Type */}
-                  <Grid item xs={12} sm={6}>
+                  <Grid item xs={12}>
                       <Stack spacing={1.25}>
                         <InputLabel htmlFor="project-type">Project Type</InputLabel>
                         <Select 
@@ -491,9 +502,28 @@ const AddCustomer = ({ customer, onCancel }) => {
                     </Grid>
                     {/* end of age */}
 
+                    {/* curerency type */}
+                    <Grid item sm={2}>
+                      <Stack spacing={1.25} paddingLeft={3}>
+                        <InputLabel htmlFor="project-type">Currency</InputLabel>
+                        <Select 
+                          labelId='project-type'
+                          id='project-type'
+                          placeholder='Select Project Type'
+                          {...getFieldProps('status')}
+                          onChange={(event) => setFieldValue('category', event.target.value)}
+                        >
+                          <MenuItem value={'gbp'}>GBP</MenuItem>
+                          <MenuItem value={'usd'}>USD</MenuItem>
+                          <MenuItem value={'euro'}>EURO</MenuItem>
+                          <MenuItem value={'aud'}>AUD</MenuItem>
+                        </Select>
+                      </Stack>
+                    </Grid>
+
                     
                     {/* budget */}
-                    <Grid item xs={6}>
+                    <Grid item xs={12} sm={4} >
                       
                       <Stack spacing={1.25}>
                         <InputLabel htmlFor="budget">Budget</InputLabel>
@@ -507,7 +537,7 @@ const AddCustomer = ({ customer, onCancel }) => {
                         />
                       </Stack>
                     </Grid>
-                    <Grid item xs={6}></Grid>
+                    {/* <Grid item xs={6}></Grid> */}
                     {/* end of age */}
 
                     {/* expected start date */}
@@ -541,7 +571,11 @@ const AddCustomer = ({ customer, onCancel }) => {
                         />
                       </Stack>
                     </Grid>
-
+                    <Divider />
+                    <Grid item xs={12}>
+                    <Divider />
+                    </Grid>
+                    <DialogTitle>Attachments</DialogTitle>
                   {/* <Grid container spacing={3} >
                     <Grid item xs={12}>
                       <Stack spacing={1.25}>
