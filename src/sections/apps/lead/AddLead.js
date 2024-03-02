@@ -307,6 +307,55 @@ const AddCustomer = ({ customer, onCancel }) => {
                       </Stack>
                     </Grid>
 
+                    <Grid item xs={12} sm={6}>
+                      <Stack spacing={1.25}>
+                        {/* <InputLabel htmlFor="customer-phone 1">Phone Number 1</InputLabel> */}
+                        <TextField
+                          label='Phone Number 1'
+                          fullWidth
+                          type='tel'
+                          id="customer-phone 1"
+                          placeholder="Enter Phone Number 1"
+                          {...getFieldProps('phone')}
+                          error={Boolean(touched.phone && errors.phone)}
+                          helperText={touched.phone && errors.phone}
+                        />
+                      </Stack>
+                    </Grid>
+                    {/* end of phone */}
+
+                    {/* phone 2*/}
+                    <Grid item xs={12} sm={6}>
+                      <Stack spacing={1.25}>
+                        {/* <InputLabel htmlFor="customer-phone 2">Phone Number 2</InputLabel> */}
+                        <TextField
+                          label='Phone Number 2'
+                          fullWidth
+                          type='tel'
+                          id="customer-phone 2"
+                          placeholder="Enter Phone Number 2"
+                          {...getFieldProps('phone')}
+                          error={Boolean(touched.phone && errors.phone)}
+                          helperText={touched.phone && errors.phone}
+                        />
+                      </Stack>
+                    </Grid>
+
+                    <Grid item xs={12}>
+                      <Stack spacing={1.25}>
+                        {/* <InputLabel htmlFor="customer-email">Email</InputLabel> */}
+                        <TextField
+                          label='Email'
+                          fullWidth
+                          id="customer-email"
+                          placeholder="Enter Customer Email"
+                          {...getFieldProps('email')}
+                          error={Boolean(touched.email && errors.email)}
+                          helperText={touched.email && errors.email}
+                        />
+                      </Stack>
+                    </Grid>
+
 
                     {/* company name */}
                    <Grid item xs={12}>
@@ -362,57 +411,12 @@ const AddCustomer = ({ customer, onCancel }) => {
                     </Grid>
 
                      {/* phone 1*/}
-                     <Grid item xs={12} sm={6}>
-                      <Stack spacing={1.25}>
-                        {/* <InputLabel htmlFor="customer-phone 1">Phone Number 1</InputLabel> */}
-                        <TextField
-                          label='Phone Number 1'
-                          fullWidth
-                          type='tel'
-                          id="customer-phone 1"
-                          placeholder="Enter Phone Number 1"
-                          {...getFieldProps('phone')}
-                          error={Boolean(touched.phone && errors.phone)}
-                          helperText={touched.phone && errors.phone}
-                        />
-                      </Stack>
-                    </Grid>
-                    {/* end of phone */}
-
-                    {/* phone 2*/}
-                    <Grid item xs={12} sm={6}>
-                      <Stack spacing={1.25}>
-                        {/* <InputLabel htmlFor="customer-phone 2">Phone Number 2</InputLabel> */}
-                        <TextField
-                          label='Phone Number 2'
-                          fullWidth
-                          type='tel'
-                          id="customer-phone 2"
-                          placeholder="Enter Phone Number 2"
-                          {...getFieldProps('phone')}
-                          error={Boolean(touched.phone && errors.phone)}
-                          helperText={touched.phone && errors.phone}
-                        />
-                      </Stack>
-                    </Grid>
+                     
                     {/* end of phone 2*/}
 
 
                     {/* email */}
-                    <Grid item xs={12}>
-                      <Stack spacing={1.25}>
-                        {/* <InputLabel htmlFor="customer-email">Email</InputLabel> */}
-                        <TextField
-                          label='Email'
-                          fullWidth
-                          id="customer-email"
-                          placeholder="Enter Customer Email"
-                          {...getFieldProps('email')}
-                          error={Boolean(touched.email && errors.email)}
-                          helperText={touched.email && errors.email}
-                        />
-                      </Stack>
-                    </Grid>
+                    
                     {/* end of email */}
 
 

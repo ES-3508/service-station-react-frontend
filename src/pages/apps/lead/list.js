@@ -380,7 +380,7 @@ const CustomerListPage = () => {
         Cell: CustomCell
       },
       {
-        Header: 'Contact',
+        Header: 'Project Type',
         accessor: 'projectType',
         Cell: ProjectType
       },
