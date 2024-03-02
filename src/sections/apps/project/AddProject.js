@@ -260,11 +260,11 @@ const AddProject = ({ project, onCancel }) => {
                     {/* client name */}
                     <Grid item xs={12}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="client-name">Client Name</InputLabel>
+                        <InputLabel htmlFor="client-name">Contact Name</InputLabel>
                         <TextField
                           fullWidth
                           id="client-name"
-                          placeholder="Enter Client Name"
+                          placeholder="Enter Contact Name"
                           {...getFieldProps('clientName')}
                           error={Boolean(touched.clientName && errors.clientName)}
                           helperText={touched.clientName && errors.clientName}

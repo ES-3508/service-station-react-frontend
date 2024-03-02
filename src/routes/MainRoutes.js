@@ -5,6 +5,7 @@ import MainLayout from 'layout/MainLayout';
 import CommonLayout from 'layout/CommonLayout';
 import Loadable from 'components/Loadable';
 import AuthGuard from 'utils/route-guard/AuthGuard';
+import TabLead from 'sections/apps/lead/View';
 
 // render - dashboard
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/default')));
@@ -215,6 +216,10 @@ const MainRoutes = {
                 {
                   path: 'lead-card',
                   element: <AppLeadCard />
+                },
+                {
+                  path: 'lead-view',
+                  element: <TabLead />
                 }
               ]
             },

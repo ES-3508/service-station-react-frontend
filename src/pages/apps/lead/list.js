@@ -151,6 +151,7 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
             <Button variant="contained" color='primary' startIcon={<PlusOutlined />} onClick={handleAdd} size="small">
               Add Lead
             </Button>
+            
             <CSVExport data={selectedFlatRows.length > 0 ? selectedFlatRows.map((d) => d.original) : customers} filename={'customer-list.csv'} />
           </Stack>
         </Stack>
@@ -286,7 +287,7 @@ const ActionCell = (row, setCustomer, setCustomerDeleteId, handleAdd, handleClos
           {collapseIcon}
         </IconButton>
       </Tooltip>
-      <Tooltip title="Edit">
+      <Tooltip title="edit">
         <IconButton
           color="primary"
           onClick={(e) => {
@@ -296,6 +297,19 @@ const ActionCell = (row, setCustomer, setCustomerDeleteId, handleAdd, handleClos
           }}
         >
           <EditTwoTone twoToneColor={theme.palette.primary.main} />
+        </IconButton>
+      </Tooltip>
+      
+      <Tooltip title="info">
+        <IconButton
+          color="primary"
+          onClick={(e) => {
+            e.stopPropagation();
+            setCustomer(row.values);
+            handleAdd();
+          }}
+        >
+          <PhoneOutlined twoToneColor={theme.palette.primary.main} />
         </IconButton>
       </Tooltip>
       <Tooltip title="Delete">
