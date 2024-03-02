@@ -254,6 +254,18 @@ const StatusCell = ({ value }) => {
   }
 };
 
+const ProjectType = ({ value }) => {
+  switch (value) {
+    case 'Rejected':
+      return <Chip color="error" label="Electrical" size="small" variant="light" />;
+    case 'Verified':
+      return <Chip color="success" label="Mechanical" size="small" variant="light" />;
+    case 'Pending':
+    default:
+      return <Chip color="info" label="Civil" size="small" variant="light" />;
+  }
+};
+
 const ActionCell = (row, setCustomer, setCustomerDeleteId, handleAdd, handleClose, theme) => {
   const collapseIcon = row.isExpanded ? (
     <CloseOutlined style={{ color: theme.palette.error.main }} />
@@ -367,49 +379,79 @@ const CustomerListPage = () => {
         Cell: CustomCell
       },
       {
-        Header: 'Address',
-        accessor: 'address',
-        disableSortBy: true
-      },
-      {
-        Header: 'Email',
-        accessor: 'email'
-      },
-      {
         Header: 'Contact',
-        accessor: 'phone',
-        Cell: NumberFormatCell
+        accessor: 'projectType',
+        Cell: ProjectType
       },
       {
-        Header: 'Age',
-        accessor: 'age',
-        className: 'cell-right'
+        Header: 'Source',
+        //manual edit
+        accessor: 'source',
+        Cell: ({ value }) => {
+          
+          return `Manual Entry`;
+        }
       },
+      // {
+      //   Header: 'Address',
+      //   accessor: 'address',
+      //   disableSortBy: true
+      // },
+      // {
+      //   Header: 'Created',
+      //   accessor: 'created',
+      //   disableSortBy: true
+      // },
       {
-        Header: 'Country',
-        accessor: 'country'
+        Header: 'Created',
+        accessor: 'created',
+        Cell: ({ value }) => {
+          if (value === null) {
+            return ''; // Or you can return any other representation of a blank cell
+          }
+          const date = new Date(value);
+          const day = date.getDate().toString().padStart(2, '0');
+          const month = (date.getMonth() + 1).toString().padStart(2, '0'); 
+          const year = date.getFullYear();
+          return `${day}/${month}/${year}`;
+        }
       },
-      {
-        Header: 'Image',
-        accessor: 'imageUrl'
-      },
+
+      // {
+      //   Header: 'Email',
+      //   accessor: 'email'
+      // },
+      
+      // {
+      //   Header: 'Age',
+      //   accessor: 'age',
+      //   className: 'cell-right'
+      // },
+      // {
+      //   Header: 'Country',
+      //   accessor: 'country'
+      // },
+      // {
+      //   Header: 'Image',
+      //   accessor: 'imageUrl'
+      // },
       {
         Header: 'Status',
         accessor: 'accountStatus',
         Cell: StatusCell
       },
-      {
-        Header: 'Zip Code',
-        accessor: 'zipCode',
-      },
-      {
-        Header: 'Website',
-        accessor: 'web',
-      },
-      {
-        Header: 'Description',
-        accessor: 'description',
-      },
+      // {
+      //   Header: 'Zip Code',
+      //   accessor: 'zipCode',
+      // },
+      // {
+      //   Header: 'Website',
+      //   accessor: 'web',
+      // },
+      // {
+      //   Header: 'Description',
+      //   accessor: 'description',
+      // },
       {
         Header: 'Actions',
         className: 'cell-center',

@@ -440,6 +440,7 @@ const AddCustomer = ({ customer, onCancel }) => {
 
                     {/* lead creation date */}
                     <Grid item xs={12} sm={6}>
+                      
                       <Stack spacing={1.25}>
                         <InputLabel htmlFor="lead-creationdate">Lead Creation Date</InputLabel>
                         <TextField
@@ -580,6 +581,7 @@ const AddCustomer = ({ customer, onCancel }) => {
               </Grid>
             </DialogActions>
           </Form>
+          
         </LocalizationProvider>
       </FormikProvider>
       {!isCreating && <AlertCustomerDelete title={deletingCustomer.name} customerId={deletingCustomer._id} open={openAlert} handleClose={handleAlertClose} />}
