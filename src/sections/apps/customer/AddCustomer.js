@@ -26,7 +26,7 @@ import {
   Tooltip,
   Typography
 } from '@mui/material';
-import { LocalizationProvider } from '@mui/x-date-pickers';
+import { DateField, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 // third-party
@@ -50,6 +50,7 @@ import { CustomerStatus } from 'config';
 import { useSelector } from 'store';
 
 import SingleFilCustomized from 'components/third-party/dropzone/SingleFileCustomized';
+import { borderRadius, fontFamily } from '@mui/system';
 
 // const avatarImage = require.context('assets/images/users', true);
 
@@ -217,7 +218,7 @@ const AddCustomer = ({ customer, onCancel }) => {
       <FormikProvider value={formik}>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-            <DialogTitle sx={{fontSize: 32, p:3.5}}>{customer ? 'Edit Lead' : 'Create Lead'}</DialogTitle>
+            <DialogTitle sx={{fontSize: 32, p:3.5}}>{customer ? 'Edit Contact' : 'Create Contact'}</DialogTitle>
             <Divider />
             <DialogContent sx={{ pt: 0.8 }}>
               <Grid container spacing={3}>
@@ -266,7 +267,7 @@ const AddCustomer = ({ customer, onCancel }) => {
                 </Grid>
                 <DialogTitle>Lead Information</DialogTitle>
                 
-                <Grid item xs={12}>
+                <Grid item xs={12} >
                   <Grid container spacing={3}>
                     
                     {/* first name */}
@@ -274,8 +275,9 @@ const AddCustomer = ({ customer, onCancel }) => {
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
                       
-                        <InputLabel htmlFor="customer-first-name">First Name</InputLabel>
+                        {/* <InputLabel htmlFor="customer-first-name">First Name</InputLabel> */}
                         <TextField
+                        label='First Name'
                           fullWidth
                           id="customer-first-name"
                           placeholder="Enter Customer First Name"
@@ -290,8 +292,9 @@ const AddCustomer = ({ customer, onCancel }) => {
                    {/* last name */}
                    <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="customer-last-name">Last Name</InputLabel>
+                        {/* <InputLabel htmlFor="customer-last-name">Last Name</InputLabel> */}
                         <TextField
+                          label='Last Name'
                           fullWidth
                           id="customer-last-name"
                           placeholder="Enter Customer Last Name"
@@ -306,8 +309,9 @@ const AddCustomer = ({ customer, onCancel }) => {
                     {/* company name */}
                    <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="customer-company-name">Company Name</InputLabel>
+                        {/* <InputLabel htmlFor="customer-company-name">Company Name</InputLabel> */}
                         <TextField
+                          label='Company Name'
                           fullWidth
                           id="customer-company-name"
                           placeholder="Enter Customer Company Name"
@@ -321,8 +325,9 @@ const AddCustomer = ({ customer, onCancel }) => {
                     {/* Industry Category */}
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="customer-industry-category">Industry Category</InputLabel>
+                        {/* <InputLabel htmlFor="customer-industry-category">Industry Category</InputLabel> */}
                         <Select 
+                          label='Industry Category'
                           labelId='customer-insdustry-category'
                           id='category'
                           placeholder='Select category'
@@ -341,8 +346,9 @@ const AddCustomer = ({ customer, onCancel }) => {
                     {/* address */}
                    <Grid item xs={12}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="customer-address">Address</InputLabel>
+                        {/* <InputLabel htmlFor="customer-address">Address</InputLabel> */}
                         <TextField
+                          label='Address'
                           fullWidth
                           id="customer-address"
                           placeholder="Enter Customer Adderess"
@@ -356,8 +362,9 @@ const AddCustomer = ({ customer, onCancel }) => {
                      {/* phone 1*/}
                      <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="customer-phone 1">Phone Number 1</InputLabel>
+                        {/* <InputLabel htmlFor="customer-phone 1">Phone Number 1</InputLabel> */}
                         <TextField
+                          label='Phone Number 1'
                           fullWidth
                           type='tel'
                           id="customer-phone 1"
@@ -373,8 +380,9 @@ const AddCustomer = ({ customer, onCancel }) => {
                     {/* phone 2*/}
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="customer-phone 2">Phone Number 2</InputLabel>
+                        {/* <InputLabel htmlFor="customer-phone 2">Phone Number 2</InputLabel> */}
                         <TextField
+                          label='Phone Number 2'
                           fullWidth
                           type='tel'
                           id="customer-phone 2"
@@ -392,8 +400,9 @@ const AddCustomer = ({ customer, onCancel }) => {
                     {/* email */}
                     <Grid item xs={12}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="customer-email">Email</InputLabel>
+                        {/* <InputLabel htmlFor="customer-email">Email</InputLabel> */}
                         <TextField
+                          label='Email'
                           fullWidth
                           id="customer-email"
                           placeholder="Enter Customer Email"
@@ -414,8 +423,9 @@ const AddCustomer = ({ customer, onCancel }) => {
                   <Grid item xs={12}>
                   
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="customer-priority-level">Priority Level</InputLabel>
+                        {/* <InputLabel htmlFor="customer-priority-level">Priority Level</InputLabel> */}
                         <Select 
+                          label='Priority Level'
                           labelId='customer-priority-level'
                           id='priority'
                           placeholder='Select priority'
@@ -433,8 +443,9 @@ const AddCustomer = ({ customer, onCancel }) => {
                     {/* Lead owner */}
                   <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="lead-owner">Lead Owner</InputLabel>
+                        {/* <InputLabel htmlFor="lead-owner">Lead Owner</InputLabel> */}
                         <Select 
+                          label='Lead Owner'
                           labelId='lead-owner'
                           id='leadOwner'
                           placeholder='Select Lead owner'
@@ -452,8 +463,9 @@ const AddCustomer = ({ customer, onCancel }) => {
                     {/* lead creation date */}
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="lead-creationdate">Lead Creation Date</InputLabel>
-                        <TextField
+                        {/* <InputLabel htmlFor="lead-creationdate">Lead Creation Date</InputLabel> */}
+                        {/* <TextField
+                          label='Lead Creation Date'
                           fullWidth
                           type='date'
                           id="lead-creationdate"
@@ -461,7 +473,11 @@ const AddCustomer = ({ customer, onCancel }) => {
                           {...getFieldProps('startdate')}
                           error={Boolean(touched.startdate && errors.startdate)}
                           helperText={touched.startdate && errors.startdate}
-                        />
+                        /> */}
+
+                        <DateField 
+                          label="Lead Creation Date"
+                          />
                       </Stack>
                     </Grid>
 
@@ -469,8 +485,9 @@ const AddCustomer = ({ customer, onCancel }) => {
                     {/* Project Type */}
                   <Grid item xs={12}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="project-type">Project Type</InputLabel>
+                        {/* <InputLabel htmlFor="project-type">Project Type</InputLabel> */}
                         <Select 
+                          label='Project Type'
                           labelId='project-type'
                           id='project-type'
                           placeholder='Select Project Type'
@@ -486,10 +503,11 @@ const AddCustomer = ({ customer, onCancel }) => {
                     </Grid>
 
                      {/* project Scope */}
-                     <Grid item xs={12} sm={6}>
+                     <Grid gap={0} item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="budget">Project Scope</InputLabel>
+                        {/* <InputLabel htmlFor="budget">Project Scope</InputLabel> */}
                         <TextField
+                          label='Project Scope'
                           fullWidth
                           id="scope"
                           placeholder="Project Scope"
@@ -501,11 +519,13 @@ const AddCustomer = ({ customer, onCancel }) => {
                     </Grid>
                     {/* end of age */}
 
+                    
                     {/* curerency type */}
-                    <Grid item sm={2}>
+                    <Grid item sm={2} gap={0}>
                       <Stack spacing={1.25} paddingLeft={3}>
-                        <InputLabel htmlFor="project-type">Currency</InputLabel>
-                        <Select 
+                        {/* <InputLabel htmlFor="project-type">Currency</InputLabel> */}
+                        <Select
+                          label='Currency'
                           labelId='project-type'
                           id='project-type'
                           placeholder='Select Project Type'
@@ -517,16 +537,20 @@ const AddCustomer = ({ customer, onCancel }) => {
                           <MenuItem value={'euro'}>EURO</MenuItem>
                           <MenuItem value={'aud'}>AUD</MenuItem>
                         </Select>
+                    
+                        
                       </Stack>
+                      
                     </Grid>
 
                     
                     {/* budget */}
-                    <Grid item xs={12} sm={4} >
+                    <Grid item xs={12} sm={4} gap={0}>
                       
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="budget">Budget</InputLabel>
+                        {/* <InputLabel htmlFor="budget">Estimate Budget</InputLabel> */}
                         <TextField
+                        label='Estimate Budget'
                           fullWidth
                           id="budget"
                           placeholder="Budget Estimate"
@@ -535,15 +559,16 @@ const AddCustomer = ({ customer, onCancel }) => {
                           helperText={touched.age && errors.age}
                         />
                       </Stack>
-                    </Grid>
+                    
                     {/* <Grid item xs={6}></Grid> */}
-                    {/* end of age */}
-
+                    
+                    </Grid>
                     {/* expected start date */}
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="start-date">Expected Start Date</InputLabel>
-                        <TextField
+                        {/* <InputLabel htmlFor="start-date">Expected Start Date</InputLabel> */}
+                        {/* <TextField
+                          label='Expected Start Date'
                           fullWidth
                           type='date'
                           id="startdate"
@@ -551,15 +576,21 @@ const AddCustomer = ({ customer, onCancel }) => {
                           {...getFieldProps('startdate')}
                           error={Boolean(touched.startdate && errors.startdate)}
                           helperText={touched.startdate && errors.startdate}
-                        />
+                        /> */}
+                        <DateField 
+                          label="Expected Start Date"
+                          />
+
+
                       </Stack>
                     </Grid>
 
                     {/* expected end date */}
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="start-date">Expected Compeltion Date</InputLabel>
-                        <TextField
+                        {/* <InputLabel htmlFor="start-date">Expected Compeltion Date</InputLabel> */}
+                        {/* <TextField
+                          label='Expected Completion Date'
                           fullWidth
                           type='date'
                           id="enddate"
@@ -567,7 +598,12 @@ const AddCustomer = ({ customer, onCancel }) => {
                           {...getFieldProps('startdate')}
                           error={Boolean(touched.startdate && errors.startdate)}
                           helperText={touched.startdate && errors.startdate}
-                        />
+                        /> */}
+
+                          <DateField 
+                          label="Expected Completion Date"
+                          />
+
                       </Stack>
                     </Grid>
                     <Divider />
