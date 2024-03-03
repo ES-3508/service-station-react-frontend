@@ -67,23 +67,23 @@ const applications = {
     {
       id: 'Lead',
       title: <FormattedMessage id="Leads" />,
-      type: 'item',
+      type: 'collapse',
       icon: icons.FilterOutlined,
-      url: '/apps/lead/lead-list'
-      // children: [
-      //   {
-      //     id: 'lead-list',
-      //     title: <FormattedMessage id="All Leads" />,
-      //     type: 'item',
-      //     url: '/apps/lead/lead-list'
-      //   },
-      //   // {
-      //   //   id: 'customer-card',
-      //   //   title: <FormattedMessage id="cards" />,
-      //   //   type: 'item',
-      //   //   url: '/apps/customer/customer-card'
-      //   // }
-      // ]
+      // url: '/apps/lead/lead-list'
+      children: [
+        {
+          id: 'lead-list',
+          title: <FormattedMessage id="All Leads" />,
+          type: 'item',
+          url: '/apps/lead/lead-list'
+        },
+        {
+          id: 'customer-card',
+          title: <FormattedMessage id="Client Portal" />,
+          type: 'item',
+          url: 'apps/lead/lead-view'
+        }
+      ]
     },
     // {
     //   id: 'Contact',
