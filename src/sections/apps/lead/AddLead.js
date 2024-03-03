@@ -47,50 +47,7 @@ import { openSnackbar } from 'store/reducers/snackbar';
 // assets
 import { CameraOutlined, DeleteFilled } from '@ant-design/icons';
 import {  deleteLead, updateLead, uploadLeadImage } from 'store/reducers/leads';
-
-import { CustomerStatus } from 'config';
-import { useSelector } from 'store';
-// import { DateField } from '@mui/x-date-pickers/DateField';
-// import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import { DateField, } from '@mui/x-date-pickers';
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-
-
-import SingleFilCustomized from 'components/third-party/dropzone/SingleFileCustomized';
 import { createLead } from 'store/reducers/leads';
-
-// const avatarImage = require.context('assets/images/users', true);
-
-// constant
-// const getInitialValues = (customer) => {
-
-//   const newCustomer = {
-//     name: '',
-//     email: '',
-//     phone: '',
-//     address: '',
-//     country: '',
-//     status: CustomerStatus.PENDING,
-//   };
-
-//   if (customer) {
-//     newCustomer.name = customer.name;
-//     newCustomer.phone = customer.phone;
-//     newCustomer.email = customer.email;
-//     newCustomer.address = customer.address;
-//     newCustomer.country = customer.country;
-//     newCustomer.status = customer.status;
-//     newCustomer.age = customer.age;
-//     newCustomer.zipCode = customer.zipCode;
-//     newCustomer.web = customer.web;
-//     newCustomer.description = customer?.description;
-//     return _.merge({}, newCustomer, customer);
-//   }
-
-//   return newCustomer;
-// };
-
-// const allStatus = ['Complicated', 'Single', 'Relationship'];
 
 // ==============================|| CUSTOMER ADD / EDIT / DELETE ||============================== //
 
@@ -293,9 +250,10 @@ const AddLead = ({ lead, onCancel }) => {
             <Divider />
             <DialogContent sx={{ pt: 0.8 }}>
               <Grid container spacing={3}>
-                <Grid item xs={12}>
-                 
+                <Grid item xs={12}> 
                 </Grid>
+
+                {/* ===================================+++++++++++++++++++++++++++++++++++++++++++++++++++++++++================================         */}
                 <DialogTitle>Contact information </DialogTitle> 
 
                 <Grid item xs={12}>
@@ -315,7 +273,6 @@ const AddLead = ({ lead, onCancel }) => {
                       </FormControl>
                         
                     </Grid>
-                    {/* end of firts name */}
 
                    {/* last name */}
                    <Grid item xs={12} sm={6}>
@@ -333,6 +290,7 @@ const AddLead = ({ lead, onCancel }) => {
                       </Stack>
                     </Grid>
 
+                    {/* phone 1*/}
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
                         {/* <InputLabel htmlFor="customer-phone 1">Phone Number 1</InputLabel> */}
@@ -348,7 +306,7 @@ const AddLead = ({ lead, onCancel }) => {
                         />
                       </Stack>
                     </Grid>
-                    {/* end of phone */}
+                
 
                     {/* phone 2*/}
                     <Grid item xs={12} sm={6}>
@@ -367,6 +325,7 @@ const AddLead = ({ lead, onCancel }) => {
                       </Stack>
                     </Grid>
 
+                    {/* email*/}
                     <Grid item xs={12}>
                       <Stack spacing={1.25}>
                         {/* <InputLabel htmlFor="lead-email">Email</InputLabel> */}
@@ -397,34 +356,9 @@ const AddLead = ({ lead, onCancel }) => {
                           helperText={touched.name && errors.name}
                         />
                       </Stack>
-                    </Grid>
+                   </Grid>
 
-                    {/* Industry Category */}
-                    <Grid item xs={12}>
-                    <Stack spacing={1.25}>
-                      <InputLabel htmlFor="customer-industry-category">Industry Category</InputLabel>
-                      <Select 
-                          label='Industry Category'
-                          labelId='lead-industry-category'
-                          id='categoryasd'
-                          placeholder='Select category'
-                          {...getFieldProps('contactInformation.industry')}
-                          onChange={(event) => {
-                            setFieldValue('contactInformation.industry', event.target.value);
-                          }}
-                        >
-                          <MenuItem value={'Consulting'}>Consulting</MenuItem>
-                          <MenuItem value={'Analyst'}>Analyst</MenuItem>
-                          <MenuItem value={'Developer'}>Developer</MenuItem>
-                          <MenuItem value={'Quality Assurance'}>Quality Assurance</MenuItem>
-                        </Select>
-
-                    </Stack>
-
-                    </Grid>
-
-
-                    {/* address */}
+                   {/* address */}
                    <Grid item xs={12}>
                       <Stack spacing={1.25}>
                         {/* <InputLabel htmlFor="lead-address">Address</InputLabel> */}
@@ -438,115 +372,118 @@ const AddLead = ({ lead, onCancel }) => {
                           helperText={touched.name && errors.name}
                         />
                       </Stack>
+                   </Grid>
+
+                    {/* Industry Category */}
+                    
+
+                    <Grid item xs={12} sm={6}>                   
+                      <FormControl fullWidth>
+                        <InputLabel htmlFor="customer-industry-category">Industry Category</InputLabel>
+                        <Select
+                          labelId="contactInformation.industry"
+                          id="contactInformation.industry"
+                          placeholder="Industry Category"
+                          {...getFieldProps('contactInformation.industry')}
+                          onChange={(event) => setFieldValue('contactInformation.industry', event.target.value)}
+                        >
+                          <MenuItem value={'Consulting'}>Consulting</MenuItem>
+                            <MenuItem value={'Analyst'}>Analyst</MenuItem>
+                            <MenuItem value={'Developer'}>Developer</MenuItem>
+                            <MenuItem value={'Quality Assurance'}>Quality Assurance</MenuItem>
+                        </Select>
+                      </FormControl>
                     </Grid>
-
-                     {/* phone 1*/}
-                     
-                    {/* end of phone 2*/}
-
-
-                    {/* email */}
+                          {/* Industry Category end */}
                     
-                    {/* end of email */}
+                    {/* project type for create             */}
+                    {!lead &&(
+                      <>
+                        <Grid item xs={6} sm={6}>
+                        
+                        {/* Project TYPE */}
+                        <FormControl fullWidth>
+                          <InputLabel htmlFor="project-type-label">Project TYPE</InputLabel>
+                          <Select
+                            labelId="project-type"
+                            id="project-type"
+                            placeholder="Project Type"
+                            {...getFieldProps('projectType')}
+                            onChange={(event) => setFieldValue('projectType', event.target.value)}
+                          >
+                            <MenuItem value={'Electrical'}>Electrical</MenuItem>
+                            <MenuItem value={'Civil'}>Civil</MenuItem>
+                            <MenuItem value={'Robotics'}>Robotics</MenuItem>
+                            <MenuItem value={'Network'}>Network</MenuItem>
+                          </Select>
+                        </FormControl>
+                        </Grid>
+                        
+                      </>
+                      
+                      )}
 
-
-                  {/* Priority level */}
-                  <DialogTitle>Lead details </DialogTitle> 
-                  <Divider/>
-                  <Grid item xs={12} sm={6}></Grid>
-
-                  {!lead &&(
-                    <Grid item xs={6} sm={6}>
                     
+
                     
-                    <FormControl fullWidth>
-                      <InputLabel htmlFor="project-type-label">Project TYPE</InputLabel>
-                      <Select
-                        labelId="project-type"
-                        id="project-type"
-                        placeholder="Project Type"
-                        {...getFieldProps('projectType')}
-                        onChange={(event) => setFieldValue('projectType', event.target.value)}
-                      >
-                        <MenuItem value={'Electrical'}>Electrical</MenuItem>
-                    <MenuItem value={'Civil'}>Civil</MenuItem>
-                    <MenuItem value={'Robotics'}>Robotics</MenuItem>
-                    <MenuItem value={'Network'}>Network</MenuItem>
-                      </Select>
-                    </FormControl>
+
                   </Grid>
+                </Grid>
+                {/* end of contact information */}
 
-                  
-                  )}
-                  {lead &&(
-                    <>
-                    <Grid item xs={12}>
-                      <Stack spacing={1.25}>
-                        {/* <InputLabel htmlFor="lead-priority-level">Priority Level</InputLabel> */}
-                        <Select 
-                          label='Priority Level'
-                          labelId='lead-priority-level'
-                          id='priority'
-                          placeholder='Select priority'
-                          {...getFieldProps('status')}
+               
+                
+                <Divider />           
+                {/* ===================================+++++++++++++++++++++++++++++++++++++++++++++++++++++++++================================         */}
+                <DialogTitle>Lead details </DialogTitle> 
+
+                <Grid item xs={12}>
+               <Grid container spacing={3}> 
+                    
+
+                    {/* Priority level */}
+                    <Grid item xs={6} sm={6}>                   
+                      <FormControl fullWidth>
+                        <InputLabel htmlFor="priority-level">Priority Level</InputLabel>
+                        <Select
+                          labelId="priority-level"
+                          id="priority-level"
+                          placeholder="Priority Level"
                           {...getFieldProps('priorityLevel')}
-                        onChange={(event) => setFieldValue('priorityLevel', event.target.value)}
-                      >
+                          onChange={(event) => setFieldValue('priorityLevel', event.target.value)}
+                        >
                           <MenuItem value={'Critical'}>Critical</MenuItem>
                           <MenuItem value={'High'}>High</MenuItem>
                           <MenuItem value={'Medium'}>Medium</MenuItem>
                           <MenuItem value={'Low'}>Low</MenuItem>
                         </Select>
-                      </Stack>
+                      </FormControl>
                     </Grid>
 
                   
                   
                     {/* Lead owner */}
-                  {/* <Grid item xs={12} sm={6}>
-                      <Stack spacing={1.25}>
-                        <InputLabel htmlFor="lead-owner">Lead Owner</InputLabel> 
-                        <Select 
-                          label='Lead Owner'
-                          labelId='lead-owner'
-                          id='leadOwner'
-                          placeholder='Select Lead owner'
-                          {...getFieldProps('status')}
-                          onChange={(event) => setFieldValue('category', event.target.value)}
-                        >
-                          <MenuItem value={'Mr.X'}>Mr.X</MenuItem>
-                          <MenuItem value={'Mr.Y'}>Mr.Y</MenuItem>
-                          <MenuItem value={'Mr.Z'}>Mr.Z</MenuItem>
-                          <MenuItem value={'Mr.A'}>Mr.A</MenuItem>
-                        </Select>
-                      </Stack>
-                  </Grid> */}
-
-                    {/* lead creation date */}
                     {/* <Grid item xs={12} sm={6}>
-                      <Stack spacing={1.25}>
-                        
-                        <DesktopDatePicker>
-
-                        </DesktopDatePicker>
-                        <TextField
-                          label='Lead Creation Date'
-                          fullWidth
-                          type='date'
-                          id="lead-creationdate"
-                          placeholder="Enter Date"
-                          {...getFieldProps('startdate')}
-                          error={Boolean(touched.startdate && errors.startdate)}
-                          helperText={touched.startdate && errors.startdate}
-                        />
-
-                        <DateField 
-                          label="Lead Creation Date"
-                          />
-
-                      </Stack>
+                        <Stack spacing={1.25}>
+                          <InputLabel htmlFor="lead-owner">Lead Owner</InputLabel> 
+                          <Select 
+                            label='Lead Owner'
+                            labelId='lead-owner'
+                            id='leadOwner'
+                            placeholder='Select Lead owner'
+                            {...getFieldProps('status')}
+                            onChange={(event) => setFieldValue('category', event.target.value)}
+                          >
+                            <MenuItem value={'Mr.X'}>Mr.X</MenuItem>
+                            <MenuItem value={'Mr.Y'}>Mr.Y</MenuItem>
+                            <MenuItem value={'Mr.Z'}>Mr.Z</MenuItem>
+                            <MenuItem value={'Mr.A'}>Mr.A</MenuItem>
+                          </Select>
+                        </Stack>
                     </Grid> */}
 
+                   
+                    {/* Lead Creation Date */}
                     <Grid item xs={6}>
                       <FormControl fullWidth>
                         <DesktopDatePicker
@@ -583,10 +520,10 @@ const AddLead = ({ lead, onCancel }) => {
                       <MenuItem value={'Network'}>Network</MenuItem>
                         </Select>
                       </FormControl>
-                  </Grid>
+                    </Grid>
 
-                     {/* project Scope */}
-                     <Grid item xs={12} sm={6}>
+                    {/* project Scope */}
+                    <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
                         {/* <InputLabel htmlFor="budget">Project Scope</InputLabel> */}
                         <TextField
@@ -600,87 +537,97 @@ const AddLead = ({ lead, onCancel }) => {
                         />
                       </Stack>
                     </Grid>
-                    {/* end of age */}
-
                     
-                    {/* budget */}
-                    <DialogTitle>Additional information </DialogTitle> 
+                  </Grid>
+                </Grid>    
+                {/* end of Lead information */}    
+                
+                <Divider />         
+                {/* ===================================+++++++++++++++++++++++++++++++++++++++++++++++++++++++++================================         */}
+                {lead &&(
+                  <>
+                                  <DialogTitle>Additional information </DialogTitle>
 
-                    <Grid item xs={12}>
+<Grid item xs={12}>
+  <Grid container >
+  
+  
+  {lead &&(
+        <>
 
-                      <Grid container spacing={3}>
-                      {/* first name */}
-                      <Grid item xs={12} sm={6}>
-                        
-                        <Stack spacing={1.25}>
-                          {/* <InputLabel htmlFor="budget">Budget</InputLabel> */}
-                          <TextField
-                            label='Budget'
-                            fullWidth
-                            id="budget"
-                            placeholder="Budget Estimate"
-                            {...getFieldProps('budgetEstimate')}
-                            error={Boolean(touched.budgetEstimate && errors.budgetEstimate)}
-                            helperText={touched.budgetEstimate && errors.budgetEstimate}
-                          />
-                        </Stack>
-                      </Grid>
-                      <Grid item xs={6}></Grid>
-                      {/* end of age */}
+        
+        {/* budget */}
+        <Grid item xs={12}>
+          <Grid container spacing={3}>
+          {/* Budget estimate */}
+          <Grid item xs={12} sm={6}>
+            
+            <Stack spacing={1.25}>
+              {/* <InputLabel htmlFor="budget">Budget</InputLabel> */}
+              <TextField
+                label='Budget'
+                fullWidth
+                id="budget"
+                placeholder="Budget Estimate"
+                {...getFieldProps('budgetEstimate')}
+                error={Boolean(touched.budgetEstimate && errors.budgetEstimate)}
+                helperText={touched.budgetEstimate && errors.budgetEstimate}
+              />
+            </Stack>
+          </Grid>
 
-                      {/* expected start date */}
-                      
-                      <Grid item xs={6}>
-                      <FormControl fullWidth>
-                        <DesktopDatePicker
-                          inputFormat="dd/MM/yyyy"
-                          format="dd/MM/yyyy"
-                          label="Expected Start Date"
-                          value={formik.values.expectedStart}
-                          onChange={(newValue) => {
-                            setFieldValue('expectedStart', newValue);
-                          }}
-                          renderInput={(params) => <TextField {...params} fullWidth />}
-                          //minDate={new Date()}
-                        />
-                      </FormControl>
-                    </Grid>
+          {/* empty for next row */}
+          <Grid item xs={6}></Grid>
 
-                      {/* expected end date */}
-                      <Grid item xs={6}>
-                      <FormControl fullWidth>
-                        <DesktopDatePicker
-                          inputFormat="dd/MM/yyyy"
-                          format="dd/MM/yyyy"
-                          label="Expected Completion Date"
-                          value={formik.values.expectedCompletion}
-                          onChange={(newValue) => {
-                            setFieldValue('expectedCompletion', newValue);
-                          }}
-                          renderInput={(params) => <TextField {...params} fullWidth />}
-                          //minDate={new Date()}
-                        />
-                      </FormControl>
-                    </Grid>
-                      </Grid>
-                      
-                      </Grid>
-                      </>
-                      )}      
-                    {/* <Grid container spacing={3} >
-                      <Grid item xs={12}>
-                        <Stack spacing={1.25}>
-                          <InputLabel htmlFor="lead-priority-level">Upload File</InputLabel>
-                          <SingleFilCustomized />
-                          
-                        </Stack>
-                      </Grid>
-                      </Grid> */}
+          {/* expected start date */}
+          <Grid item xs={6}>
+          <FormControl fullWidth>
+            <DesktopDatePicker
+              inputFormat="dd/MM/yyyy"
+              format="dd/MM/yyyy"
+              label="Expected Start Date"
+              value={formik.values.expectedStart}
+              onChange={(newValue) => {
+                setFieldValue('expectedStart', newValue);
+              }}
+              renderInput={(params) => <TextField {...params} fullWidth />}
+              //minDate={new Date()}
+            />
+          </FormControl>
+          </Grid>
 
-                    
-</Grid></Grid> 
+          {/* expected completion date */}
+          <Grid item xs={6}>
+          <FormControl fullWidth>
+            <DesktopDatePicker
+              inputFormat="dd/MM/yyyy"
+              format="dd/MM/yyyy"
+              label="Expected Completion Date"
+              value={formik.values.expectedCompletion}
+              onChange={(newValue) => {
+                setFieldValue('expectedCompletion', newValue);
+              }}
+              renderInput={(params) => <TextField {...params} fullWidth />}
+              //minDate={new Date()}
+            />
+          </FormControl>
+          </Grid>
+        </Grid>  
+      </Grid>
+    </>
+  )}    
+  </Grid>  
+</Grid> 
+
+{/* end of Additional information */}   
+                  </>
+                )}
+   
+
               </Grid>
             </DialogContent>
+
+
             <Divider />
             <DialogActions sx={{ p: 2.5 }}>
               <Grid container justifyContent="space-between" alignItems="center">

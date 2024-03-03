@@ -50,8 +50,8 @@ import {CloseOutlined, PlusOutlined, EyeTwoTone, EditTwoTone, DeleteTwoTone, Pho
 import { dispatch, useSelector } from 'store';
 import { getLeads } from 'store/reducers/leads';
 import LeadCardPage from "./card";
+import ViewLead from 'sections/apps/lead/LeadView';
 
-// const avatarImage = require.context('assets/images/users', true);
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -109,15 +109,7 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
     dispatch(getLeads(pageIndex, pageSize, query));
   }, [pageIndex, pageSize, query, action])
 
-  // useEffect(() => {
-  //   if (matchDownSM) {
-  //     setHiddenColumns(['age', 'phone', 'visits', 'email', 'accountStatus', 'imageUrl']);
-  //   } else {
-  //     setHiddenColumns(['age', 'address', 'imageUrl', 'accountStatus']);
-  //   }
-  //   // eslint-disable-next-line
-  // }, [matchDownSM]);
-
+ 
   const renderRowSubComponent = useCallback(({ row }) => {
     return <LeadView data={leads.find((lead) => lead._id === row.values._id)} />;
   }, [leads]);
@@ -258,17 +250,17 @@ const StatusCell = ({ value }) => {
 
 const ProjectType = ({ value }) => {
   switch (value) {
-    case 'Rejected':
+    case 'Electrical':
       return <Chip color="error" label="Electrical" size="small" variant="light" />;
-    case 'Verified':
+    case 'Mechanical':
       return <Chip color="success" label="Mechanical" size="small" variant="light" />;
-    case 'Pending':
+    case 'Civil':
     default:
       return <Chip color="info" label="Civil" size="small" variant="light" />;
   }
 };
 
-const ActionCell = (row, setLead, setLeadDeleteId, handleAdd, handleClose, theme) => {
+const ActionCell = (row, setLead, setLeadDeleteId, handleAdd, handleView, handleClose, theme) => {
   const collapseIcon = row.isExpanded ? (
     <CloseOutlined style={{ color: theme.palette.error.main }} />
   ) : (
@@ -314,16 +306,16 @@ const ActionCell = (row, setLead, setLeadDeleteId, handleAdd, handleClose, theme
         </IconButton>
       </Tooltip>
       
-      <Tooltip title="info">
+      <Tooltip title="view">
         <IconButton
           color="primary"
           onClick={(e) => {
             e.stopPropagation();
-            setLead(row.values);
-            handleAdd();
+            filterLeadsById(row.values._id);
+            handleView();
           }}
         >
-          <PhoneOutlined twoToneColor={theme.palette.primary.main} />
+          <EyeTwoTone twoToneColor={theme.palette.primary.main} />
         </IconButton>
       </Tooltip>
       <Tooltip title="Delete">
@@ -371,6 +363,7 @@ const LeadListPage = () => {
   const [mode, setMode] = useState('TABLE')
 
   const [add, setAdd] = useState(false);
+  const [view, setView] = useState(false);
   const [open, setOpen] = useState(false);
   const [lead, setLead] = useState();
   const [deletingLead, setDeletingLead] = useState({
@@ -381,6 +374,11 @@ const LeadListPage = () => {
   const handleAdd = () => {
     setAdd(!add);
     if (lead && !add) setLead(null);
+  };
+
+  const handleView = () => {
+    setView(!view);
+    if (lead && !view) setLead(null);
   };
 
   const handleClose = () => {
@@ -431,16 +429,6 @@ const LeadListPage = () => {
           return `Manual Entry`;
         }
       },
-      // {
-      //   Header: 'Address',
-      //   accessor: 'address',
-      //   disableSortBy: true
-      // },
-      // {
-      //   Header: 'Created',
-      //   accessor: 'created',
-      //   disableSortBy: true
-      // },
       {
         Header: 'Created',
         accessor: 'created',
@@ -456,58 +444,23 @@ const LeadListPage = () => {
         }
       },
 
-      // {
-      //   Header: 'Email',
-      //   accessor: 'email'
-      // },
-      
-      // {
-      //   Header: 'Age',
-      //   accessor: 'age',
-      //   className: 'cell-right'
-      // },
-      // {
-      //   Header: 'Country',
-      //   accessor: 'country'
-      // },
-      // {
-      //   Header: 'Image',
-      //   accessor: 'imageUrl'
-      // },
+     
       {
         Header: 'Status',
         accessor: 'accountStatus',
         Cell: StatusCell
       },
-      // {
-      //   Header: 'Zip Code',
-      //   accessor: 'zipCode',
-      // },
-      // {
-      //   Header: 'Website',
-      //   accessor: 'web',
-      // },
-      // {
-      //   Header: 'Description',
-      //   accessor: 'description',
-      // },
       {
         Header: 'Actions',
         className: 'cell-center',
         disableSortBy: true,
-        Cell: ({ row }) => ActionCell(row, setLead, setDeletingLead, handleAdd, handleClose, theme)
+        Cell: ({ row }) => ActionCell(row, setLead, setDeletingLead, handleAdd, handleView, handleClose, theme)
       }
     ],
     // 
     [theme]
   );
 
-  // const renderRowSubComponent = useCallback(({ row }) => {
-  //   console.log('DEVELOPER ROW ', data.find((lead) => lead._id === row.values._id));
-  //   console.log('DEVELOPER ', data);
-  //   return null;
-  //   // return <LeadView data={data[row._id]} />;
-  // }, [data]);
 
   return (
     <>
@@ -542,6 +495,20 @@ const LeadListPage = () => {
                     aria-describedby="alert-dialog-slide-description"
                 >
                     <AddLead lead={lead} onCancel={handleAdd} />
+                </Dialog>
+
+                {/* view lead dialog */}
+                <Dialog
+                    maxWidth="sm"
+                    TransitionComponent={PopupTransition}
+                    keepMounted
+                    fullWidth
+                    onClose={handleView}
+                    open={view}
+                    sx={{ '& .MuiDialog-paper': { p: 0 }, transition: 'transform 225ms' }}
+                    aria-describedby="alert-dialog-slide-description"
+                >
+                    <ViewLead lead={lead} onCancel={handleView} />
                 </Dialog>
             </MainCard>
     ) : (

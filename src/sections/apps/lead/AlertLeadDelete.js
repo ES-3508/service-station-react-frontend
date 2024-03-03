@@ -12,9 +12,9 @@ import { DeleteFilled } from '@ant-design/icons';
 import { deleteLead } from 'store/reducers/leads';
 import { dispatch } from 'store';
 
-// ==============================|| CUSTOMER - DELETE ||============================== //
+// ==============================|| Lead - DELETE ||============================== //
 
-export default function AlertCustomerDelete({ title, leadId, open, handleClose }) {
+export default function AlertLeadDelete({ title, leadId, open, handleClose }) {
 
   const deleteHandler = async () => {
     dispatch(deleteLead(leadId));
@@ -64,7 +64,7 @@ export default function AlertCustomerDelete({ title, leadId, open, handleClose }
   );
 }
 
-AlertCustomerDelete.propTypes = {
+AlertLeadDelete.propTypes = {
   title: PropTypes.string,
   open: PropTypes.bool,
   handleClose: PropTypes.func
