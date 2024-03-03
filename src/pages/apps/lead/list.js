@@ -40,16 +40,16 @@ import {
 
 import AddLead from 'sections/apps/lead/AddLead';
 
-import CustomerView from 'sections/apps/customer/CustomerView';
-import AlertCustomerDelete from 'sections/apps/customer/AlertCustomerDelete';
+import LeadView from 'sections/apps/lead/LeadView';
+import AlertLeadDelete from 'sections/apps/lead/AlertLeadDelete';
 
 import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 
 // assets
 import {CloseOutlined, PlusOutlined, EyeTwoTone, EditTwoTone, DeleteTwoTone, PhoneOutlined, UnorderedListOutlined, AppstoreOutlined} from '@ant-design/icons';
 import { dispatch, useSelector } from 'store';
-import { getCustomers } from 'store/reducers/customers';
-import CustomerCardPage from "./card";
+import { getLeads } from 'store/reducers/leads';
+import LeadCardPage from "./card";
 
 // const avatarImage = require.context('assets/images/users', true);
 
@@ -65,10 +65,10 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
   const [query, setQuery] = useState('')
   const [numOfPages, setNumOfPages] = useState(10)
 
-  const { customers: {
-    customers,
+  const { leads: {
+    leads,
     total,
-  }, action } = useSelector((state) => state.customers);
+  }, action } = useSelector((state) => state.leads);
 
   const {
     getTableProps,
@@ -90,7 +90,7 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
   } = useTable(
     {
       columns,
-      data: customers,
+      data: leads,
       filterTypes,
       initialState: { pageIndex: 0, pageSize: 10, hiddenColumns: ['age', 'address', 'imageUrl', 'zipCode', 'web', 'description'] },
       manualPagination: true,
@@ -106,7 +106,7 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
   );
 
   useEffect(() => {
-    dispatch(getCustomers(pageIndex, pageSize, query));
+    dispatch(getLeads(pageIndex, pageSize, query));
   }, [pageIndex, pageSize, query, action])
 
   // useEffect(() => {
@@ -119,8 +119,8 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
   // }, [matchDownSM]);
 
   const renderRowSubComponent = useCallback(({ row }) => {
-    return <CustomerView data={customers.find((customer) => customer._id === row.values._id)} />;
-  }, [customers]);
+    return <LeadView data={leads.find((lead) => lead._id === row.values._id)} />;
+  }, [leads]);
 
 
   return (
@@ -152,7 +152,7 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
               Add Lead
             </Button>
             
-            <CSVExport data={selectedFlatRows.length > 0 ? selectedFlatRows.map((d) => d.original) : customers} filename={'customer-list.csv'} />
+            <CSVExport data={selectedFlatRows.length > 0 ? selectedFlatRows.map((d) => d.original) : leads} filename={'lead-list.csv'} />
           </Stack>
         </Stack>
 
@@ -215,7 +215,7 @@ ReactTable.propTypes = {
   renderRowSubComponent: PropTypes.any
 };
 
-// ==============================|| CUSTOMER - LIST ||============================== //
+// ==============================|| lead - LIST ||============================== //
 
 // Section Cell and Header
 const SelectionCell = ({ row }) => <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />;
@@ -231,7 +231,7 @@ const CustomCell = ({ row }) => {
   const { values } = row;
   return (
     <Stack direction="row" spacing={1.5} alignItems="center">
-      <Avatar alt="Avatar 1" size="sm" src={values.imageUrl} />
+      {/* <Avatar alt="Avatar 1" size="sm" src={values.imageUrl} /> */}
       <Stack spacing={0}>
         <Typography variant="subtitle1">{values.name}</Typography>
         <Typography variant="caption" color="textSecondary">
@@ -268,12 +268,25 @@ const ProjectType = ({ value }) => {
   }
 };
 
-const ActionCell = (row, setCustomer, setCustomerDeleteId, handleAdd, handleClose, theme) => {
+const ActionCell = (row, setLead, setLeadDeleteId, handleAdd, handleClose, theme) => {
   const collapseIcon = row.isExpanded ? (
     <CloseOutlined style={{ color: theme.palette.error.main }} />
   ) : (
     <EyeTwoTone twoToneColor={theme.palette.secondary.main} />
   );
+
+  const { leads: {
+    leads,
+    total,
+  }, action } = useSelector((state) => state.leads);
+ 
+  const filterLeadsById = (_id) => {
+    console.log(_id,"idddddddddd")
+    const selectedLead = leads.find((lead) => lead._id === _id);
+    // Do something with the selected lead, for example, set it in state
+    setLead(selectedLead);
+  };
+
   return (
     <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
       <Tooltip title="View">
@@ -292,7 +305,8 @@ const ActionCell = (row, setCustomer, setCustomerDeleteId, handleAdd, handleClos
           color="primary"
           onClick={(e) => {
             e.stopPropagation();
-            setCustomer(row.values);
+            console.log(row.values)
+            filterLeadsById(row.values._id); // Pass the _id of the selected row
             handleAdd();
           }}
         >
@@ -305,7 +319,7 @@ const ActionCell = (row, setCustomer, setCustomerDeleteId, handleAdd, handleClos
           color="primary"
           onClick={(e) => {
             e.stopPropagation();
-            setCustomer(row.values);
+            setLead(row.values);
             handleAdd();
           }}
         >
@@ -318,7 +332,7 @@ const ActionCell = (row, setCustomer, setCustomerDeleteId, handleAdd, handleClos
           onClick={(e) => {
             e.stopPropagation();
             handleClose();
-            setCustomerDeleteId({
+            setLeadDeleteId({
               _id: row.values._id,
               name: row.values.name
             });
@@ -351,22 +365,22 @@ SelectionHeader.propTypes = {
   getToggleAllPageRowsSelectedProps: PropTypes.func
 };
 
-const CustomerListPage = () => {
+const LeadListPage = () => {
   const theme = useTheme();
 
   const [mode, setMode] = useState('TABLE')
 
   const [add, setAdd] = useState(false);
   const [open, setOpen] = useState(false);
-  const [customer, setCustomer] = useState();
-  const [deletingCustomer, setDeletingCustomer] = useState({
+  const [lead, setLead] = useState();
+  const [deletingLead, setDeletingLead] = useState({
     _id: null,
     name: ''
   });
 
   const handleAdd = () => {
     setAdd(!add);
-    if (customer && !add) setCustomer(null);
+    if (lead && !add) setLead(null);
   };
 
   const handleClose = () => {
@@ -390,8 +404,18 @@ const CustomerListPage = () => {
       },
       {
         Header: 'Name',
+        accessor: 'contactInformation.firstName',
+        // Cell: CustomCell
+      },
+      {
+        Header: 'Namel',
         accessor: 'name',
-        Cell: CustomCell
+        // Cell: CustomCell
+      },
+      {
+        Header: 'Namef',
+        accessor: 'contactInformation.lastName',
+        // Cell: CustomCell
       },
       {
         Header: 'Project Type',
@@ -471,7 +495,7 @@ const CustomerListPage = () => {
         Header: 'Actions',
         className: 'cell-center',
         disableSortBy: true,
-        Cell: ({ row }) => ActionCell(row, setCustomer, setDeletingCustomer, handleAdd, handleClose, theme)
+        Cell: ({ row }) => ActionCell(row, setLead, setDeletingLead, handleAdd, handleClose, theme)
       }
     ],
     // 
@@ -479,10 +503,10 @@ const CustomerListPage = () => {
   );
 
   // const renderRowSubComponent = useCallback(({ row }) => {
-  //   console.log('DEVELOPER ROW ', data.find((customer) => customer._id === row.values._id));
+  //   console.log('DEVELOPER ROW ', data.find((lead) => lead._id === row.values._id));
   //   console.log('DEVELOPER ', data);
   //   return null;
-  //   // return <CustomerView data={data[row._id]} />;
+  //   // return <LeadView data={data[row._id]} />;
   // }, [data]);
 
   return (
@@ -505,7 +529,7 @@ const CustomerListPage = () => {
                         getHeaderProps={(column) => column.getSortByToggleProps()}
                     />
                 </ScrollX>
-                <AlertCustomerDelete title={deletingCustomer.name} customerId={deletingCustomer._id} open={open} handleClose={handleClose} />
+                <AlertLeadDelete title={deletingLead.name} leadId={deletingLead._id} open={open} handleClose={handleClose} />
                 {/* add user dialog */}
                 <Dialog
                     maxWidth="sm"
@@ -517,15 +541,15 @@ const CustomerListPage = () => {
                     sx={{ '& .MuiDialog-paper': { p: 0 }, transition: 'transform 225ms' }}
                     aria-describedby="alert-dialog-slide-description"
                 >
-                    <AddLead customer={customer} onCancel={handleAdd} />
+                    <AddLead lead={lead} onCancel={handleAdd} />
                 </Dialog>
             </MainCard>
     ) : (
-        <CustomerCardPage />
+        <LeadCardPage />
     )}
 
     </>
   );
 };
 
-export default CustomerListPage;
+export default LeadListPage;

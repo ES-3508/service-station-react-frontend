@@ -36,7 +36,7 @@ import * as Yup from 'yup';
 import { useFormik, Form, FormikProvider } from 'formik';
 
 // project imports
-import AlertCustomerDelete from './AlertLeadDelete';
+import AlertLeadDelete from './AlertLeadDelete';
 import Avatar from 'components/@extended/Avatar';
 import IconButton from 'components/@extended/IconButton';
 
@@ -46,7 +46,8 @@ import { openSnackbar } from 'store/reducers/snackbar';
 
 // assets
 import { CameraOutlined, DeleteFilled } from '@ant-design/icons';
-import { createCustomer, deleteCustomer, updateCustomer, uploadCustomerImage } from 'store/reducers/customers';
+import {  deleteLead, updateLead, uploadLeadImage } from 'store/reducers/leads';
+
 import { CustomerStatus } from 'config';
 import { useSelector } from 'store';
 // import { DateField } from '@mui/x-date-pickers/DateField';
@@ -56,6 +57,7 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 
 
 import SingleFilCustomized from 'components/third-party/dropzone/SingleFileCustomized';
+import { createLead } from 'store/reducers/leads';
 
 // const avatarImage = require.context('assets/images/users', true);
 
@@ -92,13 +94,13 @@ import SingleFilCustomized from 'components/third-party/dropzone/SingleFileCusto
 
 // ==============================|| CUSTOMER ADD / EDIT / DELETE ||============================== //
 
-const AddCustomer = ({ customer, onCancel }) => {
+const AddLead = ({ lead, onCancel }) => {
 
   const [openAlert, setOpenAlert] = useState(false);
 
-  // const { uploadedImageUrl } = useSelector((state) => state.customers);
+  // const { uploadedImageUrl } = useSelector((state) => state.leads);
 
-  const [deletingCustomer, setDeletingCustomer] = useState({
+  const [deletingLead, setDeletingLead] = useState({
     _id: null,
     name: ''
   });
@@ -109,7 +111,7 @@ const AddCustomer = ({ customer, onCancel }) => {
   };
 
   const theme = useTheme();
-  const isCreating = !customer;
+  const isCreating = !lead;
 
   const [selectedImage, setSelectedImage] = useState(undefined);
   const [avatar, setAvatar] = useState('');
@@ -121,69 +123,132 @@ const AddCustomer = ({ customer, onCancel }) => {
   }, [selectedImage]);
 
   useEffect(() => {
-    if (customer) {
-      setAvatar(customer.imageUrl);
+    console.log(lead,'lead //////////////////////////////////////////')
+    if (lead) {
+      setAvatar(lead.imageUrl);
     }
-  }, [customer])
+  }, [lead])
 
-  const deleteHandler = async (customer) => {
-    setDeletingCustomer({
-      _id: customer._id,
-      name: customer.name
+  const deleteHandler = async (lead) => {
+    setDeletingLead({
+      _id: lead._id,
+      name: lead.name
     })
     setOpenAlert(true)
   }
 
-  const CustomerSchema = Yup.object().shape({
-    name: Yup.string().max(255).required('Name is required'),
-    email: Yup.string().max(255).required('Email is required').email('Must be a valid email'),
-    phone: Yup.string().matches(/^\(?(?:(?:0(?:0|11)\)?[\s-]?\(?|\+)44\)?[\s-]?\(?(?:0\)?[\s-]?\(?)?|0)(?:\d{5}\)?[\s-]?\d{4,5}|\d{4}\)?[\s-]?(?:\d{5}|\d{3}[\s-]?\d{3})|\d{3}\)?[\s-]?\d{3}[\s-]?\d{3,4}|\d{2}\)?[\s-]?\d{4}[\s-]?\d{4}|8(?:00[\s-]?11[\s-]?11|45[\s-]?46[\s-]?4\d))(?:(?:[\s-]?(?:x|ext\.?\s?|\#)\d+)?)$/, "Invalid phone number").required("Phone number is required"),
-    // age: Yup.number().min(16).required('Age is required'), // TODO: Define Min and Max age limits
-    // address: Yup.string().max(255).required('Address is required'),
-    // country: Yup.string().max(255).required('Country is required'),
-    // zipCode: Yup.number().typeError("Please enter a number").required('Zip code is required'),
-    web: Yup.string().matches(/^((https?|ftp):\/\/)?(www.)?(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i, "Invalid URL").required('Website is required'),
-    description: Yup.string().max(500).optional(),
-    status: Yup.mixed().oneOf([CustomerStatus.PENDING, CustomerStatus.VERIFIED, CustomerStatus.REJECTED]).default(CustomerStatus.PENDING)
+  const LeadSchema = Yup.object().shape({
+    // priorityLevel: Yup.string(),
+    // companyType: Yup.string(),
+    // leadOwner: Yup.string(),
+    // startDate: Yup.date(),
+    // endDate: Yup.date()
+    //   .when(
+    //     'startDate',
+    //     (date, schema) => date && schema.min(date, "End date can't be before start date")
+    //   )
+    //   .nullable(),
+    // contactInformation: Yup.object().shape({
+    //   firstName: Yup.string().required('First Name is required'),
+    //   lastName: Yup.string().required('Last Name is required'),
+    //   surName: Yup.string(),
+    //   company: Yup.string(),
+    //   companyNumber: Yup.string(),
+    //   industry: Yup.string(),
+    //   address: Yup.string(),
+    //   phone1: Yup.string(),
+    //   phone2: Yup.string(),
+    //   email: Yup.string().email('Incorrect email address'),
+    // }),
+    // descriptionInformation: Yup.array().of(
+    //   Yup.object().shape({
+    //     note: Yup.string(),
+    //     // fileName: Yup.string(),
+    //     files: Yup.mixed(),
+    //     // Remove createdBy, updatedBy, createdAt, and updatedAt
+    //   })
+    // ),
+
+    // projectType: Yup.string(),
+    // projectSize: Yup.string(),
+    // currency: Yup.string(),
+    // budgetEstimate: Yup.string(),
+    // expectedStart: Yup.date(),
+    // expectedCompletion: Yup.date()
+    //   .when(
+    //     'expectedStart',
+    //     (date, schema) => date && schema.min(date, "End date can't be before start date")
+    //   )
+    //   .nullable(),
   });
 
-  const defaultValues = useMemo(() => ({
-    name: customer ? customer.name : '',
-    phone: customer ? customer.phone : '',
-    email: customer ? customer.email : '',
-    address: customer ? customer.address : '',
-    country: customer ? customer.country : '',
-    status: customer ? customer.accountStatus : '',
-    age: customer ? customer.age : '',
-    zipCode: customer ? customer.zipCode : '',
-    web: customer ? customer.web : '',
-    description: customer ? customer?.description : '',
-  }), [customer])
+  const defaultValues  = useMemo(
+    () => ({
+      priorityLevel: lead?.priorityLevel || '',
+      companyType: lead?.companyType || '',
+      leadOwner: lead?.leadOwner || '',
+
+      startDate: lead?.startDate ? new Date(lead.startDate) : new Date(),
+      endDate: lead?.endDate ? new Date(lead.endDate) : new Date(),
+      contactInformation: {
+        firstName: lead?.contactInformation?.firstName || '',
+        lastName: lead?.contactInformation?.lastName || '',
+        company: lead?.contactInformation?.company || '',
+        companyNumber: lead?.contactInformation?.companyNumber || '',
+        industry: lead?.contactInformation?.industry || '',
+        address: lead?.contactInformation?.address || '',
+        phone1: lead?.contactInformation?.phone1 || '',
+        phone2: lead?.contactInformation?.phone2 || '',
+        email: lead?.contactInformation?.email || '',
+      },
+
+      projectType: lead?.projectType || '',
+      // projectSize: lead?.projectSize || '',
+      // budgetEstimate: lead?.budgetEstimate || '',
+      // currency: lead ? lead.currency : '',
+      // expectedStart: lead?.expectedStart
+      //   ? new Date(lead.expectedStart)
+      //   : new Date(),
+      // expectedCompletion: lead?.expectedCompletion
+      //   ? new Date(lead.expectedCompletion)
+      //   : null,
+
+      // descriptionInformation: [
+      //   {
+      //     note: lead?.descriptionInformation[0].note || '',
+      //     // fileName: lead?.descriptionInformation[0].fileName || '',
+      //     files: lead?.descriptionInformation[0].files || false,
+      //   },
+      // ],
+      // document: lead?.document || false,
+    }),
+    [lead]
+  );
 
   const formik = useFormik({
     enableReinitialize: true,
-    // initialValues: getInitialValues(customer),
+    // initialValues: getInitialValues(lead),
     initialValues: defaultValues,
-    validationSchema: CustomerSchema,
+    validationSchema: LeadSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
 
-        if (customer) {
+        if (lead) {
 
           if (selectedImage) {
-            dispatch(uploadCustomerImage(selectedImage))
+            dispatch(uploadLeadImage(selectedImage))
               .then((fileUrl) => {
                 setSelectedImage(undefined);
                 if (fileUrl) {
-                  dispatch(updateCustomer(customer._id, {
+                  dispatch(updateLead(lead._id, {
                     ...values, imageUrl: fileUrl.payload
                   }));
                 }
               })
           } else {
-            dispatch(updateCustomer(customer._id, {
+            dispatch(updateLead(lead._id, {
               ...values,
-              imageUrl: customer.imageUrl,
+              imageUrl: lead.imageUrl,
             }));
           }
 
@@ -191,17 +256,18 @@ const AddCustomer = ({ customer, onCancel }) => {
         } else {
 
           if (selectedImage) {
-            dispatch(uploadCustomerImage(selectedImage))
+            dispatch(uploadLeadImage(selectedImage))
               .then((fileUrl) => {
                 setSelectedImage(undefined);
                 if (fileUrl) {
-                  dispatch(createCustomer({
+                  dispatch(createLead({
                     ...values, imageUrl: fileUrl.payload
                   }))
                 }
               })
           } else {
-            dispatch(createCustomer(values))
+            console.log('create values ', values )
+            dispatch(createLead(values))
           }
 
           resetForm();
@@ -223,52 +289,12 @@ const AddCustomer = ({ customer, onCancel }) => {
       <FormikProvider value={formik}>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-            <DialogTitle sx={{fontSize: 32, p:3.5}}>{customer ? 'Edit Contact' : 'Create Contact'}</DialogTitle>
+            <DialogTitle sx={{fontSize: 32, p:3.5}}>{lead ? 'Edit Lead' : 'Create Lead'}</DialogTitle>
             <Divider />
             <DialogContent sx={{ pt: 0.8 }}>
               <Grid container spacing={3}>
                 <Grid item xs={12}>
-                  {/* <Stack direction="row" justifyContent="center" sx={{ mt: 3 }}>
-                    <FormLabel
-                      htmlFor="change-avtar"
-                      sx={{
-                        position: 'relative',
-                        borderRadius: '50%',
-                        overflow: 'hidden',
-                        '&:hover .MuiBox-root': { opacity: 1 },
-                        cursor: 'pointer'
-                      }}
-                    >
-                      <Avatar alt="Avatar 1" src={avatar} sx={{ width: 72, height: 72, border: '1px dashed' }} />
-                      <Box
-                        sx={{
-                          position: 'absolute',
-                          top: 0,
-                          left: 0,
-                          backgroundColor: theme.palette.mode === ThemeMode.DARK ? 'rgba(255, 255, 255, .75)' : 'rgba(0,0,0,.65)',
-                          width: '100%',
-                          height: '100%',
-                          opacity: 0,
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center'
-                        }}
-                      >
-                        <Stack spacing={0.5} alignItems="center">
-                          <CameraOutlined style={{ color: theme.palette.secondary.lighter, fontSize: '2rem' }} />
-                          <Typography sx={{ color: 'secondary.lighter' }}>Upload</Typography>
-                        </Stack>
-                      </Box>
-                    </FormLabel>
-                    <TextField
-                      type="file"
-                      id="change-avtar"
-                      placeholder="Outlined"
-                      variant="outlined"
-                      sx={{ display: 'none' }}
-                      onChange={(e) => setSelectedImage(e.target.files?.[0])}
-                    />
-                  </Stack>  */}
+                 
                 </Grid>
                 <DialogTitle>Contact information </DialogTitle> 
 
@@ -276,18 +302,18 @@ const AddCustomer = ({ customer, onCancel }) => {
                   <Grid container spacing={3}>
                     {/* first name */}
                     <Grid item xs={12} sm={6}>
-                      <Stack spacing={1.25}>
-                        {/* <InputLabel htmlFor="customer-first-name">First Name</InputLabel> */}
+                      
+                      {/* <Stack spacing={1.25}> */}
+                        <FormControl fullWidth>
                         <TextField
-                          label='First Name'
-                          fullWidth
-                          id="customer-first-name"
-                          placeholder="Enter Customer First Name"
-                          {...getFieldProps('name')}
-                          error={Boolean(touched.name && errors.name)}
-                          helperText={touched.name && errors.name}
+                          id="firstName"
+                          label="First Name"
+                          // placeholder="1st LEG VOYAGE"
+                          {...getFieldProps('contactInformation.firstName')}
+                          onChange={(event) => setFieldValue('contactInformation.firstName', event.target.value)}
                         />
-                      </Stack>
+                      </FormControl>
+                        
                     </Grid>
                     {/* end of firts name */}
 
@@ -298,11 +324,11 @@ const AddCustomer = ({ customer, onCancel }) => {
                         <TextField
                         label='Last Name'
                           fullWidth
-                          id="customer-last-name"
+                          id="lead-last-name"
                           placeholder="Enter Customer Last Name"
-                          {...getFieldProps('name')}
-                          error={Boolean(touched.name && errors.name)}
-                          helperText={touched.name && errors.name}
+                          {...getFieldProps('contactInformation.lastName')}
+                          // error={Boolean(touched.lastName && errors.lastName)}
+                          // helperText={touched.lastName && errors.lastName}
                         />
                       </Stack>
                     </Grid>
@@ -314,11 +340,11 @@ const AddCustomer = ({ customer, onCancel }) => {
                           label='Phone Number 1'
                           fullWidth
                           type='tel'
-                          id="customer-phone 1"
+                          id="lead-phone 1"
                           placeholder="Enter Phone Number 1"
-                          {...getFieldProps('phone')}
-                          error={Boolean(touched.phone && errors.phone)}
-                          helperText={touched.phone && errors.phone}
+                          {...getFieldProps('contactInformation.phone1')}
+                          error={Boolean(touched.phone1 && errors.phone1)}
+                          helperText={touched.phone1 && errors.phone1}
                         />
                       </Stack>
                     </Grid>
@@ -327,29 +353,29 @@ const AddCustomer = ({ customer, onCancel }) => {
                     {/* phone 2*/}
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        {/* <InputLabel htmlFor="customer-phone 2">Phone Number 2</InputLabel> */}
+                        {/* <InputLabel htmlFor="lead-phone 2">Phone Number 2</InputLabel> */}
                         <TextField
                           label='Phone Number 2'
                           fullWidth
                           type='tel'
-                          id="customer-phone 2"
+                          id="lead-phone 2"
                           placeholder="Enter Phone Number 2"
-                          {...getFieldProps('phone')}
-                          error={Boolean(touched.phone && errors.phone)}
-                          helperText={touched.phone && errors.phone}
+                          {...getFieldProps('contactInformation.phone')}
+                          error={Boolean(touched.phone2 && errors.phone2)}
+                          helperText={touched.phone2 && errors.phone2}
                         />
                       </Stack>
                     </Grid>
 
                     <Grid item xs={12}>
                       <Stack spacing={1.25}>
-                        {/* <InputLabel htmlFor="customer-email">Email</InputLabel> */}
+                        {/* <InputLabel htmlFor="lead-email">Email</InputLabel> */}
                         <TextField
                           label='Email'
                           fullWidth
-                          id="customer-email"
+                          id="lead-email"
                           placeholder="Enter Customer Email"
-                          {...getFieldProps('email')}
+                          {...getFieldProps('contactInformation.email')}
                           error={Boolean(touched.email && errors.email)}
                           helperText={touched.email && errors.email}
                         />
@@ -366,7 +392,7 @@ const AddCustomer = ({ customer, onCancel }) => {
                           fullWidth
                           id="customer-company-name"
                           placeholder="Enter Customer Company Name"
-                          {...getFieldProps('name')}
+                          {...getFieldProps('contactInformation.company')}
                           error={Boolean(touched.name && errors.name)}
                           helperText={touched.name && errors.name}
                         />
@@ -375,34 +401,38 @@ const AddCustomer = ({ customer, onCancel }) => {
 
                     {/* Industry Category */}
                     <Grid item xs={12}>
-                      <Stack spacing={1.25}>
-                        {/* <InputLabel htmlFor="customer-industry-category">Industry Category</InputLabel> */}
-                        <Select 
+                    <Stack spacing={1.25}>
+                      <InputLabel htmlFor="customer-industry-category">Industry Category</InputLabel>
+                      <Select 
                           label='Industry Category'
-                          labelId='customer-insdustry-category'
-                          id='category'
+                          labelId='lead-industry-category'
+                          id='categoryasd'
                           placeholder='Select category'
-                          {...getFieldProps('status')}
-                          onChange={(event) => setFieldValue('category', event.target.value)}
+                          {...getFieldProps('contactInformation.industry')}
+                          onChange={(event) => {
+                            setFieldValue('contactInformation.industry', event.target.value);
+                          }}
                         >
                           <MenuItem value={'Consulting'}>Consulting</MenuItem>
                           <MenuItem value={'Analyst'}>Analyst</MenuItem>
                           <MenuItem value={'Developer'}>Developer</MenuItem>
-                          <MenuItem value={'Qa'}>Quality Assurance</MenuItem>
+                          <MenuItem value={'Quality Assurance'}>Quality Assurance</MenuItem>
                         </Select>
-                      </Stack>
+
+                    </Stack>
+
                     </Grid>
 
 
                     {/* address */}
                    <Grid item xs={12}>
                       <Stack spacing={1.25}>
-                        {/* <InputLabel htmlFor="customer-address">Address</InputLabel> */}
+                        {/* <InputLabel htmlFor="lead-address">Address</InputLabel> */}
                         <TextField
                           label='Address'
                           fullWidth
-                          id="customer-address"
-                          placeholder="Enter Customer Adderess"
+                          id="lead-address"
+                          placeholder="Enter lead Adderess"
                           {...getFieldProps('name')}
                           error={Boolean(touched.name && errors.name)}
                           helperText={touched.name && errors.name}
@@ -421,12 +451,41 @@ const AddCustomer = ({ customer, onCancel }) => {
 
 
                   {/* Priority level */}
-                  <Grid item xs={12}>
+                  <DialogTitle>Lead details </DialogTitle> 
+                  <Divider/>
+                  <Grid item xs={12} sm={6}></Grid>
+
+                  {!lead &&(
+                    <Grid item xs={6} sm={6}>
+                    
+                    
+                    <FormControl fullWidth>
+                      <InputLabel htmlFor="project-type-label">Project TYPE</InputLabel>
+                      <Select
+                        labelId="project-type"
+                        id="project-type"
+                        placeholder="Project Type"
+                        {...getFieldProps('projectType')}
+                        onChange={(event) => setFieldValue('projectType', event.target.value)}
+                      >
+                        <MenuItem value={'Electrical'}>Electrical</MenuItem>
+                    <MenuItem value={'Civil'}>Civil</MenuItem>
+                    <MenuItem value={'Robotics'}>Robotics</MenuItem>
+                    <MenuItem value={'Network'}>Network</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+
+                  
+                  )}
+                  {lead &&(
+                    <>
+                    <Grid item xs={12}>
                       <Stack spacing={1.25}>
-                        {/* <InputLabel htmlFor="customer-priority-level">Priority Level</InputLabel> */}
+                        {/* <InputLabel htmlFor="lead-priority-level">Priority Level</InputLabel> */}
                         <Select 
                           label='Priority Level'
-                          labelId='customer-priority-level'
+                          labelId='lead-priority-level'
                           id='priority'
                           placeholder='Select priority'
                           {...getFieldProps('status')}
@@ -440,6 +499,8 @@ const AddCustomer = ({ customer, onCancel }) => {
                       </Stack>
                     </Grid>
 
+                  
+                  
                     {/* Lead owner */}
                   <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
@@ -484,24 +545,25 @@ const AddCustomer = ({ customer, onCancel }) => {
 
 
                     {/* Project Type */}
-                  <Grid item xs={12} sm={6}>
-                      <Stack spacing={1.25}>
-                        {/* <InputLabel htmlFor="project-type">Project Type</InputLabel> */}
-                        <Select 
-                          label='Project Type'
-                          labelId='project-type'
-                          id='project-type'
-                          placeholder='Select Project Type'
-                          {...getFieldProps('status')}
-                          onChange={(event) => setFieldValue('category', event.target.value)}
+                    <Grid item xs={6} sm={6}>
+                    
+                    
+                      <FormControl fullWidth>
+                        <InputLabel htmlFor="project-type-label">Project TYPE</InputLabel>
+                        <Select
+                          labelId="project-type"
+                          id="project-type"
+                          placeholder="Project Type"
+                          {...getFieldProps('projectType')}
+                          onChange={(event) => setFieldValue('projectType', event.target.value)}
                         >
                           <MenuItem value={'Electrical'}>Electrical</MenuItem>
-                          <MenuItem value={'Civil'}>Civil</MenuItem>
-                          <MenuItem value={'Robotics'}>Robotics</MenuItem>
-                          <MenuItem value={'Network'}>Network</MenuItem>
+                      <MenuItem value={'Civil'}>Civil</MenuItem>
+                      <MenuItem value={'Robotics'}>Robotics</MenuItem>
+                      <MenuItem value={'Network'}>Network</MenuItem>
                         </Select>
-                      </Stack>
-                    </Grid>
+                      </FormControl>
+                  </Grid>
 
                      {/* project Scope */}
                      <Grid item xs={12} sm={6}>
@@ -522,78 +584,66 @@ const AddCustomer = ({ customer, onCancel }) => {
 
                     
                     {/* budget */}
-                    <Grid item xs={6}>
-                      
-                      <Stack spacing={1.25}>
-                        {/* <InputLabel htmlFor="budget">Budget</InputLabel> */}
-                        <TextField
-                          label='Budget'
-                          fullWidth
-                          id="budget"
-                          placeholder="Budget Estimate"
-                          {...getFieldProps('age')}
-                          error={Boolean(touched.age && errors.age)}
-                          helperText={touched.age && errors.age}
-                        />
-                      </Stack>
-                    </Grid>
-                    <Grid item xs={6}></Grid>
-                    {/* end of age */}
+                    <DialogTitle>Additional information </DialogTitle> 
 
-                    {/* expected start date */}
-                    <Grid item xs={12} sm={6}>
-                      <Stack spacing={1.25}>
-                        {/* <InputLabel htmlFor="start-date">Expected Start Date</InputLabel> */}
-                        {/* <TextField
-                          label='Expected Start Date'
-                          fullWidth
-                          type='date'
-                          id="startdate"
-                          placeholder="Enter Date"
-                          {...getFieldProps('startdate')}
-                          error={Boolean(touched.startdate && errors.startdate)}
-                          helperText={touched.startdate && errors.startdate}
-                        /> */}
-
-                        <DateField 
-                          label="Expected Start Date"
-                          />
-                      </Stack>
-                    </Grid>
-
-                    {/* expected end date */}
-                    <Grid item xs={12} sm={6}>
-                      <Stack spacing={1.25}>
-                        {/* <InputLabel htmlFor="start-date">Expected Compeltion Date</InputLabel> */}
-                        {/* <TextField
-                          label='Expected Completion Date'
-                          fullWidth
-                          type='date'
-                          id="enddate"
-                          placeholder="Enter Date"
-                          {...getFieldProps('startdate')}
-                          error={Boolean(touched.startdate && errors.startdate)}
-                          helperText={touched.startdate && errors.startdate}
-                        /> */}
-                        <DateField 
-                          label="Expected Completion Date"
-                          />
-
-                      </Stack>
-                    </Grid>
-
-                  {/* <Grid container spacing={3} >
                     <Grid item xs={12}>
-                      <Stack spacing={1.25}>
-                        <InputLabel htmlFor="customer-priority-level">Upload File</InputLabel>
-                        <SingleFilCustomized />
-                        
-                      </Stack>
-                    </Grid>
-                    </Grid> */}
 
-                  </Grid>
-                </Grid>
+                      <Grid container spacing={3}>
+                      {/* first name */}
+                      <Grid item xs={12} sm={6}>
+                        
+                        <Stack spacing={1.25}>
+                          {/* <InputLabel htmlFor="budget">Budget</InputLabel> */}
+                          <TextField
+                            label='Budget'
+                            fullWidth
+                            id="budget"
+                            placeholder="Budget Estimate"
+                            {...getFieldProps('age')}
+                            error={Boolean(touched.age && errors.age)}
+                            helperText={touched.age && errors.age}
+                          />
+                        </Stack>
+                      </Grid>
+                      <Grid item xs={6}></Grid>
+                      {/* end of age */}
+
+                      {/* expected start date */}
+                      <Grid item xs={12} sm={6}>
+                        <Stack spacing={1.25}>
+                          <DateField 
+                            label="Expected Start Date"
+                            />
+                        </Stack>
+                      </Grid>
+
+                      {/* expected end date */}
+                      <Grid item xs={12} sm={6}>
+                        <Stack spacing={1.25}>
+                          
+                          <DateField 
+                            label="Expected Completion Date"
+                            />
+
+                        </Stack>
+                        </Grid>
+                      </Grid>
+                      
+                      </Grid>
+                      </>
+                      )}      
+                    {/* <Grid container spacing={3} >
+                      <Grid item xs={12}>
+                        <Stack spacing={1.25}>
+                          <InputLabel htmlFor="lead-priority-level">Upload File</InputLabel>
+                          <SingleFilCustomized />
+                          
+                        </Stack>
+                      </Grid>
+                      </Grid> */}
+
+                    
+</Grid></Grid> 
               </Grid>
             </DialogContent>
             <Divider />
@@ -601,8 +651,8 @@ const AddCustomer = ({ customer, onCancel }) => {
               <Grid container justifyContent="space-between" alignItems="center">
                 <Grid item>
                   {!isCreating && (
-                    <Tooltip title="Delete Customer" placement="top">
-                      <IconButton onClick={() => deleteHandler(customer)} size="large" color="error">
+                    <Tooltip title="Delete Lead" placement="top">
+                      <IconButton onClick={() => deleteHandler(lead)} size="large" color="error">
                         <DeleteFilled />
                       </IconButton>
                     </Tooltip>
@@ -614,7 +664,7 @@ const AddCustomer = ({ customer, onCancel }) => {
                       Cancel
                     </Button>
                     <Button type="submit" variant="contained" disabled={isSubmitting}>
-                      {customer ? 'Edit' : 'Add'}
+                      {lead ? 'Edit' : 'Add'}
                     </Button>
                   </Stack>
                 </Grid>
@@ -623,14 +673,14 @@ const AddCustomer = ({ customer, onCancel }) => {
           </Form>
         </LocalizationProvider>
       </FormikProvider>
-      {!isCreating && <AlertCustomerDelete title={deletingCustomer.name} customerId={deletingCustomer._id} open={openAlert} handleClose={handleAlertClose} />}
+      {!isCreating && <AlertLeadDelete title={deletingLead.name} leadId={deletingLead._id} open={openAlert} handleClose={handleAlertClose} />}
     </>
   );
 };
 
-AddCustomer.propTypes = {
-  customer: PropTypes.any,
+AddLead.propTypes = {
+  lead: PropTypes.any,
   onCancel: PropTypes.func
 };
 
-export default AddCustomer;
+export default AddLead;

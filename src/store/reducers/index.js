@@ -18,7 +18,7 @@ import cartReducer from './cart';
 import kanban from './kanban';
 import invoice from './invoice';
 import tasks from './tasks';
-
+import leads from './leads'
 // ==============================|| COMBINE REDUCERS ||============================== //
 
 const reducers = combineReducers({
@@ -43,6 +43,8 @@ const reducers = combineReducers({
   kanban,
   invoice,
   roles,
+  leads
+  
 });
 
 export default reducers;

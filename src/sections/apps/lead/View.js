@@ -116,27 +116,6 @@ const validationSchema = yup.object({
                       </Stack>
                     </Stack>
                   </Grid>
-                  {/* <Grid item xs={12}>
-                    <Divider />
-                  </Grid> */}
-                  {/* <Grid item xs={12}>
-                    <Stack direction="row" justifyContent="space-around" alignItems="center">
-                      <Stack spacing={0.5} alignItems="center">
-                        <Typography variant="h5">86</Typography>
-                        <Typography color="secondary">Post</Typography>
-                      </Stack>
-                      <Divider orientation="vertical" flexItem />
-                      <Stack spacing={0.5} alignItems="center">
-                        <Typography variant="h5">40</Typography>
-                        <Typography color="secondary">Project</Typography>
-                      </Stack>
-                      <Divider orientation="vertical" flexItem />
-                      <Stack spacing={0.5} alignItems="center">
-                        <Typography variant="h5">4.5K</Typography>
-                        <Typography color="secondary">Members</Typography>
-                      </Stack>
-                    </Stack>
-                  </Grid> */}
                   <Grid item xs={12}>
                     <Divider />
                   </Grid>

@@ -9,15 +9,15 @@ import { PopupTransition } from 'components/@extended/Transitions';
 
 // assets
 import { DeleteFilled } from '@ant-design/icons';
-import { deleteCustomer } from 'store/reducers/customers';
+import { deleteLead } from 'store/reducers/leads';
 import { dispatch } from 'store';
 
 // ==============================|| CUSTOMER - DELETE ||============================== //
 
-export default function AlertCustomerDelete({ title, customerId, open, handleClose }) {
+export default function AlertCustomerDelete({ title, leadId, open, handleClose }) {
 
   const deleteHandler = async () => {
-    dispatch(deleteCustomer(customerId));
+    dispatch(deleteLead(leadId));
     handleClose(true)
   }
 
