@@ -67,24 +67,27 @@ const applications = {
     {
       id: 'Lead',
       title: <FormattedMessage id="Leads" />,
-      type: 'collapse',
+      // type: 'collapse',
       icon: icons.FilterOutlined,
-      // url: '/apps/lead/lead-list'
-      children: [
-        {
-          id: 'lead-list',
-          title: <FormattedMessage id="All Leads" />,
-          type: 'item',
-          url: '/apps/lead/lead-list'
-        },
-        {
-          id: 'customer-card',
-          title: <FormattedMessage id="Client Portal" />,
-          type: 'item',
-          url: 'apps/lead/lead-view'
-        }
-      ]
+      type: 'item',
+      url: '/apps/lead/lead-list',
+      // children: [
+      //   {
+      //     id: 'lead-list',
+      //     title: <FormattedMessage id="All Leads" />,
+      //     type: 'item',
+      //     url: '/apps/lead/lead-list'
+      //   },
+      //   {
+      //     id: 'customer-card',
+      //     title: <FormattedMessage id="Client Portal" />,
+      //     type: 'item',
+      //     url: 'apps/lead/lead-view'
+      //   }
+      // ]
     },
+
+    
     // {
     //   id: 'Contact',
     //   title: <FormattedMessage id="Contact" />,
@@ -271,6 +274,12 @@ const applications = {
           url: '/apps/user/role-list'
         },
       ]
+    },
+    {
+      id: 'client-portal',
+      title: <FormattedMessage id="Client Portal (Testing)" />,
+      type: 'item',
+      url: 'apps/lead/lead-view'
     },
   ]
 };

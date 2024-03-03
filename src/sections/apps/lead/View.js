@@ -91,10 +91,10 @@ const validationSchema = yup.object({
     });
     return (
       <Grid container spacing={3}>
-        <Grid item xs={9}></Grid>
-            <Grid item xs={3}>
-            <Chip color="success" label="Active" size="medium" variant="light"  sx={{marginRight:'10px'}}/>
-              <Button variant="contained" color='primary'  size="small" > Convert to Project  </Button>
+        <Grid item xs={11}></Grid>
+            <Grid item xs={1}>
+            {/* <Chip color="success" label="Active" size="medium" variant="light"  sx={{marginRight:'10px'}}/> */}
+              <Button variant="contained" color='primary'  size="small" >  Message </Button>
             </Grid>
         <Grid item xs={12} sm={5} md={4} xl={3}>
           <Grid container spacing={3}>
