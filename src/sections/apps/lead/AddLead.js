@@ -27,7 +27,7 @@ import {
   Typography,
   InputAdornment
 } from '@mui/material';
-import { LocalizationProvider } from '@mui/x-date-pickers';
+import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 // third-party
@@ -203,15 +203,15 @@ const AddLead = ({ lead, onCancel }) => {
       },
 
       projectType: lead?.projectType || '',
-      // projectSize: lead?.projectSize || '',
-      // budgetEstimate: lead?.budgetEstimate || '',
-      // currency: lead ? lead.currency : '',
-      // expectedStart: lead?.expectedStart
-      //   ? new Date(lead.expectedStart)
-      //   : new Date(),
-      // expectedCompletion: lead?.expectedCompletion
-      //   ? new Date(lead.expectedCompletion)
-      //   : null,
+      projectSize: lead?.projectSize || '',
+      budgetEstimate: lead?.budgetEstimate || '',
+      currency: lead ? lead.currency : '',
+      expectedStart: lead?.expectedStart
+        ? new Date(lead.expectedStart)
+        : new Date(),
+      expectedCompletion: lead?.expectedCompletion
+        ? new Date(lead.expectedCompletion)
+        : null,
 
       // descriptionInformation: [
       //   {
@@ -489,8 +489,9 @@ const AddLead = ({ lead, onCancel }) => {
                           id='priority'
                           placeholder='Select priority'
                           {...getFieldProps('status')}
-                          onChange={(event) => setFieldValue('category', event.target.value)}
-                        >
+                          {...getFieldProps('priorityLevel')}
+                        onChange={(event) => setFieldValue('priorityLevel', event.target.value)}
+                      >
                           <MenuItem value={'Critical'}>Critical</MenuItem>
                           <MenuItem value={'High'}>High</MenuItem>
                           <MenuItem value={'Medium'}>Medium</MenuItem>
@@ -502,9 +503,9 @@ const AddLead = ({ lead, onCancel }) => {
                   
                   
                     {/* Lead owner */}
-                  <Grid item xs={12} sm={6}>
+                  {/* <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        {/* <InputLabel htmlFor="lead-owner">Lead Owner</InputLabel> */}
+                        <InputLabel htmlFor="lead-owner">Lead Owner</InputLabel> 
                         <Select 
                           label='Lead Owner'
                           labelId='lead-owner'
@@ -519,13 +520,16 @@ const AddLead = ({ lead, onCancel }) => {
                           <MenuItem value={'Mr.A'}>Mr.A</MenuItem>
                         </Select>
                       </Stack>
-                    </Grid>
+                  </Grid> */}
 
                     {/* lead creation date */}
-                    <Grid item xs={12} sm={6}>
+                    {/* <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        {/* <InputLabel htmlFor="lead-creationdate">Lead Creation Date</InputLabel> */}
-                        {/* <TextField
+                        
+                        <DesktopDatePicker>
+
+                        </DesktopDatePicker>
+                        <TextField
                           label='Lead Creation Date'
                           fullWidth
                           type='date'
@@ -534,13 +538,29 @@ const AddLead = ({ lead, onCancel }) => {
                           {...getFieldProps('startdate')}
                           error={Boolean(touched.startdate && errors.startdate)}
                           helperText={touched.startdate && errors.startdate}
-                        /> */}
+                        />
 
                         <DateField 
                           label="Lead Creation Date"
                           />
 
                       </Stack>
+                    </Grid> */}
+
+                    <Grid item xs={6}>
+                      <FormControl fullWidth>
+                        <DesktopDatePicker
+                          inputFormat="dd/MM/yyyy"
+                          format="dd/MM/yyyy"
+                          label="Lead Creation Date"
+                          value={formik.values.startDate}
+                          onChange={(newValue) => {
+                            setFieldValue('startDate', newValue);
+                          }}
+                          renderInput={(params) => <TextField {...params} fullWidth />}
+                          //minDate={new Date()}
+                        />
+                      </FormControl>
                     </Grid>
 
 
@@ -599,9 +619,9 @@ const AddLead = ({ lead, onCancel }) => {
                             fullWidth
                             id="budget"
                             placeholder="Budget Estimate"
-                            {...getFieldProps('age')}
-                            error={Boolean(touched.age && errors.age)}
-                            helperText={touched.age && errors.age}
+                            {...getFieldProps('budgetEstimate')}
+                            error={Boolean(touched.budgetEstimate && errors.budgetEstimate)}
+                            helperText={touched.budgetEstimate && errors.budgetEstimate}
                           />
                         </Stack>
                       </Grid>
@@ -609,24 +629,39 @@ const AddLead = ({ lead, onCancel }) => {
                       {/* end of age */}
 
                       {/* expected start date */}
-                      <Grid item xs={12} sm={6}>
-                        <Stack spacing={1.25}>
-                          <DateField 
-                            label="Expected Start Date"
-                            />
-                        </Stack>
-                      </Grid>
+                      
+                      <Grid item xs={6}>
+                      <FormControl fullWidth>
+                        <DesktopDatePicker
+                          inputFormat="dd/MM/yyyy"
+                          format="dd/MM/yyyy"
+                          label="Expected Start Date"
+                          value={formik.values.expectedStart}
+                          onChange={(newValue) => {
+                            setFieldValue('expectedStart', newValue);
+                          }}
+                          renderInput={(params) => <TextField {...params} fullWidth />}
+                          //minDate={new Date()}
+                        />
+                      </FormControl>
+                    </Grid>
 
                       {/* expected end date */}
-                      <Grid item xs={12} sm={6}>
-                        <Stack spacing={1.25}>
-                          
-                          <DateField 
-                            label="Expected Completion Date"
-                            />
-
-                        </Stack>
-                        </Grid>
+                      <Grid item xs={6}>
+                      <FormControl fullWidth>
+                        <DesktopDatePicker
+                          inputFormat="dd/MM/yyyy"
+                          format="dd/MM/yyyy"
+                          label="Expected Completion Date"
+                          value={formik.values.expectedCompletion}
+                          onChange={(newValue) => {
+                            setFieldValue('expectedCompletion', newValue);
+                          }}
+                          renderInput={(params) => <TextField {...params} fullWidth />}
+                          //minDate={new Date()}
+                        />
+                      </FormControl>
+                    </Grid>
                       </Grid>
                       
                       </Grid>
