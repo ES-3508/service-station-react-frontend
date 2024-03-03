@@ -38,10 +38,10 @@ import {
   TableRowSelection
 } from 'components/third-party/ReactTable';
 
-import AddLead from 'sections/apps/lead/AddLead';
+import AddLead from 'sections/apps/contact/AddLead';
 
-import LeadView from 'sections/apps/lead/LeadView';
-import AlertLeadDelete from 'sections/apps/lead/AlertLeadDelete';
+import LeadView from 'sections/apps/contact/LeadView';
+import AlertLeadDelete from 'sections/apps/contact/AlertLeadDelete';
 
 import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 
@@ -50,7 +50,7 @@ import {CloseOutlined, PlusOutlined, EyeTwoTone, EditTwoTone, DeleteTwoTone, Pho
 import { dispatch, useSelector } from 'store';
 import { getLeads } from 'store/reducers/leads';
 import LeadCardPage from "./card";
-import ViewLead from 'sections/apps/lead/LeadView';
+import ViewLead from 'sections/apps/contact/LeadView';
 
 
 // ==============================|| REACT TABLE ||============================== //
@@ -141,7 +141,7 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
           <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
             <SortingSelect sortBy={sortBy.id} setSortBy={setSortBy} allColumns={allColumns} />
             <Button variant="contained" color='primary' startIcon={<PlusOutlined />} onClick={handleAdd} size="small">
-              Add Lead
+              Add Contact
             </Button>
             
             <CSVExport data={selectedFlatRows.length > 0 ? selectedFlatRows.map((d) => d.original) : leads} filename={'lead-list.csv'} />
@@ -304,7 +304,7 @@ const ActionCell = (row, setLead, setLeadDeleteId, handleAdd, handleView, handle
           <EyeTwoTone twoToneColor={theme.palette.primary.main} />
         </IconButton>
       </Tooltip>
-      
+
       <Tooltip title="edit">
         <IconButton
           color="primary"
@@ -407,31 +407,31 @@ const LeadListPage = () => {
         accessor: 'contactInformation.firstName',
         // Cell: CustomCell
       },
+      
       {
         Header: 'Second Name',
         accessor: 'contactInformation.lastName',
         // Cell: CustomCell
       },
       // {
-      //   Header: 'Namel',
+      //   Header: 'Name',
       //   accessor: 'name',
       //   // Cell: CustomCell
       // },
-      
       {
-        Header: 'Project Type',
-        accessor: 'projectType',
+        Header: 'Email',
+        accessor: 'contactInformation.email',
         // Cell: ProjectType
       },
-      {
-        Header: 'Source',
-        //manual edit
-        accessor: 'source',
-        Cell: ({ value }) => {
+      // {
+      //   Header: 'Source',
+      //   //manual edit
+      //   accessor: 'source',
+      //   Cell: ({ value }) => {
           
-          return `Manual Entry`;
-        }
-      },
+      //     return `Manual Entry`;
+      //   }
+      // },
       {
         Header: 'Created',
         accessor: 'created',
@@ -449,9 +449,9 @@ const LeadListPage = () => {
 
      
       {
-        Header: 'Status',
-        accessor: 'accountStatus',
-        Cell: StatusCell
+        Header: 'Address',
+        accessor: 'contactInformation.address',
+        // Cell: StatusCell
       },
       {
         Header: 'Actions',
@@ -467,14 +467,14 @@ const LeadListPage = () => {
 
   return (
     <>
-        {/* <Box sx={{display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.5 }}>
-            <IconButton size="large" color={mode === "TABLE" ? "primary" : "secondary"} onClick={() => setMode("TABLE")}>
+        <Box sx={{display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.5 }}>
+            {/* <IconButton size="large" color={mode === "TABLE" ? "primary" : "secondary"} onClick={() => setMode("TABLE")}>
                 <UnorderedListOutlined />
             </IconButton>
             <IconButton size="large" color={mode === "CARD" ? "primary" : "secondary"} onClick={() => setMode("CARD")}>
                 <AppstoreOutlined />
-            </IconButton>
-        </Box> */}
+            </IconButton> */}
+        </Box>
 
         {mode === "TABLE" ? (
             <MainCard content={false}>
@@ -485,7 +485,7 @@ const LeadListPage = () => {
                         getHeaderProps={(column) => column.getSortByToggleProps()}
                     />
                 </ScrollX>
-                <AlertLeadDelete title={deletingLead.created} leadId={deletingLead._id} open={open} handleClose={handleClose} />
+                <AlertLeadDelete title={deletingLead?.created} leadId={deletingLead._id} open={open} handleClose={handleClose} />
                 {/* add user dialog */}
                 <Dialog
                     maxWidth="sm"

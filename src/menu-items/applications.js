@@ -11,6 +11,9 @@ import {
   ShoppingCartOutlined,
   UserOutlined,
   AppstoreAddOutlined,
+  FilterOutlined,
+  UsergroupDeleteOutlined ,
+  SettingOutlined
 } from '@ant-design/icons';
 
 // icons
@@ -22,7 +25,11 @@ const icons = {
   ShoppingCartOutlined,
   UserOutlined,
   AppstoreAddOutlined,
-  FileTextOutlined
+  FileTextOutlined,
+  FilterOutlined ,
+  UsergroupDeleteOutlined,
+  SettingOutlined
+   
 };
 // ==============================|| MENU ITEMS - APPLICATIONS ||============================== //
 
@@ -59,43 +66,66 @@ const applications = {
 
     {
       id: 'Lead',
-      title: <FormattedMessage id="Lead" />,
-      type: 'collapse',
-      icon: icons.UserOutlined,
-      children: [
-        {
-          id: 'lead-list',
-          title: <FormattedMessage id="All Leads" />,
-          type: 'item',
-          url: '/apps/lead/lead-list'
-        },
-        // {
-        //   id: 'customer-card',
-        //   title: <FormattedMessage id="cards" />,
-        //   type: 'item',
-        //   url: '/apps/customer/customer-card'
-        // }
-      ]
+      title: <FormattedMessage id="Leads" />,
+      type: 'item',
+      icon: icons.FilterOutlined,
+      url: '/apps/lead/lead-list'
+      // children: [
+      //   {
+      //     id: 'lead-list',
+      //     title: <FormattedMessage id="All Leads" />,
+      //     type: 'item',
+      //     url: '/apps/lead/lead-list'
+      //   },
+      //   // {
+      //   //   id: 'customer-card',
+      //   //   title: <FormattedMessage id="cards" />,
+      //   //   type: 'item',
+      //   //   url: '/apps/customer/customer-card'
+      //   // }
+      // ]
     },
+    // {
+    //   id: 'Contact',
+    //   title: <FormattedMessage id="Contact" />,
+    //   type: 'collapse',
+    //   icon: icons.UserOutlined,
+    //   children: [
+    //     {
+    //       id: 'contact-list',
+    //       title: <FormattedMessage id="All Contacts" />,
+    //       type: 'item',
+    //       url: '/apps/customer/customer-list'
+    //     },
+    //     // {
+    //     //   id: 'customer-card',
+    //     //   title: <FormattedMessage id="cards" />,
+    //     //   type: 'item',
+    //     //   url: '/apps/customer/customer-card'
+    //     // }
+    //   ]
+    // },
+
     {
-      id: 'Contact',
-      title: <FormattedMessage id="Contact" />,
-      type: 'collapse',
-      icon: icons.UserOutlined,
-      children: [
-        {
-          id: 'contact-list',
-          title: <FormattedMessage id="All Contacts" />,
-          type: 'item',
-          url: '/apps/customer/customer-list'
-        },
+      id: 'contact',
+      title: <FormattedMessage id="Contacts" />,
+      type: 'item',
+      icon: icons.UsergroupDeleteOutlined ,
+      url: '/apps/contact/contact-list'
+      // children: [
+      //   {
+      //     id: 'contact-list',
+      //     title: <FormattedMessage id="All Contacts" />,
+      //     type: 'item',
+      //     url: '/apps/contact/contact-list'
+      //   },
         // {
-        //   id: 'customer-card',
+        //   id: 'project-card',
         //   title: <FormattedMessage id="cards" />,
         //   type: 'item',
-        //   url: '/apps/customer/customer-card'
+        //   url: '/apps/project/project-card'
         // }
-      ]
+      // ]
     },
     {
       id: 'project',
@@ -118,6 +148,13 @@ const applications = {
       ]
     },
     {
+      id: 'calendar',
+      title: <FormattedMessage id="calendar" />,
+      type: 'item',
+      url: '/apps/calendar',
+      icon: icons.CalendarOutlined
+    },
+    {
       id: 'invoice',
       title: <FormattedMessage id="invoice" />,
       url: '/apps/invoice/dashboard',
@@ -126,8 +163,14 @@ const applications = {
       breadcrumbs: true,
       children: [
         {
+          id: 'list',
+          title: <FormattedMessage id="All Inovoices" />,
+          type: 'item',
+          url: '/apps/invoice/list'
+        },
+        {
           id: 'create',
-          title: <FormattedMessage id="create" />,
+          title: <FormattedMessage id="Create" />,
           type: 'item',
           url: '/apps/invoice/create'
         },
@@ -137,18 +180,13 @@ const applications = {
           type: 'item',
           url: '/apps/invoice/details/1'
         },
-        {
-          id: 'list',
-          title: <FormattedMessage id="list" />,
-          type: 'item',
-          url: '/apps/invoice/list'
-        },
-        {
-          id: 'edit',
-          title: <FormattedMessage id="edit" />,
-          type: 'item',
-          url: '/apps/invoice/edit/1'
-        }
+       
+        // {
+        //   id: 'edit',
+        //   title: <FormattedMessage id="edit" />,
+        //   type: 'item',
+        //   url: '/apps/invoice/edit/1'
+        // }
       ]
     },
     // {
@@ -201,7 +239,7 @@ const applications = {
         },
         {
           id: 'add-new-product',
-          title: <FormattedMessage id="Add material" />,
+          title: <FormattedMessage id="Add Material" />,
           type: 'item',
           url: '/apps/e-commerce/add-new-product'
         },
@@ -215,19 +253,20 @@ const applications = {
     },
     {
       id: 'users',
-      title: <FormattedMessage id="users" />,
+      title: <FormattedMessage id="Settings" />,
       type: 'collapse',
-      icon: icons.UserOutlined,
+      icon: icons.SettingOutlined,
       children: [
         {
           id: 'user-list',
-          title: <FormattedMessage id="list" />,
+          title: <FormattedMessage id="Users" />,
           type: 'item',
+          // icon: icons.UserOutlined,
           url: '/apps/user/user-list'
         },
         {
           id: 'role-list',
-          title: <FormattedMessage id="role" />,
+          title: <FormattedMessage id="User Permissions" />,
           type: 'item',
           url: '/apps/user/role-list'
         },

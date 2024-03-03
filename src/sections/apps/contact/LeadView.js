@@ -45,13 +45,13 @@ import { dispatch } from 'store';
 import { openSnackbar } from 'store/reducers/snackbar';
 
 // assets
-import { CameraOutlined, CaretRightOutlined, DeleteFilled, RetweetOutlined } from '@ant-design/icons';
+import { CameraOutlined, CaretRightOutlined, DeleteFilled } from '@ant-design/icons';
 import {  deleteLead, updateLead, uploadLeadImage } from 'store/reducers/leads';
 import { createLead } from 'store/reducers/leads';
 
 // ==============================|| CUSTOMER ADD / EDIT / DELETE ||============================== //
 
-const AddLead = ({ lead, onCancel }) => {
+const ViewLead = ({ lead, onCancel }) => {
 
   const [openAlert, setOpenAlert] = useState(false);
 
@@ -162,7 +162,7 @@ const AddLead = ({ lead, onCancel }) => {
       projectType: lead?.projectType || '',
       projectSize: lead?.projectSize || '',
       budgetEstimate: lead?.budgetEstimate || '',
-      currency: lead ? lead.currency : 'GBP',
+      currency: lead ? lead.currency : '',
       expectedStart: lead?.expectedStart
         ? new Date(lead.expectedStart)
         : new Date(),
@@ -246,30 +246,30 @@ const AddLead = ({ lead, onCancel }) => {
       <FormikProvider value={formik}>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-          <Grid container justifyContent="space-between" alignItems="center">
+            {/* <Button variant='filled' color='primary'> Convert to project</Button> */}
+            <Grid container justifyContent="space-between" alignItems="center">
               <Grid item>
-                <DialogTitle sx={{ fontSize: 32, p: 3.5 }}>{lead ? 'Edit Lead  ' : 'Create Lead'}</DialogTitle>
+                <DialogTitle sx={{ fontSize: 32, p: 3.5 }}>{lead ? 'View Contact' : 'Create Contact'}</DialogTitle>
               </Grid>
               <Grid item>
                 {lead && (
                     <Button variant="contained" color="primary" size="small" sx={{marginRight:'20px'}}>
-                   Convert to Project {'      '}  
-                   {/* <RetweetOutlined /> */}
+                   Convert to Project 
+                    {/* <CaretRightOutlined /> */}
                   </Button>
                 )}
                 
               </Grid>
             </Grid>
+
             <Divider />
             <DialogContent sx={{ pt: 0.8 }}>
-              <Grid container spacing={1}>
+              <Grid container spacing={3} sx={{border:'20px'}}>
                 <Grid item xs={12}> 
                 </Grid>
 
-                
-
                 {/* ===================================+++++++++++++++++++++++++++++++++++++++++++++++++++++++++================================         */}
-                <DialogTitle sx={{marginTop:'10px'}}>Contact information </DialogTitle> 
+                <DialogTitle>Contact information </DialogTitle> 
 
                 <Grid item xs={12}>
                   <Grid container spacing={3}>
@@ -279,8 +279,17 @@ const AddLead = ({ lead, onCancel }) => {
                       {/* <Stack spacing={1.25}> */}
                         <FormControl fullWidth>
                         <TextField
+                        sx={{
+                          '&.Mui-disabled': {
+                            // Add your custom styles for disabled state here
+                            backgroundColor: '#F0F0F0', // Example background color
+                            color: '#666666', // Example text color
+                            // Add any other styles as needed
+                          },
+                        }}
                           id="firstName"
                           label="First Name"
+                          disabled={true}
                           // placeholder="1st LEG VOYAGE"
                           {...getFieldProps('contactInformation.firstName')}
                           onChange={(event) => setFieldValue('contactInformation.firstName', event.target.value)}
@@ -296,6 +305,7 @@ const AddLead = ({ lead, onCancel }) => {
                         <TextField
                         label='Last Name'
                           fullWidth
+                          disabled={true}
                           id="lead-last-name"
                           placeholder="Enter Customer Last Name"
                           {...getFieldProps('contactInformation.lastName')}
@@ -313,6 +323,7 @@ const AddLead = ({ lead, onCancel }) => {
                           label='Phone Number 1'
                           fullWidth
                           type='tel'
+                          disabled={true}
                           id="lead-phone 1"
                           placeholder="Enter Phone Number 1"
                           {...getFieldProps('contactInformation.phone1')}
@@ -331,6 +342,7 @@ const AddLead = ({ lead, onCancel }) => {
                           label='Phone Number 2'
                           fullWidth
                           type='tel'
+                          disabled={true}
                           id="lead-phone 2"
                           placeholder="Enter Phone Number 2"
                           {...getFieldProps('contactInformation.phone')}
@@ -348,6 +360,7 @@ const AddLead = ({ lead, onCancel }) => {
                           label='Email'
                           fullWidth
                           id="lead-email"
+                          disabled={true}
                           placeholder="Enter Customer Email"
                           {...getFieldProps('contactInformation.email')}
                           error={Boolean(touched.email && errors.email)}
@@ -364,6 +377,7 @@ const AddLead = ({ lead, onCancel }) => {
                         <TextField
                         label='Company Name'
                           fullWidth
+                          disabled={true}
                           id="customer-company-name"
                           placeholder="Enter Customer Company Name"
                           {...getFieldProps('contactInformation.company')}
@@ -373,290 +387,57 @@ const AddLead = ({ lead, onCancel }) => {
                       </Stack>
                    </Grid>
 
-                   {/* address */}
+                    {/* Industry Category */}
+                    <Grid item xs={12}>
+                      <Stack spacing={1.25}>
+                        <InputLabel disabled={true} htmlFor="customer-industry-category">Industry Category</InputLabel>
+                        <Select 
+                            label='Industry Category'
+                            labelId='lead-industry-category'
+                            id='categoryasd'
+                            disabled={true}
+                            placeholder='Select category'
+                            {...getFieldProps('contactInformation.industry')}
+                            onChange={(event) => {
+                              setFieldValue('contactInformation.industry', event.target.value);
+                            }}
+                          >
+                            <MenuItem value={'Consulting'}>Consulting</MenuItem>
+                            <MenuItem value={'Analyst'}>Analyst</MenuItem>
+                            <MenuItem value={'Developer'}>Developer</MenuItem>
+                            <MenuItem value={'Quality Assurance'}>Quality Assurance</MenuItem>
+                        </Select>
+                      </Stack>
+
+                    </Grid>
+                          {/* Industry Category end */}
+
+                    {/* address */}
                    <Grid item xs={12}>
                       <Stack spacing={1.25}>
                         {/* <InputLabel htmlFor="lead-address">Address</InputLabel> */}
                         <TextField
                           label='Address'
+                          disabled={true}
                           fullWidth
                           id="lead-address"
                           placeholder="Enter lead Adderess"
-                          {...getFieldProps('contactInformation.address')}
+                          {...getFieldProps('name')}
                           error={Boolean(touched.name && errors.name)}
                           helperText={touched.name && errors.name}
                         />
                       </Stack>
                    </Grid>
 
-                    {/* Industry Category */}
-                    
-
-                    <Grid item xs={12} sm={6}>                   
-                      <FormControl fullWidth>
-                        <InputLabel htmlFor="customer-industry-category">Industry Category</InputLabel>
-                        <Select
-                          labelId="contactInformation.industry"
-                          id="contactInformation.industry"
-                          placeholder="Industry Category"
-                          {...getFieldProps('contactInformation.industry')}
-                          onChange={(event) => setFieldValue('contactInformation.industry', event.target.value)}
-                        >
-                          <MenuItem value={'Consulting'}>Consulting</MenuItem>
-                            <MenuItem value={'Analyst'}>Analyst</MenuItem>
-                            <MenuItem value={'Developer'}>Developer</MenuItem>
-                            <MenuItem value={'Quality Assurance'}>Quality Assurance</MenuItem>
-                        </Select>
-                      </FormControl>
-                    </Grid>
-                          {/* Industry Category end */}
-                    
-                    {/* project type for create             */}
-                    {!lead &&(
-                      <>
-                        <Grid item xs={6} sm={6}>
-                        
-                        {/* Project TYPE */}
-                        <FormControl fullWidth>
-                          <InputLabel htmlFor="project-type-label">Project TYPE</InputLabel>
-                          <Select
-                            labelId="project-type"
-                            id="project-type"
-                            placeholder="Project Type"
-                            {...getFieldProps('projectType')}
-                            onChange={(event) => setFieldValue('projectType', event.target.value)}
-                          >
-                            <MenuItem value={'Electrical'}>Electrical</MenuItem>
-                            <MenuItem value={'Civil'}>Civil</MenuItem>
-                            <MenuItem value={'Robotics'}>Robotics</MenuItem>
-                            <MenuItem value={'Network'}>Network</MenuItem>
-                          </Select>
-                        </FormControl>
-                        </Grid>
-                        
-                      </>
-                      
-                      )}
-
-                    
-
-                    
-
                   </Grid>
                 </Grid>
                 {/* end of contact information */}
 
-               
+                {/* project type for create             */}
+                
                 
                 <Divider />           
-                {/* ===================================+++++++++++++++++++++++++++++++++++++++++++++++++++++++++================================         */}
-                <DialogTitle sx={{marginTop:'10px'}}>Lead details </DialogTitle> 
-
-                <Grid item xs={12}>
-               <Grid container spacing={3}> 
-                    
-
-                    {/* Priority level */}
-                    <Grid item xs={6} sm={6}>                   
-                      <FormControl fullWidth>
-                        <InputLabel htmlFor="priority-level">Priority Level</InputLabel>
-                        <Select
-                          labelId="priority-level"
-                          id="priority-level"
-                          placeholder="Priority Level"
-                          {...getFieldProps('priorityLevel')}
-                          onChange={(event) => setFieldValue('priorityLevel', event.target.value)}
-                        >
-                          <MenuItem value={'Critical'}>Critical</MenuItem>
-                          <MenuItem value={'High'}>High</MenuItem>
-                          <MenuItem value={'Medium'}>Medium</MenuItem>
-                          <MenuItem value={'Low'}>Low</MenuItem>
-                        </Select>
-                      </FormControl>
-                    </Grid>
-
-                  
-                  
-                    {/* Lead owner */}
-                    {/* <Grid item xs={12} sm={6}>
-                        <Stack spacing={1.25}>
-                          <InputLabel htmlFor="lead-owner">Lead Owner</InputLabel> 
-                          <Select 
-                            label='Lead Owner'
-                            labelId='lead-owner'
-                            id='leadOwner'
-                            placeholder='Select Lead owner'
-                            {...getFieldProps('status')}
-                            onChange={(event) => setFieldValue('category', event.target.value)}
-                          >
-                            <MenuItem value={'Mr.X'}>Mr.X</MenuItem>
-                            <MenuItem value={'Mr.Y'}>Mr.Y</MenuItem>
-                            <MenuItem value={'Mr.Z'}>Mr.Z</MenuItem>
-                            <MenuItem value={'Mr.A'}>Mr.A</MenuItem>
-                          </Select>
-                        </Stack>
-                    </Grid> */}
-
-                   
-                    {/* Lead Creation Date */}
-                    <Grid item xs={6}>
-                      <FormControl fullWidth>
-                        <DesktopDatePicker
-                          inputFormat="dd/MM/yyyy"
-                          format="dd/MM/yyyy"
-                          label="Lead Creation Date"
-                          value={formik.values.startDate}
-                          onChange={(newValue) => {
-                            setFieldValue('startDate', newValue);
-                          }}
-                          renderInput={(params) => <TextField {...params} fullWidth />}
-                          //minDate={new Date()}
-                        />
-                      </FormControl>
-                    </Grid>
-
-
-                    {/* Project Type */}
-                    <Grid item xs={6} sm={6}>
-                    
-                    
-                      <FormControl fullWidth>
-                        <InputLabel htmlFor="project-type-label">Project TYPE</InputLabel>
-                        <Select
-                          labelId="project-type"
-                          id="project-type"
-                          placeholder="Project Type"
-                          {...getFieldProps('projectType')}
-                          onChange={(event) => setFieldValue('projectType', event.target.value)}
-                        >
-                          <MenuItem value={'Electrical'}>Electrical</MenuItem>
-                      <MenuItem value={'Civil'}>Civil</MenuItem>
-                      <MenuItem value={'Robotics'}>Robotics</MenuItem>
-                      <MenuItem value={'Network'}>Network</MenuItem>
-                        </Select>
-                      </FormControl>
-                    </Grid>
-
-                    {/* project Scope */}
-                    <Grid item xs={12} sm={6}>
-                      <Stack spacing={1.25}>
-                        {/* <InputLabel htmlFor="budget">Project Scope</InputLabel> */}
-                        <TextField
-                          label='Project Scope'
-                          fullWidth
-                          id="scope"
-                          placeholder="Project Scope"
-                          {...getFieldProps('age')}
-                          error={Boolean(touched.age && errors.age)}
-                          helperText={touched.age && errors.age}
-                        />
-                      </Stack>
-                    </Grid>
-                    
-                  </Grid>
-                </Grid>    
-                {/* end of Lead information */}    
-                
-                <Divider />         
-                {/* ===================================+++++++++++++++++++++++++++++++++++++++++++++++++++++++++================================         */}
-                {lead &&(
-                  <>
-                                  <DialogTitle sx={{marginTop:'10px'}}>Additional information </DialogTitle>
-
-<Grid item xs={12}>
-  <Grid container >
-  
-  
-  {lead &&(
-        <>
-
-        
-        {/* budget */}
-        <Grid item xs={12}>
-          <Grid container spacing={3}>
-
-          <Grid item xs={2} sm={2}>
-                    
-                    {/* Project TYPE */}
-                    <FormControl fullWidth>
-                      <InputLabel disabled={true} htmlFor="currency-type-label">Currency</InputLabel>
-                      <Select
-                      // disabled={true}
-                        labelId="currency"
-                        id="currency"
-                        placeholder="Currency"
-                        {...getFieldProps('currency')}
-                        onChange={(event) => setFieldValue('currency', event.target.value)}
-                      >
-                        <MenuItem value={'USD'}>USD</MenuItem>
-                        <MenuItem value={'GBP'}>GBP</MenuItem>
-                        <MenuItem value={'EURO'}>EURO</MenuItem>
-                      </Select>
-                    </FormControl>
-          </Grid>
-          {/* Budget estimate */}
-          <Grid item xs={12} sm={4}>
-            
-            <Stack spacing={1.25}>
-              {/* <InputLabel htmlFor="budget">Budget</InputLabel> */}
-              <TextField
-                label='Estimated Budget'
-                fullWidth
-                id="budget"
-                placeholder="Budget Estimate"
-                {...getFieldProps('budgetEstimate')}
-                error={Boolean(touched.budgetEstimate && errors.budgetEstimate)}
-                helperText={touched.budgetEstimate && errors.budgetEstimate}
-              />
-            </Stack>
-          </Grid>
-
-          {/* empty for next row */}
-          <Grid item xs={6}></Grid>
-
-          {/* expected start date */}
-          <Grid item xs={6}>
-          <FormControl fullWidth>
-            <DesktopDatePicker
-              inputFormat="dd/MM/yyyy"
-              format="dd/MM/yyyy"
-              label="Expected Start Date"
-              value={formik.values.expectedStart}
-              onChange={(newValue) => {
-                setFieldValue('expectedStart', newValue);
-              }}
-              renderInput={(params) => <TextField {...params} fullWidth />}
-              //minDate={new Date()}
-            />
-          </FormControl>
-          </Grid>
-
-          {/* expected completion date */}
-          <Grid item xs={6}>
-          <FormControl fullWidth>
-            <DesktopDatePicker
-              inputFormat="dd/MM/yyyy"
-              format="dd/MM/yyyy"
-              label="Expected Completion Date"
-              value={formik.values.expectedCompletion}
-              onChange={(newValue) => {
-                setFieldValue('expectedCompletion', newValue);
-              }}
-              renderInput={(params) => <TextField {...params} fullWidth />}
-              //minDate={new Date()}
-            />
-          </FormControl>
-          </Grid>
-        </Grid>  
-      </Grid>
-    </>
-  )}    
-  </Grid>  
-</Grid> 
-
-{/* end of Additional information */}   
-                  </>
-                )}
+               
    
 
               </Grid>
@@ -695,9 +476,9 @@ const AddLead = ({ lead, onCancel }) => {
   );
 };
 
-AddLead.propTypes = {
+ViewLead.propTypes = {
   lead: PropTypes.any,
   onCancel: PropTypes.func
 };
 
-export default AddLead;
+export default ViewLead;

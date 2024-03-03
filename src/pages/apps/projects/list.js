@@ -251,7 +251,7 @@ const StartDateCell = ({ row }) => {
   const { values } = row;
   return (
     <>
-      <Typography variant="subtitle1">{format(parseISO(values.startDate), "M/d/yyyy")}</Typography>
+      {/* <Typography variant="subtitle1">{format(parseISO(values.startDate), "M/d/yyyy")}</Typography> */}
 
     </>
   );
@@ -259,7 +259,8 @@ const StartDateCell = ({ row }) => {
 const EndDateCell = ({ row }) => {
   const { values } = row;
   return (
-    <Typography variant="subtitle1">{format(parseISO(values.endDate), "M/d/yyyy")}</Typography>
+    // <Typography variant="subtitle1">{format(parseISO(values.endDate), "M/d/yyyy")}</Typography>
+    <></>
   );
 }
 
@@ -361,7 +362,7 @@ const ProjectListPage = () => {
 
     const { analytics, projects: { total: totalProjects } } = useSelector((state) => state.projects);
 
-  const [mode, setMode] = useState('CARD')
+  const [mode, setMode] = useState('TABLE')
 
   const [add, setAdd] = useState(false);
   const [open, setOpen] = useState(false);
@@ -382,15 +383,15 @@ const ProjectListPage = () => {
 
   const columns = useMemo(
     () => [
+      // {
+      //   title: 'Row Selection',
+      //   Header: SelectionHeader,
+      //   accessor: 'selection',
+      //   Cell: SelectionCell,
+      //   disableSortBy: true
+      // },
       {
-        title: 'Row Selection',
-        Header: SelectionHeader,
-        accessor: 'selection',
-        Cell: SelectionCell,
-        disableSortBy: true
-      },
-      {
-        Header: '#',
+        Header: ' ',
         accessor: '_id',
         className: 'cell-center',
         Cell: IndexCell,
@@ -399,25 +400,42 @@ const ProjectListPage = () => {
         Header: 'Project Name',
         accessor: 'projectName',
       },
+      
       {
-        Header: 'Client Name',
-        accessor: 'clientName',
+        Header: 'Project Total',
+        accessor: 'projecTotal',
+        Cell: ({ value }) => {
+          return '$ 0.0'
+        }
       },
+      // {
+      //   Header: 'Client Name',
+      //   accessor: 'clientName',
+      // },
       {
         Header: 'Start Date',
         accessor: 'startDate',
-        Cell: StartDateCell,
+        Cell: ({ value }) => {
+          if (value === null) {
+            return ''; // Or you can return any other representation of a blank cell
+          }
+          const date = new Date(value);
+          const day = date.getDate().toString().padStart(2, '0');
+          const month = (date.getMonth() + 1).toString().padStart(2, '0'); 
+          const year = date.getFullYear();
+          return `${day}/${month}/${year}`;
+        }
       },
-      {
-        Header: 'End Date',
-        accessor: 'endDate',
-        Cell: EndDateCell
-      },
-      {
-        Header: 'Attachment',
-        accessor: 'imageUrl',
-        Cell: CustomCell
-      },
+      // {
+      //   Header: 'End Date',
+      //   accessor: 'endDate',
+      //   Cell: EndDateCell
+      // },
+      // {
+      //   Header: 'Attachment',
+      //   accessor: 'imageUrl',
+      //   Cell: CustomCell
+      // },
       {
         Header: 'Status',
         accessor: 'status',

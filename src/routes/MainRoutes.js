@@ -25,6 +25,9 @@ const AppCustomerCard = Loadable(lazy(() => import('pages/apps/customer/card')))
 const AppLeadList = Loadable(lazy(() => import('pages/apps/lead/list')));
 const AppLeadCard = Loadable(lazy(() => import('pages/apps/lead/card')));
 
+const AppContactList = Loadable(lazy(() => import('pages/apps/contact/list')));
+const AppContactCard = Loadable(lazy(() => import('pages/apps/contact/card')));
+
 
 const AppProjectList = Loadable(lazy(() => import('pages/apps/projects/list')));
 const AppProjectCard = Loadable(lazy(() => import('pages/apps/projects/card')));
@@ -237,6 +240,21 @@ const MainRoutes = {
                 }
               ]
             },
+            {
+              path: 'contact',
+              children: [
+                {
+                  path: 'contact-list',
+                  element: <AppContactList /> 
+
+                },
+                {
+                  path: 'contact-card',
+                  element: <AppContactCard />
+                }
+              ]
+            },
+
             {
               path: 'project',
               children: [

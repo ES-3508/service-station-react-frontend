@@ -45,7 +45,7 @@ import { dispatch } from 'store';
 import { openSnackbar } from 'store/reducers/snackbar';
 
 // assets
-import { CameraOutlined, DeleteFilled } from '@ant-design/icons';
+import { CameraOutlined, CaretRightOutlined, DeleteFilled } from '@ant-design/icons';
 import {  deleteLead, updateLead, uploadLeadImage } from 'store/reducers/leads';
 import { createLead } from 'store/reducers/leads';
 
@@ -162,7 +162,7 @@ const ViewLead = ({ lead, onCancel }) => {
       projectType: lead?.projectType || '',
       projectSize: lead?.projectSize || '',
       budgetEstimate: lead?.budgetEstimate || '',
-      currency: lead ? lead.currency : '',
+      currency: lead ? lead.currency : 'USD',
       expectedStart: lead?.expectedStart
         ? new Date(lead.expectedStart)
         : new Date(),
@@ -246,15 +246,29 @@ const ViewLead = ({ lead, onCancel }) => {
       <FormikProvider value={formik}>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-            <DialogTitle sx={{fontSize: 32, p:3.5}}>{lead ? 'View Lead' : 'Create Lead'}</DialogTitle>
+            {/* <DialogTitle sx={{fontSize: 32, p:3.5}}>{formik.values.contactInformation.firstName +' '+formik.values.contactInformation.lastName }</DialogTitle> */}
+            <Grid container justifyContent="space-between" alignItems="center">
+              <Grid item>
+              <DialogTitle sx={{fontSize: 32, p:3.5}}>{formik.values.contactInformation.firstName +' '+formik.values.contactInformation.lastName }</DialogTitle>
+            </Grid>
+              <Grid item>
+                {lead && (
+                    <Button variant="contained" color="primary" size="small" sx={{marginRight:'20px'}}>
+                   Convert to Project 
+                    {/* <CaretRightOutlined/> */}
+                  </Button>
+                )}
+                
+              </Grid>
+            </Grid>
             <Divider />
             <DialogContent sx={{ pt: 0.8 }}>
-              <Grid container spacing={3}>
+              <Grid container spacing={1}>
                 <Grid item xs={12}> 
                 </Grid>
 
                 {/* ===================================+++++++++++++++++++++++++++++++++++++++++++++++++++++++++================================         */}
-                <DialogTitle>Contact information </DialogTitle> 
+                <DialogTitle sx={{marginTop:'10px'}}>Contact information </DialogTitle> 
 
                 <Grid item xs={12}>
                   <Grid container spacing={3}>
@@ -417,7 +431,7 @@ const ViewLead = ({ lead, onCancel }) => {
                     
                     {/* Project TYPE */}
                     <FormControl fullWidth>
-                      <InputLabel disabled={true} htmlFor="project-type-label">Project TYPE</InputLabel>
+                      <InputLabel disabled={true} htmlFor="project-type-label">Project Type</InputLabel>
                       <Select
                       disabled={true}
                         labelId="project-type"
@@ -442,7 +456,7 @@ const ViewLead = ({ lead, onCancel }) => {
                 
                 <Divider />           
                 {/* ===================================+++++++++++++++++++++++++++++++++++++++++++++++++++++++++================================         */}
-                <DialogTitle>Lead details </DialogTitle> 
+                <DialogTitle sx={{marginTop:'10px'}}>Lead details </DialogTitle> 
 
                 <Grid item xs={12}>
                   <Grid container spacing={3}>
@@ -557,7 +571,7 @@ const ViewLead = ({ lead, onCancel }) => {
                 {/* ===================================+++++++++++++++++++++++++++++++++++++++++++++++++++++++++================================         */}
                 {lead &&(
                   <>
-                                  <DialogTitle>Additional information </DialogTitle>
+                                  <DialogTitle sx={{marginTop:'10px'}}>Additional information </DialogTitle>
 
 <Grid item xs={12}>
   <Grid container >
@@ -566,17 +580,37 @@ const ViewLead = ({ lead, onCancel }) => {
   {lead &&(
         <>
 
+
         
         {/* budget */}
         <Grid item xs={12}>
           <Grid container spacing={3}>
           {/* Budget estimate */}
-          <Grid item xs={12} sm={6}>
+                  <Grid item xs={2} sm={2}>
+                    
+                    {/* Project TYPE */}
+                    <FormControl fullWidth>
+                      <InputLabel disabled={true} htmlFor="currency-type-label">Currency</InputLabel>
+                      <Select
+                      disabled={true}
+                        labelId="currency-type"
+                        id="currency-type"
+                        placeholder="Currency"
+                        {...getFieldProps('currency')}
+                        onChange={(event) => setFieldValue('currency', event.target.value)}
+                      >
+                        <MenuItem value={'USD'}>USD</MenuItem>
+                        <MenuItem value={'GBP'}>GBP</MenuItem>
+                        <MenuItem value={'EURO'}>EURO</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+          <Grid item xs={12} sm={4}>
             
             <Stack spacing={1.25}>
               {/* <InputLabel htmlFor="budget">Budget</InputLabel> */}
               <TextField
-                label='Budget'
+                label='Estimated Budget'
                 fullWidth
                 disabled={true}
                 id="budget"
@@ -589,7 +623,7 @@ const ViewLead = ({ lead, onCancel }) => {
           </Grid>
 
           {/* empty for next row */}
-          <Grid item xs={6}></Grid>
+          {/* <Grid item xs={6}></Grid> */}
 
           {/* expected start date */}
           <Grid item xs={6}>
@@ -615,7 +649,7 @@ const ViewLead = ({ lead, onCancel }) => {
             <DesktopDatePicker
               inputFormat="dd/MM/yyyy"
               format="dd/MM/yyyy"
-              
+              disabled={true}
               label="Expected Completion Date"
               value={formik.values.expectedCompletion}
               onChange={(newValue) => {

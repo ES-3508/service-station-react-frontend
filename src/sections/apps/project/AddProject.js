@@ -103,21 +103,21 @@ const AddProject = ({ project, onCancel }) => {
 
   const ProjectSchema = Yup.object().shape({
     projectName: Yup.string().max(255).required('Project name is required'),
-    clientName: Yup.string().max(255).required('Client name is required'),
-    asignTo: Yup.string().max(255)
-      .optional(),
-    // .required('Assigned persion is required').default(""),
-    asignBy: Yup.string().max(255).optional(),
-    // .required('Assigned by person is required').default(""),
-    startDate: Yup.date().required('Start date is required'),
-    endDate: Yup
-      .date()
-      .when('startDate', (date, schema) => date && schema.min(date, "End date can't be before start date"))
-      .nullable()
-      .required('End date is required'),
-    description: Yup.string().max(500).optional(),
-    files: Yup.mixed().optional(),
-    status: Yup.mixed().oneOf([ProjectStatus.PENDING, ProjectStatus.VERIFIED, ProjectStatus.REJECTED]).default(ProjectStatus.PENDING)
+    // clientName: Yup.string().max(255).required('Client name is required'),
+    // asignTo: Yup.string().max(255)
+    //   .optional(),
+    // // .required('Assigned persion is required').default(""),
+    // asignBy: Yup.string().max(255).optional(),
+    // // .required('Assigned by person is required').default(""),
+    // startDate: Yup.date().required('Start date is required'),
+    // endDate: Yup
+    //   .date()
+    //   .when('startDate', (date, schema) => date && schema.min(date, "End date can't be before start date"))
+    //   .nullable()
+    //   .required('End date is required'),
+    // description: Yup.string().max(500).optional(),
+    // files: Yup.mixed().optional(),
+    // status: Yup.mixed().oneOf([ProjectStatus.PENDING, ProjectStatus.VERIFIED, ProjectStatus.REJECTED]).default(ProjectStatus.PENDING)
   });
 
   const defaultValues = useMemo(() => ({
@@ -193,7 +193,7 @@ const AddProject = ({ project, onCancel }) => {
       <FormikProvider value={formik}>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-            <DialogTitle>{project ? 'Edit Project' : 'New Project'}</DialogTitle>
+            <DialogTitle>{project ? 'Edit Project' : 'Create Project'}</DialogTitle>
             <Divider />
             <DialogContent sx={{ p: 2.5 }}>
               <Grid container spacing={3}>
@@ -245,7 +245,7 @@ const AddProject = ({ project, onCancel }) => {
                     {/* name */}
                     <Grid item xs={12}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="project-name">Project Name</InputLabel>
+                        <InputLabel htmlFor="project-name">Project Name ( or Lead Name)</InputLabel>
                         <TextField
                           fullWidth
                           id="project-name"
@@ -271,15 +271,37 @@ const AddProject = ({ project, onCancel }) => {
                         />
                       </Stack>
                     </Grid>
+                    <Grid item xs={6} sm={6}>
+                        
+                        {/* Project TYPE */}
+                        <FormControl fullWidth>
+                          <InputLabel htmlFor="project-type-label">Project TYPE</InputLabel>
+                          <Select
+                            labelId="project-type"
+                            id="project-type"
+                            placeholder="Project Type"
+                            {...getFieldProps('projectType')}
+                            onChange={(event) => setFieldValue('projectType', event.target.value)}
+                          >
+                            <MenuItem value={'Electrical'}>Electrical</MenuItem>
+                            <MenuItem value={'Civil'}>Civil</MenuItem>
+                            <MenuItem value={'Robotics'}>Robotics</MenuItem>
+                            <MenuItem value={'Network'}>Network</MenuItem>
+                          </Select>
+                        </FormControl>
+                        </Grid>
                     {/* end of client name */}
                     {/* status */}
-                    <Grid item xs={12}>
+                    <Grid item xs={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="project-status">Status</InputLabel>
+                        
                         <FormControl fullWidth>
+                        <InputLabel htmlFor="project-status-label">Status</InputLabel>
                           <Select
+                            labelId="project-status"
                             id="column-hiding"
-                            displayEmpty
+                            placeholder="Status"
+                            // displayEmpty
                             {...getFieldProps('status')}
                             onChange={(event) => setFieldValue('status', event.target.value)}
                             input={<OutlinedInput id="select-column-hiding" placeholder="Sort by" />}
@@ -308,7 +330,7 @@ const AddProject = ({ project, onCancel }) => {
                     {/* end of status */}
 
                     {/* start date */}
-                    <Grid item xs={12} md={6}>
+                    <Grid item xs={6} md={6}>
                       <Stack spacing={1}>
                         <InputLabel>Start Date</InputLabel>
                         <FormControl sx={{ width: '100%' }} error={Boolean(touched.startDate && errors.startDate)}>
@@ -322,7 +344,7 @@ const AddProject = ({ project, onCancel }) => {
                     {/* end of start date */}
 
                     {/* end date */}
-                    <Grid item xs={12} md={6}>
+                    {/* <Grid item xs={12} md={6}>
                       <Stack spacing={1}>
                         <InputLabel>End Date</InputLabel>
                         <FormControl sx={{ width: '100%' }} error={Boolean(touched.endDate && errors.endDate)}>
@@ -332,7 +354,7 @@ const AddProject = ({ project, onCancel }) => {
                         </FormControl>
                       </Stack>
                       {touched.endDate && errors.endDate && <FormHelperText error={true}>{errors.endDate}</FormHelperText>}
-                    </Grid>
+                    </Grid> */}
                     {/* end of end date */}
 
                     {/* description */}
@@ -353,12 +375,12 @@ const AddProject = ({ project, onCancel }) => {
                     </Grid>
                     {/* end of description */}
                     {/* attachment */}
-                    <Grid item xs={12}>
+                    {/* <Grid item xs={12}>
                       <Stack spacing={1.5}>
                         <InputLabel htmlFor="project-attachment">Attachment</InputLabel>
                         <UploadSingleFile setFieldValue={setFieldValue} file={values.files} />
                       </Stack>
-                    </Grid>
+                    </Grid> */}
                     {/* end of attachment */}
 
                     {project?.imageUrl && !values.files && (<img
