@@ -38,7 +38,7 @@ import { dispatch } from 'store';
 import { DeleteFilled } from '@ant-design/icons';
 import UploadSingleFile from 'components/third-party/dropzone/SingleFile';
 import UploadAvatar from 'components/third-party/dropzone/Avatar';
-import { ProjectStatus } from 'config';
+import { ProjectStatuses } from 'config';
 import { createProject, getProjectAttachment, updateProject, uploadProjectAttachment } from 'store/reducers/projects';
 import AlertProjectDelete from './AlertProjectDelete';
 
@@ -121,6 +121,7 @@ const AddProject = ({ project, onCancel }) => {
 
   const defaultValues = useMemo(
     () => ({
+      projectType:project ? project.projectType:' ',
       projectName: project ? project.projectName : '',
       // clientName: project ? project.clientName : (lead?.contactInformation?.firstName + ' ' + lead?.contactInformation?.lastName ),
       asignTo: project ? project.asignTo : '',
@@ -128,7 +129,7 @@ const AddProject = ({ project, onCancel }) => {
       startDate: project ? new Date(project.startDate) : new Date(),
       endDate: project ? new Date(project.endDate) : null,
       description: project ? project?.description : '',
-      status: project ? project?.status : ProjectStatus.PENDING
+      projectStatus: project ? project?.projectStatus : ProjectStatuses.PENDING
     }),
     [project]
   );
@@ -303,7 +304,7 @@ const AddProject = ({ project, onCancel }) => {
                             placeholder="Status"
                             // displayEmpty
                             {...getFieldProps('status')}
-                            onChange={(event) => setFieldValue('status', event.target.value)}
+                            onChange={(event) => setFieldValue('projectStatus', event.target.value)}
                             input={<OutlinedInput id="select-column-hiding" placeholder="Sort by" />}
                             renderValue={(selected) => {
                               if (!selected) {
@@ -313,7 +314,7 @@ const AddProject = ({ project, onCancel }) => {
                               return <Typography variant="subtitle2">{selected}</Typography>;
                             }}
                           >
-                            {Object.values(ProjectStatus).map((column) => (
+                            {Object.values(ProjectStatuses).map((column) => (
                               <MenuItem key={column} value={column}>
                                 <ListItemText primary={column} />
                               </MenuItem>

@@ -39,7 +39,7 @@ import { dispatch } from 'store';
 import { DeleteFilled, WarningOutlined } from '@ant-design/icons';
 import UploadSingleFile from 'components/third-party/dropzone/SingleFile';
 import UploadAvatar from 'components/third-party/dropzone/Avatar';
-import { ProjectStatus } from 'config';
+import { ProjectStatuses } from 'config';
 import { createProject, getProjectAttachment, updateProject, uploadProjectAttachment } from 'store/reducers/projects';
 import { Box } from '@mui/system';
 
@@ -73,7 +73,7 @@ const ConvertToProject = ({ lead, onCancel }) => {
       startDate: lead ? new Date(lead.startDate) : new Date(),
       endDate: lead ? new Date(lead.endDate) : null,
       description: lead ? lead?.description : '',
-      status: lead ? lead?.status : ProjectStatus.PENDING,
+      projectStatus: lead ? lead?.projectStatus : ProjectStatuses.PENDING,
       projectType: lead ? lead?.projectType : ''
     }),
     [lead]
@@ -256,7 +256,7 @@ const ConvertToProject = ({ lead, onCancel }) => {
                               placeholder="Status"
                               // displayEmpty
                               {...getFieldProps('status')}
-                              onChange={(event) => setFieldValue('status', event.target.value)}
+                              onChange={(event) => setFieldValue('projectStatus', event.target.value)}
                               input={<OutlinedInput id="select-column-hiding" placeholder="Sort by" />}
                               renderValue={(selected) => {
                                 if (!selected) {
@@ -266,16 +266,16 @@ const ConvertToProject = ({ lead, onCancel }) => {
                                 return <Typography variant="subtitle2">{selected}</Typography>;
                               }}
                             >
-                              {Object.values(ProjectStatus).map((column) => (
+                              {Object.values(ProjectStatuses).map((column) => (
                                 <MenuItem key={column} value={column}>
                                   <ListItemText primary={column} />
                                 </MenuItem>
                               ))}
                             </Select>
                           </FormControl>
-                          {touched.status && errors.status && (
+                          {touched.projectStatus && errors.projectStatus && (
                             <FormHelperText error id="standard-weight-helper-text-email-login" sx={{ pl: 1.75 }}>
-                              {errors.status}
+                              {errors.projectStatus}
                             </FormHelperText>
                           )}
                         </Stack>

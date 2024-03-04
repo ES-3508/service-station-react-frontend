@@ -264,6 +264,41 @@ const EndDateCell = ({ row }) => {
   );
 }
 
+const CustomCell2 = (row, setProject) => {
+  const { values } = row;
+  console.log('values name ', row.values._id);
+  const {
+    projects: { projects, total },
+    action
+  } = useSelector((state) => state.projects);
+  const filterProjectsById = (_id) => {
+    const selectedProject = projects.find((project) => project._id === _id);
+    // Do something with the selected Project, for example, set it in state
+    setProject(selectedProject);
+  };
+  return (
+    <Stack direction="row" spacing={1.5} alignItems="center">
+      {/* <Avatar alt="Avatar 1" size="sm" src={values.imageUrl} /> */}
+      <Stack spacing={0}>
+        <Link to={`/apps/project/project-view/${values._id}`} style={{ textDecoration: 'none' }}>
+          <Typography
+            variant="subtitle1"
+            style={{ cursor: 'pointer', textDecoration: 'underline', color: '#d59143' }}
+            // onClick={(e) => {
+            //   e.stopPropagation();
+            //   filterLeadsById(row.values._id);
+            //   handleOpenTabLead();
+            // }}
+          >
+            {values?.projectName}
+           
+          </Typography>
+        </Link>
+      </Stack>
+    </Stack>
+  );
+};
+
 const NumberFormatCell = ({ value }) => <PatternFormat displayType="text" format="+1 (###) ###-####" mask="_" defaultValue={value} />;
 
 const StatusCell = ({ value }) => {
@@ -399,6 +434,7 @@ const ProjectListPage = () => {
       {
         Header: 'Project Name',
         accessor: 'projectName',
+        Cell: ({ row }) => CustomCell2(row, setProject)
       },
       
       {
