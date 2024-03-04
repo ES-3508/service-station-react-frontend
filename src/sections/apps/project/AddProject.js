@@ -38,7 +38,7 @@ import { dispatch } from 'store';
 import { DeleteFilled } from '@ant-design/icons';
 import UploadSingleFile from 'components/third-party/dropzone/SingleFile';
 import UploadAvatar from 'components/third-party/dropzone/Avatar';
-import { ProjectStatuses } from 'config';
+import { ProjectStatuses } from '../../../config';
 import { createProject, getProjectAttachment, updateProject, uploadProjectAttachment } from 'store/reducers/projects';
 import AlertProjectDelete from './AlertProjectDelete';
 
