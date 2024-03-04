@@ -110,7 +110,7 @@ export default function KanbanPage() {
           </Grid>
         </ScrollX>
 
-        <Box sx={{ display: 'flex' }} mt={1}>
+        <Box sx={{}} mt={1}>
 
           <Grid container spacing={1}>
             {/*<Grid item xs={12}>*/}

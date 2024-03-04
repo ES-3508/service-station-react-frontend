@@ -295,7 +295,7 @@ const ActionCell = (row, setProject, setProjectDeleteId, handleAdd, handleClose,
           </IconButton>
         </Link>
       </Tooltip>
-      <Tooltip title="View">
+      {/* <Tooltip title="View">
           <IconButton
               color="secondary"
               onClick={(e) => {
@@ -305,7 +305,7 @@ const ActionCell = (row, setProject, setProjectDeleteId, handleAdd, handleClose,
           >
               {collapseIcon}
           </IconButton>
-      </Tooltip>
+      </Tooltip> */}
         <Tooltip title="Edit">
             <IconButton
                 color="primary"

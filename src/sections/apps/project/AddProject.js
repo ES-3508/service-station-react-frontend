@@ -122,7 +122,7 @@ const AddProject = ({ project, onCancel }) => {
   const defaultValues = useMemo(
     () => ({
       projectName: project ? project.projectName : '',
-      clientName: project ? project.clientName : '',
+      // clientName: project ? project.clientName : (lead?.contactInformation?.firstName + ' ' + lead?.contactInformation?.lastName ),
       asignTo: project ? project.asignTo : '',
       asignBy: project ? project.asignBy : '',
       startDate: project ? new Date(project.startDate) : new Date(),
@@ -261,7 +261,7 @@ const AddProject = ({ project, onCancel }) => {
                     </Grid>
                     {/* end of name */}
                     {/* client name */}
-                    <Grid item xs={12}>
+                    {/* <Grid item xs={12}>
                       <Stack spacing={1.25}>
                         <InputLabel htmlFor="client-name">Contact Name</InputLabel>
                         <TextField
@@ -273,7 +273,7 @@ const AddProject = ({ project, onCancel }) => {
                           helperText={touched.clientName && errors.clientName}
                         />
                       </Stack>
-                    </Grid>
+                    </Grid> */}
                     <Grid item xs={6} sm={6}>
                       {/* Project TYPE */}
                       <FormControl fullWidth>

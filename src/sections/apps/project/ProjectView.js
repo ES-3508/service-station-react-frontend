@@ -57,7 +57,7 @@ const ProjectView = ({ data }) => {
                   }}
                 />
                 <Grid container spacing={3}>
-                  <Grid item xs={12}>
+                  {/* <Grid item xs={12}>
                     <Stack spacing={2.5} alignItems="center">
                       <Avatar alt="Avatar 1" size="xl" src={data.imageUrl} />
                       <Stack spacing={0.5} alignItems="center">
@@ -65,7 +65,7 @@ const ProjectView = ({ data }) => {
                         <Typography color="secondary">Client: {data.clientName}</Typography>
                       </Stack>
                     </Stack>
-                  </Grid>
+                  </Grid> */}
                   {/*<Grid item xs={12}>*/}
                   {/*  <Divider />*/}
                   {/*</Grid>*/}
