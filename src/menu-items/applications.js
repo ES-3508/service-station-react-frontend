@@ -12,7 +12,7 @@ import {
   UserOutlined,
   AppstoreAddOutlined,
   FilterOutlined,
-  UsergroupDeleteOutlined ,
+  UsergroupDeleteOutlined,
   SettingOutlined
 } from '@ant-design/icons';
 
@@ -26,10 +26,9 @@ const icons = {
   UserOutlined,
   AppstoreAddOutlined,
   FileTextOutlined,
-  FilterOutlined ,
+  FilterOutlined,
   UsergroupDeleteOutlined,
   SettingOutlined
-   
 };
 // ==============================|| MENU ITEMS - APPLICATIONS ||============================== //
 
@@ -61,16 +60,14 @@ const applications = {
     //   icon: BuildOutlined,
     //   url: '/apps/kanban/board'
     // },
-    
-    
 
     {
       id: 'Lead',
-      title: <FormattedMessage id="Leads" />,
+      title: <FormattedMessage id="Lead" />,
       // type: 'collapse',
       icon: icons.FilterOutlined,
       type: 'item',
-      url: '/apps/lead/lead-list',
+      url: '/apps/lead/lead-list'
       // children: [
       //   {
       //     id: 'lead-list',
@@ -87,7 +84,6 @@ const applications = {
       // ]
     },
 
-    
     // {
     //   id: 'Contact',
     //   title: <FormattedMessage id="Contact" />,
@@ -113,7 +109,7 @@ const applications = {
       id: 'contact',
       title: <FormattedMessage id="Contacts" />,
       type: 'item',
-      icon: icons.UsergroupDeleteOutlined ,
+      icon: icons.UsergroupDeleteOutlined,
       url: '/apps/contact/contact-list'
       // children: [
       //   {
@@ -122,12 +118,12 @@ const applications = {
       //     type: 'item',
       //     url: '/apps/contact/contact-list'
       //   },
-        // {
-        //   id: 'project-card',
-        //   title: <FormattedMessage id="cards" />,
-        //   type: 'item',
-        //   url: '/apps/project/project-card'
-        // }
+      // {
+      //   id: 'project-card',
+      //   title: <FormattedMessage id="cards" />,
+      //   type: 'item',
+      //   url: '/apps/project/project-card'
+      // }
       // ]
     },
     {
@@ -141,7 +137,7 @@ const applications = {
           title: <FormattedMessage id="All Projects" />,
           type: 'item',
           url: '/apps/project/project-list'
-        },
+        }
         // {
         //   id: 'project-card',
         //   title: <FormattedMessage id="cards" />,
@@ -182,8 +178,8 @@ const applications = {
           title: <FormattedMessage id="details" />,
           type: 'item',
           url: '/apps/invoice/details/1'
-        },
-       
+        }
+
         // {
         //   id: 'edit',
         //   title: <FormattedMessage id="edit" />,
@@ -245,7 +241,7 @@ const applications = {
           title: <FormattedMessage id="Add Material" />,
           type: 'item',
           url: '/apps/e-commerce/add-new-product'
-        },
+        }
         // {
         //   id: 'checkout',
         //   title: <FormattedMessage id="checkout" />,
@@ -272,15 +268,15 @@ const applications = {
           title: <FormattedMessage id="User Permissions" />,
           type: 'item',
           url: '/apps/user/role-list'
-        },
+        }
       ]
-    },
-    {
-      id: 'client-portal',
-      title: <FormattedMessage id="Client Portal (Testing)" />,
-      type: 'item',
-      url: 'apps/lead/lead-view'
-    },
+    }
+    // {
+    //   id: 'client-portal',
+    //   title: <FormattedMessage id="Client Portal (Testing)" />,
+    //   type: 'item',
+    //   url: 'apps/lead/lead-view/65e5c6724158a28219cd566a'
+    // },
   ]
 };
 

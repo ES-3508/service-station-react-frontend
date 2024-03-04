@@ -126,8 +126,8 @@ const TabLead = () => {
     const file = event.target.files[0]; // Get the selected file
     console.log('file', file);
     if (file) {
-      console.log("filr>>>", file);
-        dispatch(uploadLeadImage({leadId:selectedLead._id, file:file})); // Dispatch the uploadLeadImage thunk with the selected file
+      console.log('filr>>>', file);
+      dispatch(uploadLeadImage({ leadId: selectedLead._id, file: file })); // Dispatch the uploadLeadImage thunk with the selected file
     }
   };
 
@@ -137,12 +137,15 @@ const TabLead = () => {
   };
   return (
     <Grid container spacing={3}>
-      <Grid item xs={11}></Grid>
-      <Grid item xs={1}>
-        {/* <Chip color="success" label="Active" size="medium" variant="light"  sx={{marginRight:'10px'}}/> */}
+      <Grid item xs={9}></Grid> {/* Empty space to push buttons to the right */}
+      <Grid item xs={1} sx={{ textAlign: 'right', paddingRight: '2x' }}>
+        <Button variant="contained" color="secondary" size="small">
+          Message
+        </Button>
+      </Grid>
+      <Grid item xs={2} sx={{ textAlign: 'left', paddingLeft: '2px' }}>
         <Button variant="contained" color="primary" size="small">
-          {' '}
-          Message{' '}
+          Convert to Project
         </Button>
       </Grid>
       <Grid item xs={12} sm={5} md={4} xl={3}>
@@ -279,31 +282,33 @@ const TabLead = () => {
                   <input type="file" onChange={handleFileInputChange} style={{ display: 'none' }} ref={fileInput} />
                 </Button>
               </Grid>
-              {selectedLead?.leadFiles?.map((file,index)=> (
+              {selectedLead?.leadFiles?.map((file, index) => (
                 <Card
-                key={index}
-                sx={{
-                  maxWidth: '100%',
-                  width: '100%',
-                  padding: '10px',
-                  boxShadow: 'none',
-                  borderBottom: 'solid 1px',
-                  borderColor: '#dbdbdb',
-                  display: "flex",
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent:'space-between'
-                }}
-              >
-                <Typography>{file.fileName}</Typography>
-                <Tooltip title="Delete Lead Note" placement="top">
-                    <IconButton 
-                    // onClick={() => deleteHandler(lead)}
-                     size="large" color="error">
+                  key={index}
+                  sx={{
+                    maxWidth: '100%',
+                    width: '100%',
+                    padding: '10px',
+                    boxShadow: 'none',
+                    borderBottom: 'solid 1px',
+                    borderColor: '#dbdbdb',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between'
+                  }}
+                >
+                  <Typography>{file.fileName}</Typography>
+                  <Tooltip title="Delete Lead Note" placement="top">
+                    <IconButton
+                      // onClick={() => deleteHandler(lead)}
+                      size="large"
+                      color="error"
+                    >
                       <DeleteFilled />
                     </IconButton>
                   </Tooltip>
-              </Card>
+                </Card>
               ))}
             </MainCard>
           </Grid>
@@ -347,30 +352,32 @@ const TabLead = () => {
                     boxShadow: 'none',
                     borderBottom: 'solid 1px',
                     borderColor: '#dbdbdb',
-                    display: "flex",
+                    display: 'flex',
                     flexDirection: 'row',
                     alignItems: 'center',
-                    justifyContent:'space-between'
+                    justifyContent: 'space-between'
                   }}
                 >
                   <Typography>{note.note}</Typography>
                   <Tooltip title="Delete Lead Note" placement="top">
-                      <IconButton 
+                    <IconButton
                       // onClick={() => deleteHandler(lead)}
-                       size="large" color="error">
-                        <DeleteFilled />
-                      </IconButton>
-                    </Tooltip>
+                      size="large"
+                      color="error"
+                    >
+                      <DeleteFilled />
+                    </IconButton>
+                  </Tooltip>
                 </Card>
                 // </Grid>
               ))}
             </MainCard>
           </Grid>
-          <Grid item xs={12}>
+          {/* <Grid item xs={12}>
             <MainCard title="Date and Location">
               <GoogleMapAutocomplete />
             </MainCard>
-          </Grid>
+          </Grid> */}
           <Grid item xs={12}>
             <MainCard title="Tags">
               <Autocomplete

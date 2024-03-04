@@ -170,7 +170,7 @@ const AddLead = ({ lead, onCancel }) => {
         email: lead?.contactInformation?.email || ''
       },
 
-      projectType: lead?.projectType || '',
+      projectType: lead?.projectType || 'Glass',
       projectSize: lead?.projectSize || '',
       budgetEstimate: lead?.budgetEstimate || '',
       currency: lead ? lead.currency : 'GBP',
@@ -377,7 +377,7 @@ const AddLead = ({ lead, onCancel }) => {
                     </Grid>
 
                     {/* company name */}
-                    <Grid item xs={12}>
+                    <Grid item xs={6}>
                       <Stack spacing={1.25}>
                         {/* <InputLabel htmlFor="customer-company-name">Company Name</InputLabel> */}
                         <TextField
@@ -516,10 +516,10 @@ const AddLead = ({ lead, onCancel }) => {
                       <Stack spacing={1.25}>
                         {/* <InputLabel htmlFor="budget">Project Scope</InputLabel> */}
                         <TextField
-                          label="Project Scope"
+                          label="Project Size / Scope"
                           fullWidth
                           id="scope"
-                          placeholder="Project Scope"
+                          placeholder="Project Size / Scope"
                           {...getFieldProps('age')}
                           error={Boolean(touched.age && errors.age)}
                           helperText={touched.age && errors.age}
