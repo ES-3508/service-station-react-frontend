@@ -4,19 +4,19 @@ import { useCallback, useEffect, useMemo, useState, Fragment } from 'react';
 // material-ui
 import { alpha, useTheme } from '@mui/material/styles';
 import {
-    Box,
-    Button,
-    Chip,
-    Dialog,
-    Stack,
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableRow,
-    Tooltip,
-    Typography,
-    useMediaQuery
+  Box,
+  Button,
+  Chip,
+  Dialog,
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Tooltip,
+  Typography,
+  useMediaQuery
 } from '@mui/material';
 
 // third-party
@@ -46,12 +46,22 @@ import AlertLeadDelete from 'sections/apps/lead/AlertLeadDelete';
 import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 
 // assets
-import {CloseOutlined, PlusOutlined, EyeTwoTone, EditTwoTone, DeleteTwoTone, PhoneOutlined, UnorderedListOutlined, AppstoreOutlined} from '@ant-design/icons';
+import {
+  CloseOutlined,
+  PlusOutlined,
+  EyeTwoTone,
+  EditTwoTone,
+  DeleteTwoTone,
+  PhoneOutlined,
+  UnorderedListOutlined,
+  AppstoreOutlined
+} from '@ant-design/icons';
 import { dispatch, useSelector } from 'store';
 import { getLeads } from 'store/reducers/leads';
-import LeadCardPage from "./card";
+import LeadCardPage from './card';
 import ViewLead from 'sections/apps/lead/LeadView';
-
+import TabLead from 'sections/apps/lead/View';
+import { Link } from 'react-router-dom';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -62,13 +72,13 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
   const filterTypes = useMemo(() => renderFilterTypes, []);
   const sortBy = { id: 'created', desc: false };
 
-  const [query, setQuery] = useState('')
-  const [numOfPages, setNumOfPages] = useState(10)
+  const [query, setQuery] = useState('');
+  const [numOfPages, setNumOfPages] = useState(10);
 
-  const { leads: {
-    leads,
-    total,
-  }, action } = useSelector((state) => state.leads);
+  const {
+    leads: { leads, total },
+    action
+  } = useSelector((state) => state.leads);
 
   const {
     getTableProps,
@@ -86,7 +96,7 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
     preGlobalFilteredRows,
     // setGlobalFilter,
     setSortBy,
-    selectedFlatRows,
+    selectedFlatRows
   } = useTable(
     {
       columns,
@@ -95,7 +105,7 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
       initialState: { pageIndex: 0, pageSize: 10, hiddenColumns: ['age', 'address', 'imageUrl', 'zipCode', 'web', 'description'] },
       manualPagination: true,
       pageCount: Math.ceil(total / numOfPages),
-      autoResetPage: false,
+      autoResetPage: false
     },
     useGlobalFilter,
     useFilters,
@@ -107,13 +117,14 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
 
   useEffect(() => {
     dispatch(getLeads(pageIndex, pageSize, query));
-  }, [pageIndex, pageSize, query, action])
+  }, [pageIndex, pageSize, query, action]);
 
- 
-  const renderRowSubComponent = useCallback(({ row }) => {
-    return <LeadView data={leads.find((lead) => lead._id === row.values._id)} />;
-  }, [leads]);
-
+  const renderRowSubComponent = useCallback(
+    ({ row }) => {
+      return <LeadView data={leads.find((lead) => lead._id === row.values._id)} />;
+    },
+    [leads]
+  );
 
   return (
     <>
@@ -140,10 +151,10 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
           />
           <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
             <SortingSelect sortBy={sortBy.id} setSortBy={setSortBy} allColumns={allColumns} />
-            <Button variant="contained" color='primary' startIcon={<PlusOutlined />} onClick={handleAdd} size="small">
+            <Button variant="contained" color="primary" startIcon={<PlusOutlined />} onClick={handleAdd} size="small">
               Add Lead
             </Button>
-            
+
             <CSVExport data={selectedFlatRows.length > 0 ? selectedFlatRows.map((d) => d.original) : leads} filename={'lead-list.csv'} />
           </Stack>
         </Stack>
@@ -186,10 +197,18 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
             })}
             <TableRow sx={{ '&:hover': { bgcolor: 'transparent !important' } }}>
               <TableCell sx={{ p: 2, py: 3 }} colSpan={9}>
-                <TablePagination serverSidePagination={true} total={total} gotoPage={gotoPage} rows={rows} setPageSize={(size) => {
-                  setPageSize(size);
-                  setNumOfPages(size);
-                }} pageSize={pageSize} pageIndex={pageIndex} />
+                <TablePagination
+                  serverSidePagination={true}
+                  total={total}
+                  gotoPage={gotoPage}
+                  rows={rows}
+                  setPageSize={(size) => {
+                    setPageSize(size);
+                    setNumOfPages(size);
+                  }}
+                  pageSize={pageSize}
+                  pageIndex={pageIndex}
+                />
               </TableCell>
             </TableRow>
           </TableBody>
@@ -217,21 +236,6 @@ const SelectionHeader = ({ getToggleAllPageRowsSelectedProps }) => (
 
 const IndexCell = ({ row, state }) => {
   return <Typography variant="subtitle1">{Number(row.id) + 1 + state.pageIndex * state.pageSize}</Typography>;
-}
-
-const CustomCell = ({ row }) => {
-  const { values } = row;
-  return (
-    <Stack direction="row" spacing={1.5} alignItems="center">
-      {/* <Avatar alt="Avatar 1" size="sm" src={values.imageUrl} /> */}
-      <Stack spacing={0}>
-        <Typography variant="subtitle1">{values.created}</Typography>
-        <Typography variant="caption" color="textSecondary">
-          {values.email}
-        </Typography>
-      </Stack>
-    </Stack>
-  );
 };
 
 const NumberFormatCell = ({ value }) => <PatternFormat displayType="text" format="+1 (###) ###-####" mask="_" defaultValue={value} />;
@@ -267,13 +271,13 @@ const ActionCell = (row, setLead, setLeadDeleteId, handleAdd, handleView, handle
     <EyeTwoTone twoToneColor={theme.palette.secondary.main} />
   );
 
-  const { leads: {
-    leads,
-    total,
-  }, action } = useSelector((state) => state.leads);
- 
+  const {
+    leads: { leads, total },
+    action
+  } = useSelector((state) => state.leads);
+
   const filterLeadsById = (_id) => {
-    console.log(_id,"idddddddddd")
+    console.log(_id, 'idddddddddd');
     const selectedLead = leads.find((lead) => lead._id === _id);
     // Do something with the selected lead, for example, set it in state
     setLead(selectedLead);
@@ -304,13 +308,13 @@ const ActionCell = (row, setLead, setLeadDeleteId, handleAdd, handleView, handle
           <EyeTwoTone twoToneColor={theme.palette.primary.main} />
         </IconButton>
       </Tooltip>
-      
+
       <Tooltip title="edit">
         <IconButton
           color="primary"
           onClick={(e) => {
             e.stopPropagation();
-            console.log(row.values)
+            console.log(row.values);
             filterLeadsById(row.values._id); // Pass the _id of the selected row
             handleAdd();
           }}
@@ -318,8 +322,7 @@ const ActionCell = (row, setLead, setLeadDeleteId, handleAdd, handleView, handle
           <EditTwoTone twoToneColor={theme.palette.primary.main} />
         </IconButton>
       </Tooltip>
-      
-      
+
       <Tooltip title="Delete">
         <IconButton
           color="error"
@@ -335,6 +338,40 @@ const ActionCell = (row, setLead, setLeadDeleteId, handleAdd, handleView, handle
           <DeleteTwoTone twoToneColor={theme.palette.error.main} />
         </IconButton>
       </Tooltip>
+    </Stack>
+  );
+};
+
+const CustomCell = (row, setLead, handleOpenTabLead) => {
+  const { values } = row;
+  console.log('values name ', row.values._id);
+  const {
+    leads: { leads, total },
+    action
+  } = useSelector((state) => state.leads);
+  const filterLeadsById = (_id) => {
+    const selectedLead = leads.find((lead) => lead._id === _id);
+    // Do something with the selected lead, for example, set it in state
+    setLead(selectedLead);
+  };
+  return (
+    <Stack direction="row" spacing={1.5} alignItems="center">
+      {/* <Avatar alt="Avatar 1" size="sm" src={values.imageUrl} /> */}
+      <Stack spacing={0}>
+      <Link to={`/apps/lead/lead-view/${values._id}`} style={{ textDecoration: 'none' }}>
+        <Typography
+          variant="subtitle1"
+          style={{ cursor: 'pointer' }}
+          // onClick={(e) => {
+          //   e.stopPropagation();
+          //   filterLeadsById(row.values._id);
+          //   handleOpenTabLead();
+          // }}
+        >
+          {values?.contactInformation?.firstName}
+        </Typography>
+        </Link>
+      </Stack>
     </Stack>
   );
 };
@@ -362,7 +399,7 @@ SelectionHeader.propTypes = {
 const LeadListPage = () => {
   const theme = useTheme();
 
-  const [mode, setMode] = useState('TABLE')
+  const [mode, setMode] = useState('TABLE');
 
   const [add, setAdd] = useState(false);
   const [view, setView] = useState(false);
@@ -372,6 +409,7 @@ const LeadListPage = () => {
     _id: null,
     created: ''
   });
+  const [tebLeadOpen, setTabLeadOpen] = useState(false);
 
   const handleAdd = () => {
     setAdd(!add);
@@ -387,6 +425,10 @@ const LeadListPage = () => {
     setOpen(!open);
   };
 
+  const handleOpenTabLead = () => {
+    setTabLeadOpen(true);
+  }
+
   const columns = useMemo(
     () => [
       // {
@@ -400,16 +442,17 @@ const LeadListPage = () => {
         Header: '#',
         accessor: '_id',
         className: 'cell-center',
-        Cell: IndexCell,
+        Cell: IndexCell
       },
       {
         Header: 'First Name',
-        accessor: 'contactInformation.firstName',
+        accessor: 'contactInformation',
+        Cell: ({row}) => CustomCell(row, setLead, handleOpenTabLead)
         // Cell: CustomCell
       },
       {
         Header: 'Second Name',
-        accessor: 'contactInformation.lastName',
+        accessor: 'contactInformation.lastName'
         // Cell: CustomCell
       },
       // {
@@ -417,10 +460,10 @@ const LeadListPage = () => {
       //   accessor: 'name',
       //   // Cell: CustomCell
       // },
-      
+
       {
         Header: 'Project Type',
-        accessor: 'projectType',
+        accessor: 'projectType'
         // Cell: ProjectType
       },
       {
@@ -428,7 +471,6 @@ const LeadListPage = () => {
         //manual edit
         accessor: 'source',
         Cell: ({ value }) => {
-          
           return `Manual Entry`;
         }
       },
@@ -441,13 +483,12 @@ const LeadListPage = () => {
           }
           const date = new Date(value);
           const day = date.getDate().toString().padStart(2, '0');
-          const month = (date.getMonth() + 1).toString().padStart(2, '0'); 
+          const month = (date.getMonth() + 1).toString().padStart(2, '0');
           const year = date.getFullYear();
           return `${day}/${month}/${year}`;
         }
       },
 
-     
       {
         Header: 'Status',
         accessor: 'accountStatus',
@@ -460,14 +501,13 @@ const LeadListPage = () => {
         Cell: ({ row }) => ActionCell(row, setLead, setDeletingLead, handleAdd, handleView, handleClose, theme)
       }
     ],
-    // 
+    //
     [theme]
   );
 
-
   return (
     <>
-        {/* <Box sx={{display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.5 }}>
+      {/* <Box sx={{display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.5 }}>
             <IconButton size="large" color={mode === "TABLE" ? "primary" : "secondary"} onClick={() => setMode("TABLE")}>
                 <UnorderedListOutlined />
             </IconButton>
@@ -476,48 +516,45 @@ const LeadListPage = () => {
             </IconButton>
         </Box> */}
 
-        {mode === "TABLE" ? (
-            <MainCard content={false}>
-                <ScrollX>
-                    <ReactTable
-                        columns={columns}
-                        handleAdd={handleAdd}
-                        getHeaderProps={(column) => column.getSortByToggleProps()}
-                    />
-                </ScrollX>
-                <AlertLeadDelete title={deletingLead.created} leadId={deletingLead._id} open={open} handleClose={handleClose} />
-                {/* add user dialog */}
-                <Dialog
-                    maxWidth="sm"
-                    TransitionComponent={PopupTransition}
-                    keepMounted
-                    fullWidth
-                    onClose={handleAdd}
-                    open={add}
-                    sx={{ '& .MuiDialog-paper': { p: 0 }, transition: 'transform 225ms' }}
-                    aria-describedby="alert-dialog-slide-description"
-                >
-                    <AddLead lead={lead} onCancel={handleAdd} />
-                </Dialog>
+      {mode === 'TABLE' ? (
+        <MainCard content={false}>
+          <ScrollX>
+            <ReactTable columns={columns} handleAdd={handleAdd} getHeaderProps={(column) => column.getSortByToggleProps()} />
+          </ScrollX>
+          <AlertLeadDelete title={deletingLead.created} leadId={deletingLead._id} open={open} handleClose={handleClose} />
+          {/* add user dialog */}
+          <Dialog
+            maxWidth="sm"
+            TransitionComponent={PopupTransition}
+            keepMounted
+            fullWidth
+            onClose={handleAdd}
+            open={add}
+            sx={{ '& .MuiDialog-paper': { p: 0 }, transition: 'transform 225ms' }}
+            aria-describedby="alert-dialog-slide-description"
+          >
+            <AddLead lead={lead} onCancel={handleAdd} />
+          </Dialog>
 
-                {/* view lead dialog */}
-                <Dialog
-                    maxWidth="sm"
-                    TransitionComponent={PopupTransition}
-                    keepMounted
-                    fullWidth
-                    onClose={handleView}
-                    open={view}
-                    sx={{ '& .MuiDialog-paper': { p: 0 }, transition: 'transform 225ms' }}
-                    aria-describedby="alert-dialog-slide-description"
-                >
-                    <ViewLead lead={lead} onCancel={handleView} />
-                </Dialog>
-            </MainCard>
-    ) : (
+          {/* view lead dialog */}
+          <Dialog
+            maxWidth="sm"
+            TransitionComponent={PopupTransition}
+            keepMounted
+            fullWidth
+            onClose={handleView}
+            open={view}
+            sx={{ '& .MuiDialog-paper': { p: 0 }, transition: 'transform 225ms' }}
+            aria-describedby="alert-dialog-slide-description"
+          >
+            <ViewLead lead={lead} onCancel={handleView} />
+          </Dialog>
+
+          {tebLeadOpen && <TabLead lead={lead}/>}
+        </MainCard>
+      ) : (
         <LeadCardPage />
-    )}
-
+      )}
     </>
   );
 };
