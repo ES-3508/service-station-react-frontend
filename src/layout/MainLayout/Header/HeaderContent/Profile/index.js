@@ -53,8 +53,8 @@ const Profile = () => {
   const [userImage, setUserImage] = useState(avatar1);
 
   useEffect(() => {
-    if (user.photo) {
-      setUserImage(user.photo);
+    if (user?.photo) {
+      setUserImage(user?.photo);
     }
   }, [user])
 

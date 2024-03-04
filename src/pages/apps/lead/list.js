@@ -46,7 +46,17 @@ import AlertLeadDelete from 'sections/apps/lead/AlertLeadDelete';
 import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 
 // assets
-import {CloseOutlined, PlusOutlined, EyeTwoTone, EditTwoTone, DeleteTwoTone, PhoneOutlined, UnorderedListOutlined, AppstoreOutlined, ConsoleSqlOutlined} from '@ant-design/icons';
+import {
+  CloseOutlined,
+  PlusOutlined,
+  EyeTwoTone,
+  EditTwoTone,
+  DeleteTwoTone,
+  PhoneOutlined,
+  UnorderedListOutlined,
+  AppstoreOutlined,
+  ConsoleSqlOutlined
+} from '@ant-design/icons';
 import { dispatch, useSelector } from 'store';
 import { getLeads } from 'store/reducers/leads';
 import LeadCardPage from './card';
@@ -227,7 +237,7 @@ const SelectionHeader = ({ getToggleAllPageRowsSelectedProps }) => (
 
 const IndexCell = ({ row, state }) => {
   return <Typography variant="subtitle1">{Number(row.id) + 1 + state.pageIndex * state.pageSize}</Typography>;
-}
+};
 
 const CustomCell = ({ row }) => {
   // const { values } = row;
@@ -235,7 +245,7 @@ const CustomCell = ({ row }) => {
     <Stack direction="row" spacing={1.5} alignItems="center">
       {/* <Avatar alt="Avatar 1" size="sm" src={values.imageUrl} /> */}
       <Stack spacing={0}>
-        {console.log(row,'=============================================================================Row')}
+        {console.log(row, '=============================================================================Row')}
         <Typography variant="subtitle1">{row.firstName}</Typography>
         {/* <Typography variant="caption" color="textSecondary">
           {values.email}
@@ -365,18 +375,20 @@ const CustomCell2 = (row, setLead, handleOpenTabLead) => {
     <Stack direction="row" spacing={1.5} alignItems="center">
       {/* <Avatar alt="Avatar 1" size="sm" src={values.imageUrl} /> */}
       <Stack spacing={0}>
-      <Link to={`/apps/lead/lead-view/${values._id}`} style={{ textDecoration: 'none' }}>
-        <Typography
-          variant="subtitle1"
-          style={{ cursor: 'pointer' }}
-          // onClick={(e) => {
-          //   e.stopPropagation();
-          //   filterLeadsById(row.values._id);
-          //   handleOpenTabLead();
-          // }}
-        >
-          {values?.contactInformation?.firstName}{` `}{values?.contactInformation?.lastName}
-        </Typography>
+        <Link to={`/apps/lead/lead-view/${values._id}`} style={{ textDecoration: 'none' }}>
+          <Typography
+            variant="subtitle1"
+            style={{ cursor: 'pointer', textDecoration: 'underline', color: '#d59143' }}
+            // onClick={(e) => {
+            //   e.stopPropagation();
+            //   filterLeadsById(row.values._id);
+            //   handleOpenTabLead();
+            // }}
+          >
+            {values?.contactInformation?.firstName}
+            {` `}
+            {values?.contactInformation?.lastName}
+          </Typography>
         </Link>
       </Stack>
     </Stack>
@@ -434,7 +446,7 @@ const LeadListPage = () => {
 
   const handleOpenTabLead = () => {
     setTabLeadOpen(true);
-  }
+  };
 
   const columns = useMemo(
     () => [
@@ -454,7 +466,7 @@ const LeadListPage = () => {
       {
         Header: 'Lead Name',
         accessor: 'contactInformation',
-        Cell: ({row}) => CustomCell2(row, setLead, handleOpenTabLead)
+        Cell: ({ row }) => CustomCell2(row, setLead, handleOpenTabLead)
         // Cell: ({ value }) => {
         //   if (value === null) {
         //     return ''; // Or you can return any other representation of a blank cell
@@ -464,8 +476,7 @@ const LeadListPage = () => {
       },
       {
         Header: 'Phone Number',
-        accessor: 'contactInformation.phone1',
-       
+        accessor: 'contactInformation.phone1'
       },
       // {
       //   Header: 'Second Name',
@@ -567,7 +578,7 @@ const LeadListPage = () => {
             <ViewLead lead={lead} onCancel={handleView} />
           </Dialog>
 
-          {tebLeadOpen && <TabLead lead={lead}/>}
+          {tebLeadOpen && <TabLead lead={lead} />}
         </MainCard>
       ) : (
         <LeadCardPage />
