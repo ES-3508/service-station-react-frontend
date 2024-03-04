@@ -163,6 +163,48 @@ export function updateLead(leadId, values) {
     }
 }
 
+export function createLeadNote(leadId, values) {
+    return async () => {
+        try {
+            const response = await axios.post(`/api/v1/lead/${leadId}/notes`, {
+                ...values,
+            });
+
+            if (response.status === 200) {
+
+                setActionLead();
+
+                dispatch(
+                    openSnackbar({
+                        open: true,
+                        message: 'Lead note added successfully.',
+                        variant: 'alert',
+                        alert: {
+                            color: 'success'
+                        },
+                        close: false
+                    })
+                );
+            }
+
+
+        } catch (err) {
+            dispatch(
+                openSnackbar({
+                    open: true,
+                    message: 'Lead note could not add.',
+                    variant: 'alert',
+                    alert: {
+                        color: 'error'
+                    },
+                    close: false
+                })
+            );
+            dispatch(leads.actions.hasError(err));
+        }
+    }
+}
+
 export function deleteLead(leadId) {
     return async () => {
         try {
@@ -203,6 +245,42 @@ export function deleteLead(leadId) {
         }
     };
 }
+
+export const uploadUserDocuments = createAsyncThunk('', async (leadId, documents) => {
+    // const { documents } = params;
+    console.log("documents", documents);
+    
+    const formData = new FormData();
+  
+    documents.forEach((document, index) => {
+      // formData.append(`file${index}`, document);
+      formData.append(`files`, document);
+    });
+    
+  
+    const response = await axios.post(`/api/v1/media/multiple-document-upload`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+  
+    if (response.status === 200) {
+        dispatch(
+            openSnackbar({
+                open: true,
+                message: 'Files uploaded successfully',
+                variant: 'alert',
+                alert: {
+                    color: 'success'
+                },
+                close: false
+            })
+        );
+      return response.data.data;
+    }
+  
+    throw new Error('Failed to upload user document');
+  });
 
 export const uploadLeadImage = createAsyncThunk('', async (image) => {
     try {

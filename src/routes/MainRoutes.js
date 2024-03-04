@@ -221,7 +221,7 @@ const MainRoutes = {
                   element: <AppLeadCard />
                 },
                 {
-                  path: 'lead-view',
+                  path: 'lead-view/:id',
                   element: <TabLead />
                 }
               ]
