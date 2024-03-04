@@ -332,9 +332,9 @@ const AddLead = ({ lead, onCancel }) => {
                       <Stack spacing={1.25}>
                         {/* <InputLabel htmlFor="lead-phone 2">Phone Number 2</InputLabel> */}
                         <TextField
-                          label='Phone Number 2'
+                          label="Phone Number 2"
                           fullWidth
-                          type='tel'
+                          type="tel"
                           id="lead-phone 2"
                           placeholder="Enter Phone Number 2"
                           {...getFieldProps('contactInformation.phone2')}

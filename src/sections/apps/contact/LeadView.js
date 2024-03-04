@@ -318,6 +318,7 @@ const ViewLead = ({ lead, onCancel }) => {
                     </Grid>
 
                     {/* phone 2*/}
+                    {/* phone 2*/}
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
                         {/* <InputLabel htmlFor="lead-phone 2">Phone Number 2</InputLabel> */}
@@ -328,9 +329,9 @@ const ViewLead = ({ lead, onCancel }) => {
                           disabled={true}
                           id="lead-phone 2"
                           placeholder="Enter Phone Number 2"
-                          {...getFieldProps('contactInformation.phone')}
-                          error={Boolean(touched.phone2 && errors.phone2)}
-                          helperText={touched.phone2 && errors.phone2}
+                          {...getFieldProps('contactInformation.phone2')}
+                          error={Boolean(touched.contactInformation?.phone2 && errors.contactInformation?.phone2)}
+                          helperText={touched.contactInformation?.phone2 && errors.contactInformation?.phone2}
                         />
                       </Stack>
                     </Grid>

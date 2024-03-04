@@ -29,7 +29,7 @@ export const CustomerStatus = {
   REJECTED: 'Rejected',
 }
 
-export const ProjectStatus = {
+export const ProjectStatuses = {
   PENDING: 'Pending',
   VERIFIED: 'Verified',
   REJECTED: 'Rejected',
