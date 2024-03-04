@@ -28,6 +28,7 @@ import * as yup from 'yup';
 import MainCard from 'components/MainCard';
 import Avatar from 'components/@extended/Avatar';
 import LinearWithLabel from 'components/@extended/progress/LinearWithLabel';
+import parse from 'html-react-parser';
 
 // assets
 import { AimOutlined, DeleteFilled, EnvironmentOutlined, MailOutlined, PhoneOutlined, PlusOutlined } from '@ant-design/icons';
@@ -45,6 +46,8 @@ import { dispatch } from 'store';
 import { getLeads, uploadLeadImage, uploadUserDocuments } from 'store/reducers/leads';
 import IconButton from 'components/@extended/IconButton';
 import ConvertToProject from './ConvertToProject';
+import AlertLeadDelete from './AlertLeadDelete';
+import AlertDeletenote from './AlertDeleteNote';
 
 const avatarImage = require.context('assets/images/users', true);
 
@@ -147,6 +150,22 @@ const TabLead = () => {
   const handleAddNote = () => {
     setAddNote(!addNote);
   };
+
+  const [deletingNote, setDeletingNote] = useState({
+    leadId: null,
+    noteId: null
+  });
+
+  const [deletingFile, setDeletingFile] = useState({
+    leadId: null,
+    fileId: null
+  })
+
+  const [open, setOpen] = useState(false);
+  const handleClose = () => {
+    setOpen(!open);
+  };
+
   return (
     <Grid container spacing={3}>
       <Grid item xs={9}>
@@ -179,7 +198,7 @@ const TabLead = () => {
                     </Stack> */}
                   <Stack spacing={2.5} alignItems="center">
                     {/* <Avatar alt="Avatar 1" size="xl" src={avatarImage(`./default.png`)} /> */}
-                    <Stack spacing={0.5} alignItems="center">
+                    <Stack spacing={0.5} alignItems="flex-start">
                       <Typography variant="h5">
                         {selectedLead?.contactInformation?.firstName}
                         {` `}
@@ -316,33 +335,47 @@ const TabLead = () => {
               </Grid>
               {selectedLead?.leadNote?.map((note, index) => (
                 // <Grid item xs={12} key={index} width="100%">
-                <Card
-                  key={index}
-                  sx={{
-                    maxWidth: '100%',
-                    width: '100%',
-                    padding: '10px',
-                    boxShadow: 'none',
-                    borderBottom: 'solid 1px',
-                    borderColor: '#dbdbdb',
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'space-between'
-                  }}
-                >
-                  <Typography>{note.note}</Typography>
-                  {/* <Tooltip title="Delete Lead Note" placement="top">
-                    <IconButton
-                      // onClick={() => deleteHandler(lead)}
-                      size="large"
+                <>
+                  <Card
+                    key={index}
+                    sx={{
+                      maxWidth: '100%',
+                      width: '100%',
+                      padding: '10px',
+                      boxShadow: 'none',
+                      borderBottom: 'solid 1px',
+                      borderColor: '#dbdbdb',
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'space-between'
+                    }}
+                  >
+                    <Typography>
+                      {parse(note.note)}
+                      {/* {note.note} */}
+                    </Typography>
+                    <Button
+                      variant="text"
                       color="error"
+                      size="small"
+                      // sx={{ position: 'absolute', right: '15px', top: '15px' }}
+                      // startIcon={<PlusOutlined />}
+                      onClick={() => {
+                        setDeletingNote({
+                          leadId: selectedLead?._id,
+                          noteId: note._id
+                        });
+                        handleClose();
+                      } }
                     >
-                      <DeleteFilled />
-                    </IconButton>
-                  </Tooltip> */}
-                </Card>
-                // </Grid>
+                      Remove Note
+                    </Button>
+                  </Card>
+                  <AlertDeletenote title={deletingNote?.noteId?.createdBy} deletingNote={deletingNote} open={open}
+                   handleClose={handleClose} type='notedelete'
+                   />
+                  </>
               ))}
             </MainCard>
           </Grid>
@@ -365,7 +398,7 @@ const TabLead = () => {
                 </Button>
               </Grid>
               {selectedLead?.leadFiles?.map((file, index) => (
-                <Card
+                <><Card
                   key={index}
                   sx={{
                     maxWidth: '100%',
@@ -380,17 +413,36 @@ const TabLead = () => {
                     justifyContent: 'space-between'
                   }}
                 >
-                  <Typography>{file.fileName}</Typography>
-                  <Tooltip title="Delete Lead Note" placement="top">
-                    <IconButton
-                      // onClick={() => deleteHandler(lead)}
-                      size="large"
-                      color="error"
-                    >
-                      <DeleteFilled />
-                    </IconButton>
-                  </Tooltip>
+                  <Link
+                    href={file.fileUrl}
+                    target="_blank"
+                    sx={{
+                      ':hover': {
+                        textDecoration: 'underline',
+                        color: 'black' // Set the color to black on hover
+                      }
+                    }}
+                  >
+                    <Typography>{file.fileName}</Typography>
+                  </Link>
+                  {/* <Typography>{file.fileName}</Typography> */}
+                  <Button
+                    variant="text"
+                    color="error"
+                    size="small"
+                    onClick={() => {
+                      setDeletingFile({
+                        leadId: selectedLead?._id,
+                        fileId: file._id
+                      });
+                      handleClose();
+                    } }
+                  >
+                    Remove File
+                  </Button>
                 </Card>
+                <AlertDeletenote title={deletingFile?.fileId?.createdBy} deletingNote={deletingFile} open={open} type={'filedelete'} handleClose={handleClose}/>
+                </>
               ))}
             </MainCard>
           </Grid>

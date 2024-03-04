@@ -163,7 +163,7 @@ const TabLead = () => {
             <Typography variant="h2">{selectedLead?.projectName}</Typography>
           </Grid>
           <Grid item xs={1} sm={1}></Grid>
-          <Grid item xs={12} sm={10}>
+          {/* <Grid item xs={12} sm={10}>
             <Grid container spacing={3}>
               <Grid item xs={2}>
                 <FormControl fullWidth>
@@ -267,7 +267,7 @@ const TabLead = () => {
                 </FormControl>
               </Grid>
             </Grid>
-          </Grid>
+          </Grid> */}
           <Grid item xs={1} sm={1}></Grid>
         </Grid>
       </Grid>
@@ -282,183 +282,186 @@ const TabLead = () => {
           Convert to Project
         </Button>
       </Grid> */}
-      <Grid item xs={12} sm={7} md={8} xl={9}>
-        <Grid container spacing={3}>
-          {/* <Grid item xs={12}>
-            <MainCard title="Task">
-              <Typography color="secondary"></Typography>
-            </MainCard>
-          </Grid> */}
+      <Stack padding={5} width="100%" alignItems="center">
+        <Grid item xs={12} sm={7} md={8} xl={9} width='inherit'>
+          <Grid container spacing={3}>
+            {/* <Grid item xs={12}>
+              <MainCard title="Task">
+                <Typography color="secondary"></Typography>
+              </MainCard>
+            </Grid> */}
 
-          <Grid item xs={12}>
-            <MainCard title="Notes" sx={{ position: 'relative' }}>
-              <Grid item xs={1}>
-                <Button
-                  variant="text"
-                  color="primary"
-                  size="small"
-                  sx={{ position: 'absolute', right: '15px', top: '15px' }}
-                  startIcon={<PlusOutlined />}
-                  onClick={handleAddNote}
-                >
-                  {' '}
-                  Add Note{' '}
-                </Button>
+            <Grid item xs={12}>
+              <MainCard title="Notes" sx={{ position: 'relative' }}>
+                <Grid item xs={1}>
+                  <Button
+                    variant="text"
+                    color="primary"
+                    size="small"
+                    sx={{ position: 'absolute', right: '15px', top: '15px' }}
+                    startIcon={<PlusOutlined />}
+                    onClick={handleAddNote}
+                  >
+                    {' '}
+                    Add Note{' '}
+                  </Button>
 
-                <Dialog
-                  maxWidth="sm"
-                  TransitionComponent={PopupTransition}
-                  keepMounted
+                  <Dialog
+                    maxWidth="sm"
+                    TransitionComponent={PopupTransition}
+                    keepMounted
+                    fullWidth
+                    onClose={handleAddNote}
+                    open={addNote}
+                    sx={{ '& .MuiDialog-paper': { p: 0 }, transition: 'transform 225ms' }}
+                    aria-describedby="alert-dialog-slide-description"
+                  >
+                    <AddNote lead={selectedLead} onCancel={handleAddNote} />
+                  </Dialog>
+                </Grid>
+                {selectedLead?.leadNote?.map((note, index) => (
+                  // <Grid item xs={12} key={index} width="100%">
+                  <Card
+                    key={index}
+                    sx={{
+                      maxWidth: '100%',
+                      width: '100%',
+                      padding: '10px',
+                      boxShadow: 'none',
+                      borderBottom: 'solid 1px',
+                      borderColor: '#dbdbdb',
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'space-between'
+                    }}
+                  >
+                    <Typography>{note.note}</Typography>
+                    {/* <Tooltip title="Delete Lead Note" placement="top">
+                      <IconButton
+                        // onClick={() => deleteHandler(lead)}
+                        size="large"
+                        color="error"
+                      >
+                        <DeleteFilled />
+                      </IconButton>
+                    </Tooltip> */}
+                  </Card>
+                  // </Grid>
+                ))}
+              </MainCard>
+            </Grid>
+
+            <Grid item xs={12}>
+              <MainCard title="Files" sx={{ position: 'relative' }}>
+                <Grid item xs={1}>
+                  {/* <Button variant="text" color='primary'  size="small" sx={{position: 'absolute', right:'15px', top: '15px'}} startIcon={<PlusOutlined />} onClick={() => fileInput.current.click()}> Add File </Button> */}
+                  <Button
+                    component="label"
+                    role={undefined}
+                    variant="text"
+                    tabIndex={-1}
+                    startIcon={<PlusOutlined />}
+                    sx={{ position: 'absolute', right: '15px', top: '15px' }}
+                  >
+                    Upload file
+                    {/* <VisuallyHiddenInput type="file" /> */}
+                    <input type="file" onChange={handleFileInputChange} style={{ display: 'none' }} ref={fileInput} />
+                  </Button>
+                </Grid>
+                {selectedLead?.leadFiles?.map((file, index) => (
+                  <Card
+                    key={index}
+                    sx={{
+                      maxWidth: '100%',
+                      width: '100%',
+                      padding: '10px',
+                      boxShadow: 'none',
+                      borderBottom: 'solid 1px',
+                      borderColor: '#dbdbdb',
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'space-between'
+                    }}
+                  >
+                    <Typography>{file.fileName}</Typography>
+                    <Tooltip title="Delete Lead Note" placement="top">
+                      <IconButton
+                        // onClick={() => deleteHandler(lead)}
+                        size="large"
+                        color="error"
+                      >
+                        <DeleteFilled />
+                      </IconButton>
+                    </Tooltip>
+                  </Card>
+                ))}
+              </MainCard>
+            </Grid>
+
+            {/* <Grid item xs={12}>
+              <MainCard title="Date and Location">
+                <GoogleMapAutocomplete />
+              </MainCard>
+            </Grid> */}
+            <Grid item xs={12}>
+              <MainCard title="Tags">
+                <Autocomplete
+                  id="skills"
+                  multiple
                   fullWidth
-                  onClose={handleAddNote}
-                  open={addNote}
-                  sx={{ '& .MuiDialog-paper': { p: 0 }, transition: 'transform 225ms' }}
-                  aria-describedby="alert-dialog-slide-description"
-                >
-                  <AddNote lead={selectedLead} onCancel={handleAddNote} />
-                </Dialog>
-              </Grid>
-              {selectedLead?.leadNote?.map((note, index) => (
-                // <Grid item xs={12} key={index} width="100%">
-                <Card
-                  key={index}
-                  sx={{
-                    maxWidth: '100%',
-                    width: '100%',
-                    padding: '10px',
-                    boxShadow: 'none',
-                    borderBottom: 'solid 1px',
-                    borderColor: '#dbdbdb',
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'space-between'
+                  autoHighlight
+                  freeSolo
+                  disableCloseOnSelect
+                  options={skills}
+                  value={formik.values.skills}
+                  onBlur={formik.handleBlur}
+                  getOptionLabel={(option) => option}
+                  onChange={(event, newValue) => {
+                    const jobExist = skills.includes(newValue[newValue.length - 1]);
+                    if (!jobExist) {
+                      formik.setFieldValue('skills', newValue);
+                    } else {
+                      formik.setFieldValue('skills', newValue);
+                    }
                   }}
-                >
-                  <Typography>{note.note}</Typography>
-                  {/* <Tooltip title="Delete Lead Note" placement="top">
-                    <IconButton
-                      // onClick={() => deleteHandler(lead)}
-                      size="large"
-                      color="error"
-                    >
-                      <DeleteFilled />
-                    </IconButton>
-                  </Tooltip> */}
-                </Card>
-                // </Grid>
-              ))}
-            </MainCard>
-          </Grid>
+                  filterOptions={(options, params) => {
+                    const filtered = filterSkills(options, params);
+                    const { inputValue } = params;
+                    const isExisting = options.some((option) => inputValue === option);
+                    if (inputValue !== '' && !isExisting) {
+                      filtered.push(inputValue);
+                    }
 
-          <Grid item xs={12}>
-            <MainCard title="Files" sx={{ position: 'relative' }}>
-              <Grid item xs={1}>
-                {/* <Button variant="text" color='primary'  size="small" sx={{position: 'absolute', right:'15px', top: '15px'}} startIcon={<PlusOutlined />} onClick={() => fileInput.current.click()}> Add File </Button> */}
-                <Button
-                  component="label"
-                  role={undefined}
-                  variant="text"
-                  tabIndex={-1}
-                  startIcon={<PlusOutlined />}
-                  sx={{ position: 'absolute', right: '15px', top: '15px' }}
-                >
-                  Upload file
-                  {/* <VisuallyHiddenInput type="file" /> */}
-                  <input type="file" onChange={handleFileInputChange} style={{ display: 'none' }} ref={fileInput} />
-                </Button>
-              </Grid>
-              {selectedLead?.leadFiles?.map((file, index) => (
-                <Card
-                  key={index}
-                  sx={{
-                    maxWidth: '100%',
-                    width: '100%',
-                    padding: '10px',
-                    boxShadow: 'none',
-                    borderBottom: 'solid 1px',
-                    borderColor: '#dbdbdb',
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'space-between'
+                    return filtered;
                   }}
-                >
-                  <Typography>{file.fileName}</Typography>
-                  <Tooltip title="Delete Lead Note" placement="top">
-                    <IconButton
-                      // onClick={() => deleteHandler(lead)}
-                      size="large"
-                      color="error"
-                    >
-                      <DeleteFilled />
-                    </IconButton>
-                  </Tooltip>
-                </Card>
-              ))}
-            </MainCard>
-          </Grid>
-
-          {/* <Grid item xs={12}>
-            <MainCard title="Date and Location">
-              <GoogleMapAutocomplete />
-            </MainCard>
-          </Grid> */}
-          <Grid item xs={12}>
-            <MainCard title="Tags">
-              <Autocomplete
-                id="skills"
-                multiple
-                fullWidth
-                autoHighlight
-                freeSolo
-                disableCloseOnSelect
-                options={skills}
-                value={formik.values.skills}
-                onBlur={formik.handleBlur}
-                getOptionLabel={(option) => option}
-                onChange={(event, newValue) => {
-                  const jobExist = skills.includes(newValue[newValue.length - 1]);
-                  if (!jobExist) {
-                    formik.setFieldValue('skills', newValue);
-                  } else {
-                    formik.setFieldValue('skills', newValue);
-                  }
-                }}
-                filterOptions={(options, params) => {
-                  const filtered = filterSkills(options, params);
-                  const { inputValue } = params;
-                  const isExisting = options.some((option) => inputValue === option);
-                  if (inputValue !== '' && !isExisting) {
-                    filtered.push(inputValue);
-                  }
-
-                  return filtered;
-                }}
-                renderOption={(props, option) => {
-                  return (
-                    <Box component="li" {...props}>
-                      {!skills.some((v) => option.includes(v)) ? `Add "${option}"` : option}
-                    </Box>
-                  );
-                }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    name="skills"
-                    placeholder="Write your skills"
-                    error={formik.touched.skills && Boolean(formik.errors.skills)}
-                    // helperText={TagsError}
-                  />
-                )}
-              />
-              {/* <Dialog open={openModal} onClose={handleCloseModal}>
-                <ConvertToProject lead={selectedLead} onCancel={handleCloseModal} />
-              </Dialog> */}
-            </MainCard>
+                  renderOption={(props, option) => {
+                    return (
+                      <Box component="li" {...props}>
+                        {!skills.some((v) => option.includes(v)) ? `Add "${option}"` : option}
+                      </Box>
+                    );
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      name="skills"
+                      placeholder="Write your skills"
+                      error={formik.touched.skills && Boolean(formik.errors.skills)}
+                      // helperText={TagsError}
+                    />
+                  )}
+                />
+                {/* <Dialog open={openModal} onClose={handleCloseModal}>
+                  <ConvertToProject lead={selectedLead} onCancel={handleCloseModal} />
+                </Dialog> */}
+              </MainCard>
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
+      </Stack>
+      
     </Grid>
   );
 };

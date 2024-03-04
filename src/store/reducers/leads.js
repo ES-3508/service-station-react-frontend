@@ -246,6 +246,88 @@ export function deleteLead(leadId) {
     };
 }
 
+export function deleteNote(leadId, noteId) {
+    return async () => {
+        console.log("leadId", leadId);
+        console.log("noteid", noteId);
+        try {
+            const response = await axios.delete(`/api/v1/lead/${leadId}/notes/${noteId}`);
+            if (response.status === 200) {
+
+                dispatch(leads.actions.deleteLeadSuccess(response.data));
+
+                setActionLead();
+
+                dispatch(
+                    openSnackbar({
+                        open: true,
+                        message: 'Lead note deleted successfully.',
+                        variant: 'alert',
+                        alert: {
+                            color: 'success'
+                        },
+                        close: false
+                    })
+                );
+            }
+        } catch (error) {
+            dispatch(
+                openSnackbar({
+                    open: true,
+                    message: 'Lead note deleted failed.',
+                    variant: 'alert',
+                    alert: {
+                        color: 'error'
+                    },
+                    close: false
+                })
+            );
+            dispatch(leads.actions.hasError(error));
+        }
+    }
+}
+
+export function deleteFile(leadId, fileId) {
+    return async () => {
+        console.log("leadId", leadId);
+        console.log("fileId", fileId);
+        try {
+            const response = await axios.delete(`/api/v1/lead/${leadId}/files/${fileId}`);
+            if (response.status === 200) {
+
+                dispatch(leads.actions.deleteLeadSuccess(response.data));
+
+                setActionLead();
+
+                dispatch(
+                    openSnackbar({
+                        open: true,
+                        message: 'Lead file deleted successfully.',
+                        variant: 'alert',
+                        alert: {
+                            color: 'success'
+                        },
+                        close: false
+                    })
+                );
+            }
+        } catch (error) {
+            dispatch(
+                openSnackbar({
+                    open: true,
+                    message: 'Lead file deleted failed.',
+                    variant: 'alert',
+                    alert: {
+                        color: 'error'
+                    },
+                    close: false
+                })
+            );
+            dispatch(leads.actions.hasError(error));
+        }
+    }
+}
+
 export const uploadUserDocuments = createAsyncThunk('', async (leadId, documents) => {
     // const { documents } = params;
     console.log("documents", documents);
