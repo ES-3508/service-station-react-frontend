@@ -46,13 +46,12 @@ import { openSnackbar } from 'store/reducers/snackbar';
 
 // assets
 import { CameraOutlined, CaretRightOutlined, DeleteFilled } from '@ant-design/icons';
-import {  deleteLead, updateLead, uploadLeadImage } from 'store/reducers/leads';
+import { deleteLead, updateLead, uploadLeadImage } from 'store/reducers/leads';
 import { createLead } from 'store/reducers/leads';
 
 // ==============================|| CUSTOMER ADD / EDIT / DELETE ||============================== //
 
 const ViewLead = ({ lead, onCancel }) => {
-
   const [openAlert, setOpenAlert] = useState(false);
 
   // const { uploadedImageUrl } = useSelector((state) => state.leads);
@@ -80,19 +79,19 @@ const ViewLead = ({ lead, onCancel }) => {
   }, [selectedImage]);
 
   useEffect(() => {
-    console.log(lead,'lead //////////////////////////////////////////')
+    console.log(lead, 'lead //////////////////////////////////////////');
     if (lead) {
       setAvatar(lead.imageUrl);
     }
-  }, [lead])
+  }, [lead]);
 
   const deleteHandler = async (lead) => {
     setDeletingLead({
       _id: lead._id,
       name: lead.name
-    })
-    setOpenAlert(true)
-  }
+    });
+    setOpenAlert(true);
+  };
 
   const LeadSchema = Yup.object().shape({
     // priorityLevel: Yup.string(),
@@ -125,7 +124,6 @@ const ViewLead = ({ lead, onCancel }) => {
     //     // Remove createdBy, updatedBy, createdAt, and updatedAt
     //   })
     // ),
-
     // projectType: Yup.string(),
     // projectSize: Yup.string(),
     // currency: Yup.string(),
@@ -139,7 +137,7 @@ const ViewLead = ({ lead, onCancel }) => {
     //   .nullable(),
   });
 
-  const defaultValues  = useMemo(
+  const defaultValues = useMemo(
     () => ({
       priorityLevel: lead?.priorityLevel || '',
       companyType: lead?.companyType || '',
@@ -156,19 +154,15 @@ const ViewLead = ({ lead, onCancel }) => {
         address: lead?.contactInformation?.address || '',
         phone1: lead?.contactInformation?.phone1 || '',
         phone2: lead?.contactInformation?.phone2 || '',
-        email: lead?.contactInformation?.email || '',
+        email: lead?.contactInformation?.email || ''
       },
 
       projectType: lead?.projectType || '',
       projectSize: lead?.projectSize || '',
       budgetEstimate: lead?.budgetEstimate || '',
       currency: lead ? lead.currency : '',
-      expectedStart: lead?.expectedStart
-        ? new Date(lead.expectedStart)
-        : new Date(),
-      expectedCompletion: lead?.expectedCompletion
-        ? new Date(lead.expectedCompletion)
-        : null,
+      expectedStart: lead?.expectedStart ? new Date(lead.expectedStart) : new Date(),
+      expectedCompletion: lead?.expectedCompletion ? new Date(lead.expectedCompletion) : null
 
       // descriptionInformation: [
       //   {
@@ -189,46 +183,48 @@ const ViewLead = ({ lead, onCancel }) => {
     validationSchema: LeadSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-
         if (lead) {
-
           if (selectedImage) {
-            dispatch(uploadLeadImage(selectedImage))
-              .then((fileUrl) => {
-                setSelectedImage(undefined);
-                if (fileUrl) {
-                  dispatch(updateLead(lead._id, {
-                    ...values, imageUrl: fileUrl.payload
-                  }));
-                }
-              })
+            dispatch(uploadLeadImage(selectedImage)).then((fileUrl) => {
+              setSelectedImage(undefined);
+              if (fileUrl) {
+                dispatch(
+                  updateLead(lead._id, {
+                    ...values,
+                    imageUrl: fileUrl.payload
+                  })
+                );
+              }
+            });
           } else {
-            dispatch(updateLead(lead._id, {
-              ...values,
-              imageUrl: lead.imageUrl,
-            }));
+            dispatch(
+              updateLead(lead._id, {
+                ...values,
+                imageUrl: lead.imageUrl
+              })
+            );
           }
 
           resetForm();
         } else {
-
           if (selectedImage) {
-            dispatch(uploadLeadImage(selectedImage))
-              .then((fileUrl) => {
-                setSelectedImage(undefined);
-                if (fileUrl) {
-                  dispatch(createLead({
-                    ...values, imageUrl: fileUrl.payload
-                  }))
-                }
-              })
+            dispatch(uploadLeadImage(selectedImage)).then((fileUrl) => {
+              setSelectedImage(undefined);
+              if (fileUrl) {
+                dispatch(
+                  createLead({
+                    ...values,
+                    imageUrl: fileUrl.payload
+                  })
+                );
+              }
+            });
           } else {
-            console.log('create values ', values )
-            dispatch(createLead(values))
+            console.log('create values ', values);
+            dispatch(createLead(values));
           }
 
           resetForm();
-
         }
 
         setSubmitting(false);
@@ -251,42 +247,31 @@ const ViewLead = ({ lead, onCancel }) => {
               <Grid item>
                 <DialogTitle sx={{ fontSize: 32, p: 3.5 }}>{lead ? 'View Contact' : 'Create Contact'}</DialogTitle>
               </Grid>
-              <Grid item>
-                {lead && (
-                    <Button variant="contained" color="primary" size="small" sx={{marginRight:'20px'}}>
-                   Convert to Project 
-                    {/* <CaretRightOutlined /> */}
-                  </Button>
-                )}
-                
-              </Grid>
             </Grid>
 
             <Divider />
             <DialogContent sx={{ pt: 0.8 }}>
-              <Grid container spacing={3} sx={{border:'20px'}}>
-                <Grid item xs={12}> 
-                </Grid>
+              <Grid container spacing={2} sx={{ border: '20px' }}>
+                <Grid item xs={12}></Grid>
 
                 {/* ===================================+++++++++++++++++++++++++++++++++++++++++++++++++++++++++================================         */}
-                <DialogTitle>Contact information </DialogTitle> 
+                <DialogTitle>Contact information </DialogTitle>
 
                 <Grid item xs={12}>
                   <Grid container spacing={3}>
                     {/* first name */}
                     <Grid item xs={12} sm={6}>
-                      
                       {/* <Stack spacing={1.25}> */}
-                        <FormControl fullWidth>
+                      <FormControl fullWidth>
                         <TextField
-                        sx={{
-                          '&.Mui-disabled': {
-                            // Add your custom styles for disabled state here
-                            backgroundColor: '#F0F0F0', // Example background color
-                            color: '#666666', // Example text color
-                            // Add any other styles as needed
-                          },
-                        }}
+                          sx={{
+                            '&.Mui-disabled': {
+                              // Add your custom styles for disabled state here
+                              backgroundColor: '#F0F0F0', // Example background color
+                              color: '#666666' // Example text color
+                              // Add any other styles as needed
+                            }
+                          }}
                           id="firstName"
                           label="First Name"
                           disabled={true}
@@ -295,15 +280,14 @@ const ViewLead = ({ lead, onCancel }) => {
                           onChange={(event) => setFieldValue('contactInformation.firstName', event.target.value)}
                         />
                       </FormControl>
-                        
                     </Grid>
 
-                   {/* last name */}
-                   <Grid item xs={12} sm={6}>
+                    {/* last name */}
+                    <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
                         {/* <InputLabel htmlFor="customer-last-name">Last Name</InputLabel> */}
                         <TextField
-                        label='Last Name'
+                          label="Last Name"
                           fullWidth
                           disabled={true}
                           id="lead-last-name"
@@ -320,9 +304,9 @@ const ViewLead = ({ lead, onCancel }) => {
                       <Stack spacing={1.25}>
                         {/* <InputLabel htmlFor="customer-phone 1">Phone Number 1</InputLabel> */}
                         <TextField
-                          label='Phone Number 1'
+                          label="Phone Number 1"
                           fullWidth
-                          type='tel'
+                          type="tel"
                           disabled={true}
                           id="lead-phone 1"
                           placeholder="Enter Phone Number 1"
@@ -332,16 +316,15 @@ const ViewLead = ({ lead, onCancel }) => {
                         />
                       </Stack>
                     </Grid>
-                
 
                     {/* phone 2*/}
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
                         {/* <InputLabel htmlFor="lead-phone 2">Phone Number 2</InputLabel> */}
                         <TextField
-                          label='Phone Number 2'
+                          label="Phone Number 2"
                           fullWidth
-                          type='tel'
+                          type="tel"
                           disabled={true}
                           id="lead-phone 2"
                           placeholder="Enter Phone Number 2"
@@ -357,7 +340,7 @@ const ViewLead = ({ lead, onCancel }) => {
                       <Stack spacing={1.25}>
                         {/* <InputLabel htmlFor="lead-email">Email</InputLabel> */}
                         <TextField
-                          label='Email'
+                          label="Email"
                           fullWidth
                           id="lead-email"
                           disabled={true}
@@ -369,13 +352,12 @@ const ViewLead = ({ lead, onCancel }) => {
                       </Stack>
                     </Grid>
 
-
                     {/* company name */}
-                   <Grid item xs={12}>
+                    <Grid item xs={12}>
                       <Stack spacing={1.25}>
                         {/* <InputLabel htmlFor="customer-company-name">Company Name</InputLabel> */}
                         <TextField
-                        label='Company Name'
+                          label="Company Name"
                           fullWidth
                           disabled={true}
                           id="customer-company-name"
@@ -385,39 +367,40 @@ const ViewLead = ({ lead, onCancel }) => {
                           helperText={touched.name && errors.name}
                         />
                       </Stack>
-                   </Grid>
+                    </Grid>
 
                     {/* Industry Category */}
                     <Grid item xs={12}>
                       <Stack spacing={1.25}>
-                        <InputLabel disabled={true} htmlFor="customer-industry-category">Industry Category</InputLabel>
-                        <Select 
-                            label='Industry Category'
-                            labelId='lead-industry-category'
-                            id='categoryasd'
-                            disabled={true}
-                            placeholder='Select category'
-                            {...getFieldProps('contactInformation.industry')}
-                            onChange={(event) => {
-                              setFieldValue('contactInformation.industry', event.target.value);
-                            }}
-                          >
-                            <MenuItem value={'Consulting'}>Consulting</MenuItem>
-                            <MenuItem value={'Analyst'}>Analyst</MenuItem>
-                            <MenuItem value={'Developer'}>Developer</MenuItem>
-                            <MenuItem value={'Quality Assurance'}>Quality Assurance</MenuItem>
+                        <InputLabel disabled={true} htmlFor="customer-industry-category">
+                          Industry Category
+                        </InputLabel>
+                        <Select
+                          label="Industry Category"
+                          labelId="lead-industry-category"
+                          id="categoryasd"
+                          disabled={true}
+                          placeholder="Select category"
+                          {...getFieldProps('contactInformation.industry')}
+                          onChange={(event) => {
+                            setFieldValue('contactInformation.industry', event.target.value);
+                          }}
+                        >
+                          <MenuItem value={'Consulting'}>Consulting</MenuItem>
+                          <MenuItem value={'Analyst'}>Analyst</MenuItem>
+                          <MenuItem value={'Developer'}>Developer</MenuItem>
+                          <MenuItem value={'Quality Assurance'}>Quality Assurance</MenuItem>
                         </Select>
                       </Stack>
-
                     </Grid>
-                          {/* Industry Category end */}
+                    {/* Industry Category end */}
 
                     {/* address */}
-                   <Grid item xs={12}>
+                    <Grid item xs={12}>
                       <Stack spacing={1.25}>
                         {/* <InputLabel htmlFor="lead-address">Address</InputLabel> */}
                         <TextField
-                          label='Address'
+                          label="Address"
                           disabled={true}
                           fullWidth
                           id="lead-address"
@@ -427,22 +410,16 @@ const ViewLead = ({ lead, onCancel }) => {
                           helperText={touched.name && errors.name}
                         />
                       </Stack>
-                   </Grid>
-
+                    </Grid>
                   </Grid>
                 </Grid>
                 {/* end of contact information */}
 
                 {/* project type for create             */}
-                
-                
-                <Divider />           
-               
-   
 
+                <Divider />
               </Grid>
             </DialogContent>
-
 
             <Divider />
             <DialogActions sx={{ p: 2.5 }}>
@@ -458,12 +435,12 @@ const ViewLead = ({ lead, onCancel }) => {
                 </Grid>
                 <Grid item>
                   <Stack direction="row" spacing={2} alignItems="center">
-                    <Button color="error" onClick={onCancel}>
+                    <Button color="error" variant="outlined" onClick={onCancel}>
                       Cancel
                     </Button>
-                    <Button type="submit" variant="contained" disabled={isSubmitting}>
+                    {/* <Button type="submit" variant="contained" disabled={isSubmitting}>
                       {lead ? 'Edit' : 'Add'}
-                    </Button>
+                    </Button> */}
                   </Stack>
                 </Grid>
               </Grid>
@@ -471,7 +448,9 @@ const ViewLead = ({ lead, onCancel }) => {
           </Form>
         </LocalizationProvider>
       </FormikProvider>
-      {!isCreating && <AlertLeadDelete title={deletingLead.name} leadId={deletingLead._id} open={openAlert} handleClose={handleAlertClose} />}
+      {!isCreating && (
+        <AlertLeadDelete title={deletingLead.name} leadId={deletingLead._id} open={openAlert} handleClose={handleAlertClose} />
+      )}
     </>
   );
 };

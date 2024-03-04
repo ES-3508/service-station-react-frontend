@@ -25,7 +25,8 @@ import {
   TextField,
   Tooltip,
   Typography,
-  InputAdornment
+  InputAdornment,
+  Dialog
 } from '@mui/material';
 import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -46,13 +47,13 @@ import { openSnackbar } from 'store/reducers/snackbar';
 
 // assets
 import { CameraOutlined, CaretRightOutlined, DeleteFilled, RetweetOutlined } from '@ant-design/icons';
-import {  deleteLead, updateLead, uploadLeadImage } from 'store/reducers/leads';
+import { deleteLead, updateLead, uploadLeadImage } from 'store/reducers/leads';
 import { createLead } from 'store/reducers/leads';
+import ConvertToProject from './ConvertToProject';
 
 // ==============================|| CUSTOMER ADD / EDIT / DELETE ||============================== //
 
 const AddLead = ({ lead, onCancel }) => {
-
   const [openAlert, setOpenAlert] = useState(false);
 
   // const { uploadedImageUrl } = useSelector((state) => state.leads);
@@ -80,19 +81,30 @@ const AddLead = ({ lead, onCancel }) => {
   }, [selectedImage]);
 
   useEffect(() => {
-    console.log(lead,'lead //////////////////////////////////////////')
+    console.log(lead, 'lead //////////////////////////////////////////');
     if (lead) {
       setAvatar(lead.imageUrl);
     }
-  }, [lead])
+  }, [lead]);
 
   const deleteHandler = async (lead) => {
     setDeletingLead({
       _id: lead._id,
       name: lead.name
-    })
-    setOpenAlert(true)
-  }
+    });
+    setOpenAlert(true);
+  };
+
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleOpenModal = () => {
+    onCancel();
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
 
   const LeadSchema = Yup.object().shape({
     // priorityLevel: Yup.string(),
@@ -115,7 +127,7 @@ const AddLead = ({ lead, onCancel }) => {
     //   address: Yup.string(),
     //   phone1: Yup.string(),
     //   phone2: Yup.string(),
-    //   email: Yup.string().email('Incorrect email address'),
+      email: Yup.string().email('Incorrect email address'),
     // }),
     // descriptionInformation: Yup.array().of(
     //   Yup.object().shape({
@@ -125,7 +137,6 @@ const AddLead = ({ lead, onCancel }) => {
     //     // Remove createdBy, updatedBy, createdAt, and updatedAt
     //   })
     // ),
-
     // projectType: Yup.string(),
     // projectSize: Yup.string(),
     // currency: Yup.string(),
@@ -139,7 +150,7 @@ const AddLead = ({ lead, onCancel }) => {
     //   .nullable(),
   });
 
-  const defaultValues  = useMemo(
+  const defaultValues = useMemo(
     () => ({
       priorityLevel: lead?.priorityLevel || '',
       companyType: lead?.companyType || '',
@@ -156,19 +167,15 @@ const AddLead = ({ lead, onCancel }) => {
         address: lead?.contactInformation?.address || '',
         phone1: lead?.contactInformation?.phone1 || '',
         phone2: lead?.contactInformation?.phone2 || '',
-        email: lead?.contactInformation?.email || '',
+        email: lead?.contactInformation?.email || ''
       },
 
       projectType: lead?.projectType || '',
       projectSize: lead?.projectSize || '',
       budgetEstimate: lead?.budgetEstimate || '',
       currency: lead ? lead.currency : 'GBP',
-      expectedStart: lead?.expectedStart
-        ? new Date(lead.expectedStart)
-        : new Date(),
-      expectedCompletion: lead?.expectedCompletion
-        ? new Date(lead.expectedCompletion)
-        : null,
+      expectedStart: lead?.expectedStart ? new Date(lead.expectedStart) : new Date(),
+      expectedCompletion: lead?.expectedCompletion ? new Date(lead.expectedCompletion) : null
 
       // descriptionInformation: [
       //   {
@@ -189,46 +196,48 @@ const AddLead = ({ lead, onCancel }) => {
     validationSchema: LeadSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-
         if (lead) {
-
           if (selectedImage) {
-            dispatch(uploadLeadImage(selectedImage))
-              .then((fileUrl) => {
-                setSelectedImage(undefined);
-                if (fileUrl) {
-                  dispatch(updateLead(lead._id, {
-                    ...values, imageUrl: fileUrl.payload
-                  }));
-                }
-              })
+            dispatch(uploadLeadImage(selectedImage)).then((fileUrl) => {
+              setSelectedImage(undefined);
+              if (fileUrl) {
+                dispatch(
+                  updateLead(lead._id, {
+                    ...values,
+                    imageUrl: fileUrl.payload
+                  })
+                );
+              }
+            });
           } else {
-            dispatch(updateLead(lead._id, {
-              ...values,
-              imageUrl: lead.imageUrl,
-            }));
+            dispatch(
+              updateLead(lead._id, {
+                ...values,
+                imageUrl: lead.imageUrl
+              })
+            );
           }
 
           resetForm();
         } else {
-
           if (selectedImage) {
-            dispatch(uploadLeadImage(selectedImage))
-              .then((fileUrl) => {
-                setSelectedImage(undefined);
-                if (fileUrl) {
-                  dispatch(createLead({
-                    ...values, imageUrl: fileUrl.payload
-                  }))
-                }
-              })
+            dispatch(uploadLeadImage(selectedImage)).then((fileUrl) => {
+              setSelectedImage(undefined);
+              if (fileUrl) {
+                dispatch(
+                  createLead({
+                    ...values,
+                    imageUrl: fileUrl.payload
+                  })
+                );
+              }
+            });
           } else {
-            console.log('create values ', values )
-            dispatch(createLead(values))
+            console.log('create values ', values);
+            dispatch(createLead(values));
           }
 
           resetForm();
-
         }
 
         setSubmitting(false);
@@ -246,38 +255,33 @@ const AddLead = ({ lead, onCancel }) => {
       <FormikProvider value={formik}>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-          <Grid container justifyContent="space-between" alignItems="center">
+            <Grid container justifyContent="space-between" alignItems="center">
               <Grid item>
                 <DialogTitle sx={{ fontSize: 32, p: 3.5 }}>{lead ? 'Edit Lead  ' : 'Create Lead'}</DialogTitle>
               </Grid>
               <Grid item>
                 {lead && (
-                    <Button variant="contained" color="primary" size="small" sx={{marginRight:'20px'}}>
-                   Convert to Project {'      '}  
-                   {/* <RetweetOutlined /> */}
+                  <Button variant="contained" color="primary" size="small" sx={{ marginRight: '20px' }} onClick={handleOpenModal}>
+                    Convert to Project {'      '}
+                    {/* <RetweetOutlined /> */}
                   </Button>
                 )}
-                
               </Grid>
             </Grid>
             <Divider />
             <DialogContent sx={{ pt: 0.8 }}>
               <Grid container spacing={1}>
-                <Grid item xs={12}> 
-                </Grid>
-
-                
+                <Grid item xs={12}></Grid>
 
                 {/* ===================================+++++++++++++++++++++++++++++++++++++++++++++++++++++++++================================         */}
-                <DialogTitle sx={{marginTop:'10px'}}>Contact information </DialogTitle> 
+                <DialogTitle sx={{ marginTop: '10px' }}>Contact information </DialogTitle>
 
                 <Grid item xs={12}>
                   <Grid container spacing={3}>
                     {/* first name */}
                     <Grid item xs={12} sm={6}>
-                      
                       {/* <Stack spacing={1.25}> */}
-                        <FormControl fullWidth>
+                      <FormControl fullWidth>
                         <TextField
                           id="firstName"
                           label="First Name"
@@ -286,15 +290,14 @@ const AddLead = ({ lead, onCancel }) => {
                           onChange={(event) => setFieldValue('contactInformation.firstName', event.target.value)}
                         />
                       </FormControl>
-                        
                     </Grid>
 
-                   {/* last name */}
-                   <Grid item xs={12} sm={6}>
+                    {/* last name */}
+                    <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
                         {/* <InputLabel htmlFor="customer-last-name">Last Name</InputLabel> */}
                         <TextField
-                        label='Last Name'
+                          label="Last Name"
                           fullWidth
                           id="lead-last-name"
                           placeholder="Enter Customer Last Name"
@@ -310,9 +313,9 @@ const AddLead = ({ lead, onCancel }) => {
                       <Stack spacing={1.25}>
                         {/* <InputLabel htmlFor="customer-phone 1">Phone Number 1</InputLabel> */}
                         <TextField
-                          label='Phone Number 1'
+                          label="Phone Number 1"
                           fullWidth
-                          type='tel'
+                          type="tel"
                           id="lead-phone 1"
                           placeholder="Enter Phone Number 1"
                           {...getFieldProps('contactInformation.phone1')}
@@ -321,16 +324,15 @@ const AddLead = ({ lead, onCancel }) => {
                         />
                       </Stack>
                     </Grid>
-                
 
                     {/* phone 2*/}
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
                         {/* <InputLabel htmlFor="lead-phone 2">Phone Number 2</InputLabel> */}
                         <TextField
-                          label='Phone Number 2'
+                          label="Phone Number 2"
                           fullWidth
-                          type='tel'
+                          type="tel"
                           id="lead-phone 2"
                           placeholder="Enter Phone Number 2"
                           {...getFieldProps('contactInformation.phone')}
@@ -345,7 +347,7 @@ const AddLead = ({ lead, onCancel }) => {
                       <Stack spacing={1.25}>
                         {/* <InputLabel htmlFor="lead-email">Email</InputLabel> */}
                         <TextField
-                          label='Email'
+                          label="Email"
                           fullWidth
                           id="lead-email"
                           placeholder="Enter Customer Email"
@@ -356,13 +358,12 @@ const AddLead = ({ lead, onCancel }) => {
                       </Stack>
                     </Grid>
 
-
                     {/* company name */}
-                   <Grid item xs={12}>
+                    <Grid item xs={12}>
                       <Stack spacing={1.25}>
                         {/* <InputLabel htmlFor="customer-company-name">Company Name</InputLabel> */}
                         <TextField
-                        label='Company Name'
+                          label="Company Name"
                           fullWidth
                           id="customer-company-name"
                           placeholder="Enter Customer Company Name"
@@ -371,14 +372,14 @@ const AddLead = ({ lead, onCancel }) => {
                           helperText={touched.name && errors.name}
                         />
                       </Stack>
-                   </Grid>
+                    </Grid>
 
-                   {/* address */}
-                   <Grid item xs={12}>
+                    {/* address */}
+                    <Grid item xs={12}>
                       <Stack spacing={1.25}>
                         {/* <InputLabel htmlFor="lead-address">Address</InputLabel> */}
                         <TextField
-                          label='Address'
+                          label="Address"
                           fullWidth
                           id="lead-address"
                           placeholder="Enter lead Adderess"
@@ -387,12 +388,11 @@ const AddLead = ({ lead, onCancel }) => {
                           helperText={touched.name && errors.name}
                         />
                       </Stack>
-                   </Grid>
+                    </Grid>
 
                     {/* Industry Category */}
-                    
 
-                    <Grid item xs={12} sm={6}>                   
+                    <Grid item xs={12} sm={6}>
                       <FormControl fullWidth>
                         <InputLabel htmlFor="customer-industry-category">Industry Category</InputLabel>
                         <Select
@@ -403,61 +403,49 @@ const AddLead = ({ lead, onCancel }) => {
                           onChange={(event) => setFieldValue('contactInformation.industry', event.target.value)}
                         >
                           <MenuItem value={'Consulting'}>Consulting</MenuItem>
-                            <MenuItem value={'Analyst'}>Analyst</MenuItem>
-                            <MenuItem value={'Developer'}>Developer</MenuItem>
-                            <MenuItem value={'Quality Assurance'}>Quality Assurance</MenuItem>
+                          <MenuItem value={'Analyst'}>Analyst</MenuItem>
+                          <MenuItem value={'Developer'}>Developer</MenuItem>
+                          <MenuItem value={'Quality Assurance'}>Quality Assurance</MenuItem>
                         </Select>
                       </FormControl>
                     </Grid>
-                          {/* Industry Category end */}
-                    
+                    {/* Industry Category end */}
+
                     {/* project type for create             */}
-                    {!lead &&(
+                    {!lead && (
                       <>
                         <Grid item xs={6} sm={6}>
-                        
-                        {/* Project TYPE */}
-                        <FormControl fullWidth>
-                          <InputLabel htmlFor="project-type-label">Project TYPE</InputLabel>
-                          <Select
-                            labelId="project-type"
-                            id="project-type"
-                            placeholder="Project Type"
-                            {...getFieldProps('projectType')}
-                            onChange={(event) => setFieldValue('projectType', event.target.value)}
-                          >
-                            <MenuItem value={'Electrical'}>Electrical</MenuItem>
-                            <MenuItem value={'Civil'}>Civil</MenuItem>
-                            <MenuItem value={'Robotics'}>Robotics</MenuItem>
-                            <MenuItem value={'Network'}>Network</MenuItem>
-                          </Select>
-                        </FormControl>
+                          {/* Project TYPE */}
+                          <FormControl fullWidth>
+                            <InputLabel htmlFor="project-type-label">Project TYPE</InputLabel>
+                            <Select
+                              labelId="project-type"
+                              id="project-type"
+                              placeholder="Project Type"
+                              {...getFieldProps('projectType')}
+                              onChange={(event) => setFieldValue('projectType', event.target.value)}
+                            >
+                              <MenuItem value={'Electrical'}>Electrical</MenuItem>
+                              <MenuItem value={'Civil'}>Civil</MenuItem>
+                              <MenuItem value={'Robotics'}>Robotics</MenuItem>
+                              <MenuItem value={'Network'}>Network</MenuItem>
+                            </Select>
+                          </FormControl>
                         </Grid>
-                        
                       </>
-                      
-                      )}
-
-                    
-
-                    
-
+                    )}
                   </Grid>
                 </Grid>
                 {/* end of contact information */}
 
-               
-                
-                <Divider />           
+                <Divider />
                 {/* ===================================+++++++++++++++++++++++++++++++++++++++++++++++++++++++++================================         */}
-                <DialogTitle sx={{marginTop:'10px'}}>Lead details </DialogTitle> 
+                <DialogTitle sx={{ marginTop: '10px' }}>Lead details </DialogTitle>
 
                 <Grid item xs={12}>
-               <Grid container spacing={3}> 
-                    
-
+                  <Grid container spacing={3}>
                     {/* Priority level */}
-                    <Grid item xs={6} sm={6}>                   
+                    <Grid item xs={6} sm={6}>
                       <FormControl fullWidth>
                         <InputLabel htmlFor="priority-level">Priority Level</InputLabel>
                         <Select
@@ -475,8 +463,6 @@ const AddLead = ({ lead, onCancel }) => {
                       </FormControl>
                     </Grid>
 
-                  
-                  
                     {/* Lead owner */}
                     {/* <Grid item xs={12} sm={6}>
                         <Stack spacing={1.25}>
@@ -497,7 +483,6 @@ const AddLead = ({ lead, onCancel }) => {
                         </Stack>
                     </Grid> */}
 
-                   
                     {/* Lead Creation Date */}
                     <Grid item xs={6}>
                       <FormControl fullWidth>
@@ -515,11 +500,8 @@ const AddLead = ({ lead, onCancel }) => {
                       </FormControl>
                     </Grid>
 
-
                     {/* Project Type */}
                     <Grid item xs={6} sm={6}>
-                    
-                    
                       <FormControl fullWidth>
                         <InputLabel htmlFor="project-type-label">Project TYPE</InputLabel>
                         <Select
@@ -530,9 +512,9 @@ const AddLead = ({ lead, onCancel }) => {
                           onChange={(event) => setFieldValue('projectType', event.target.value)}
                         >
                           <MenuItem value={'Electrical'}>Electrical</MenuItem>
-                      <MenuItem value={'Civil'}>Civil</MenuItem>
-                      <MenuItem value={'Robotics'}>Robotics</MenuItem>
-                      <MenuItem value={'Network'}>Network</MenuItem>
+                          <MenuItem value={'Civil'}>Civil</MenuItem>
+                          <MenuItem value={'Robotics'}>Robotics</MenuItem>
+                          <MenuItem value={'Network'}>Network</MenuItem>
                         </Select>
                       </FormControl>
                     </Grid>
@@ -542,7 +524,7 @@ const AddLead = ({ lead, onCancel }) => {
                       <Stack spacing={1.25}>
                         {/* <InputLabel htmlFor="budget">Project Scope</InputLabel> */}
                         <TextField
-                          label='Project Scope'
+                          label="Project Scope"
                           fullWidth
                           id="scope"
                           placeholder="Project Scope"
@@ -552,116 +534,110 @@ const AddLead = ({ lead, onCancel }) => {
                         />
                       </Stack>
                     </Grid>
-                    
                   </Grid>
-                </Grid>    
-                {/* end of Lead information */}    
-                
-                <Divider />         
-                {/* ===================================+++++++++++++++++++++++++++++++++++++++++++++++++++++++++================================         */}
-                {lead &&(
+                </Grid>
+                {/* end of Lead information */}
+
+                <Divider />
+                {/* ===================================++++++ Additional Details ++++++++++++++++++++++++++++++================================         */}
+                {lead && (
                   <>
-                                  <DialogTitle sx={{marginTop:'10px'}}>Additional information </DialogTitle>
+                    <DialogTitle sx={{ marginTop: '10px' }}>Additional information </DialogTitle>
 
-<Grid item xs={12}>
-  <Grid container >
-  
-  
-  {lead &&(
-        <>
+                    <Grid item xs={12}>
+                      <Grid container>
+                        {lead && (
+                          <>
+                            {/* budget */}
+                            <Grid item xs={12}>
+                              <Grid container spacing={3}>
+                                <Grid item xs={2} sm={2}>
+                                  {/* Project TYPE */}
+                                  <FormControl fullWidth>
+                                    <InputLabel disabled={true} htmlFor="currency-type-label">
+                                      Currency
+                                    </InputLabel>
+                                    <Select
+                                      // disabled={true}
+                                      labelId="currency"
+                                      id="currency"
+                                      placeholder="Currency"
+                                      {...getFieldProps('currency')}
+                                      onChange={(event) => setFieldValue('currency', event.target.value)}
+                                    >
+                                      <MenuItem value={'USD'}>USD</MenuItem>
+                                      <MenuItem value={'GBP'}>GBP</MenuItem>
+                                      <MenuItem value={'EURO'}>EURO</MenuItem>
+                                    </Select>
+                                  </FormControl>
+                                </Grid>
+                                {/* Budget estimate */}
+                                <Grid item xs={12} sm={4}>
+                                  <Stack spacing={1.25}>
+                                    {/* <InputLabel htmlFor="budget">Budget</InputLabel> */}
+                                    <TextField
+                                      label="Estimated Budget"
+                                      fullWidth
+                                      id="budget"
+                                      placeholder="Budget Estimate"
+                                      {...getFieldProps('budgetEstimate')}
+                                      error={Boolean(touched.budgetEstimate && errors.budgetEstimate)}
+                                      helperText={touched.budgetEstimate && errors.budgetEstimate}
+                                    />
+                                  </Stack>
+                                </Grid>
 
-        
-        {/* budget */}
-        <Grid item xs={12}>
-          <Grid container spacing={3}>
+                                {/* empty for next row */}
+                                <Grid item xs={6}></Grid>
 
-          <Grid item xs={2} sm={2}>
-                    
-                    {/* Project TYPE */}
-                    <FormControl fullWidth>
-                      <InputLabel disabled={true} htmlFor="currency-type-label">Currency</InputLabel>
-                      <Select
-                      // disabled={true}
-                        labelId="currency"
-                        id="currency"
-                        placeholder="Currency"
-                        {...getFieldProps('currency')}
-                        onChange={(event) => setFieldValue('currency', event.target.value)}
-                      >
-                        <MenuItem value={'USD'}>USD</MenuItem>
-                        <MenuItem value={'GBP'}>GBP</MenuItem>
-                        <MenuItem value={'EURO'}>EURO</MenuItem>
-                      </Select>
-                    </FormControl>
-          </Grid>
-          {/* Budget estimate */}
-          <Grid item xs={12} sm={4}>
-            
-            <Stack spacing={1.25}>
-              {/* <InputLabel htmlFor="budget">Budget</InputLabel> */}
-              <TextField
-                label='Estimated Budget'
-                fullWidth
-                id="budget"
-                placeholder="Budget Estimate"
-                {...getFieldProps('budgetEstimate')}
-                error={Boolean(touched.budgetEstimate && errors.budgetEstimate)}
-                helperText={touched.budgetEstimate && errors.budgetEstimate}
-              />
-            </Stack>
-          </Grid>
+                                {/* expected start date */}
+                                <Grid item xs={6}>
+                                  <FormControl fullWidth>
+                                    <DesktopDatePicker
+                                      inputFormat="dd/MM/yyyy"
+                                      format="dd/MM/yyyy"
+                                      label="Expected Start Date"
+                                      value={formik.values.expectedStart}
+                                      onChange={(newValue) => {
+                                        setFieldValue('expectedStart', newValue);
+                                      }}
+                                      renderInput={(params) => <TextField {...params} fullWidth />}
+                                      //minDate={new Date()}
+                                    />
+                                  </FormControl>
+                                </Grid>
 
-          {/* empty for next row */}
-          <Grid item xs={6}></Grid>
+                                {/* expected completion date */}
+                                <Grid item xs={6}>
+                                  <FormControl fullWidth>
+                                    <DesktopDatePicker
+                                      inputFormat="dd/MM/yyyy"
+                                      format="dd/MM/yyyy"
+                                      label="Expected Completion Date"
+                                      value={formik.values.expectedCompletion}
+                                      onChange={(newValue) => {
+                                        setFieldValue('expectedCompletion', newValue);
+                                      }}
+                                      renderInput={(params) => <TextField {...params} fullWidth />}
+                                      //minDate={new Date()}
+                                    />
+                                  </FormControl>
+                                </Grid>
+                              </Grid>
+                            </Grid>
+                          </>
+                        )}
+                      </Grid>
+                    </Grid>
 
-          {/* expected start date */}
-          <Grid item xs={6}>
-          <FormControl fullWidth>
-            <DesktopDatePicker
-              inputFormat="dd/MM/yyyy"
-              format="dd/MM/yyyy"
-              label="Expected Start Date"
-              value={formik.values.expectedStart}
-              onChange={(newValue) => {
-                setFieldValue('expectedStart', newValue);
-              }}
-              renderInput={(params) => <TextField {...params} fullWidth />}
-              //minDate={new Date()}
-            />
-          </FormControl>
-          </Grid>
-
-          {/* expected completion date */}
-          <Grid item xs={6}>
-          <FormControl fullWidth>
-            <DesktopDatePicker
-              inputFormat="dd/MM/yyyy"
-              format="dd/MM/yyyy"
-              label="Expected Completion Date"
-              value={formik.values.expectedCompletion}
-              onChange={(newValue) => {
-                setFieldValue('expectedCompletion', newValue);
-              }}
-              renderInput={(params) => <TextField {...params} fullWidth />}
-              //minDate={new Date()}
-            />
-          </FormControl>
-          </Grid>
-        </Grid>  
-      </Grid>
-    </>
-  )}    
-  </Grid>  
-</Grid> 
-
-{/* end of Additional information */}   
+                    {/* end of Additional information */}
                   </>
                 )}
-   
-
               </Grid>
+              <Dialog open={openModal} onClose={handleCloseModal}>
+                <ConvertToProject lead={lead} onCancel={handleCloseModal} />
+              </Dialog>
             </DialogContent>
-
 
             <Divider />
             <DialogActions sx={{ p: 2.5 }}>
@@ -690,7 +666,9 @@ const AddLead = ({ lead, onCancel }) => {
           </Form>
         </LocalizationProvider>
       </FormikProvider>
-      {!isCreating && <AlertLeadDelete title={deletingLead.name} leadId={deletingLead._id} open={openAlert} handleClose={handleAlertClose} />}
+      {!isCreating && (
+        <AlertLeadDelete title={deletingLead.name} leadId={deletingLead._id} open={openAlert} handleClose={handleAlertClose} />
+      )}
     </>
   );
 };

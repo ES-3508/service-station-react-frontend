@@ -46,7 +46,7 @@ import AlertLeadDelete from 'sections/apps/lead/AlertLeadDelete';
 import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 
 // assets
-import {CloseOutlined, PlusOutlined, EyeTwoTone, EditTwoTone, DeleteTwoTone, PhoneOutlined, UnorderedListOutlined, AppstoreOutlined} from '@ant-design/icons';
+import {CloseOutlined, PlusOutlined, EyeTwoTone, EditTwoTone, DeleteTwoTone, PhoneOutlined, UnorderedListOutlined, AppstoreOutlined, ConsoleSqlOutlined} from '@ant-design/icons';
 import { dispatch, useSelector } from 'store';
 import { getLeads } from 'store/reducers/leads';
 import LeadCardPage from "./card";
@@ -220,15 +220,16 @@ const IndexCell = ({ row, state }) => {
 }
 
 const CustomCell = ({ row }) => {
-  const { values } = row;
+  // const { values } = row;
   return (
     <Stack direction="row" spacing={1.5} alignItems="center">
       {/* <Avatar alt="Avatar 1" size="sm" src={values.imageUrl} /> */}
       <Stack spacing={0}>
-        <Typography variant="subtitle1">{values.created}</Typography>
-        <Typography variant="caption" color="textSecondary">
+        {console.log(row,'=============================================================================Row')}
+        <Typography variant="subtitle1">{row.firstName}</Typography>
+        {/* <Typography variant="caption" color="textSecondary">
           {values.email}
-        </Typography>
+        </Typography> */}
       </Stack>
     </Stack>
   );
@@ -403,15 +404,25 @@ const LeadListPage = () => {
         Cell: IndexCell,
       },
       {
-        Header: 'First Name',
-        accessor: 'contactInformation.firstName',
-        // Cell: CustomCell
+        Header: 'Lead Name',
+        accessor: 'contactInformation',
+        Cell: ({ value }) => {
+          if (value === null) {
+            return ''; // Or you can return any other representation of a blank cell
+          }
+          return (value.firstName+' '+value.lastName);
+        }
       },
       {
-        Header: 'Second Name',
-        accessor: 'contactInformation.lastName',
-        // Cell: CustomCell
+        Header: 'Phone Number',
+        accessor: 'contactInformation.phone1',
+       
       },
+      // {
+      //   Header: 'Second Name',
+      //   accessor: 'contactInformation.lastName',
+      //   // Cell: CustomCell
+      // },
       // {
       //   Header: 'Namel',
       //   accessor: 'name',
