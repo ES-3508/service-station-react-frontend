@@ -117,18 +117,22 @@ const AddLead = ({ lead, onCancel }) => {
     //     (date, schema) => date && schema.min(date, "End date can't be before start date")
     //   )
     //   .nullable(),
-    // contactInformation: Yup.object().shape({
-    //   firstName: Yup.string().required('First Name is required'),
+    contactInformation: Yup.object().shape({
+      firstName: Yup.string().required('First Name is required'),
     //   lastName: Yup.string().required('Last Name is required'),
     //   surName: Yup.string(),
     //   company: Yup.string(),
     //   companyNumber: Yup.string(),
     //   industry: Yup.string(),
     //   address: Yup.string(),
-    //   phone1: Yup.string(),
-    //   phone2: Yup.string(),
-      email: Yup.string().email('Incorrect email address'),
-    // }),
+    phone1: Yup.string()
+    .matches(/^\+?[0-9]+$/, 'Phone number must contain only numeric characters and may start with a "+" sign')
+    ,
+  phone2: Yup.string()
+    .matches(/^\+?[0-9]+$/, 'Phone number must contain only numeric characters and may start with a "+" sign')
+    ,
+    email: Yup.string().email('Invalid email address'),
+    }),
     // descriptionInformation: Yup.array().of(
     //   Yup.object().shape({
     //     note: Yup.string(),
@@ -288,6 +292,8 @@ const AddLead = ({ lead, onCancel }) => {
                           // placeholder="1st LEG VOYAGE"
                           {...getFieldProps('contactInformation.firstName')}
                           onChange={(event) => setFieldValue('contactInformation.firstName', event.target.value)}
+                          error={Boolean(touched.contactInformation?.firstName && errors.contactInformation?.firstName)}
+                        helperText={touched.contactInformation?.firstName && errors.contactInformation?.firstName}
                         />
                       </FormControl>
                     </Grid>
@@ -319,8 +325,8 @@ const AddLead = ({ lead, onCancel }) => {
                           id="lead-phone 1"
                           placeholder="Enter Phone Number 1"
                           {...getFieldProps('contactInformation.phone1')}
-                          error={Boolean(touched.phone1 && errors.phone1)}
-                          helperText={touched.phone1 && errors.phone1}
+                          error={Boolean(touched.contactInformation?.phone1 && errors.contactInformation?.phone1)}
+                          helperText={touched.contactInformation?.phone1 && errors.contactInformation?.phone1}
                         />
                       </Stack>
                     </Grid>
@@ -335,9 +341,9 @@ const AddLead = ({ lead, onCancel }) => {
                           type="tel"
                           id="lead-phone 2"
                           placeholder="Enter Phone Number 2"
-                          {...getFieldProps('contactInformation.phone')}
-                          error={Boolean(touched.phone2 && errors.phone2)}
-                          helperText={touched.phone2 && errors.phone2}
+                          {...getFieldProps('contactInformation.phone2')}
+                          error={Boolean(touched.contactInformation?.phone2 && errors.contactInformation?.phone2)}
+                          helperText={touched.contactInformation?.phone2 && errors.contactInformation?.phone2}
                         />
                       </Stack>
                     </Grid>
@@ -352,8 +358,8 @@ const AddLead = ({ lead, onCancel }) => {
                           id="lead-email"
                           placeholder="Enter Customer Email"
                           {...getFieldProps('contactInformation.email')}
-                          error={Boolean(touched.email && errors.email)}
-                          helperText={touched.email && errors.email}
+                          error={Boolean(touched.contactInformation?.email && errors.contactInformation?.email)}
+                          helperText={touched.contactInformation?.email && errors.contactInformation?.email}
                         />
                       </Stack>
                     </Grid>
