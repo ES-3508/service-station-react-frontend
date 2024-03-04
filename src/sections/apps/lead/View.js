@@ -126,7 +126,8 @@ const TabLead = () => {
     const file = event.target.files[0]; // Get the selected file
     console.log('file', file);
     if (file) {
-        dispatch(uploadUserDocuments(selectedLead._id, file)); // Dispatch the uploadLeadImage thunk with the selected file
+      console.log("filr>>>", file);
+        dispatch(uploadLeadImage({leadId:selectedLead._id, file:file})); // Dispatch the uploadLeadImage thunk with the selected file
     }
   };
 
@@ -278,6 +279,32 @@ const TabLead = () => {
                   <input type="file" onChange={handleFileInputChange} style={{ display: 'none' }} ref={fileInput} />
                 </Button>
               </Grid>
+              {selectedLead?.leadFiles?.map((file,index)=> (
+                <Card
+                key={index}
+                sx={{
+                  maxWidth: '100%',
+                  width: '100%',
+                  padding: '10px',
+                  boxShadow: 'none',
+                  borderBottom: 'solid 1px',
+                  borderColor: '#dbdbdb',
+                  display: "flex",
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent:'space-between'
+                }}
+              >
+                <Typography>{file.fileName}</Typography>
+                <Tooltip title="Delete Lead Note" placement="top">
+                    <IconButton 
+                    // onClick={() => deleteHandler(lead)}
+                     size="large" color="error">
+                      <DeleteFilled />
+                    </IconButton>
+                  </Tooltip>
+              </Card>
+              ))}
             </MainCard>
           </Grid>
 

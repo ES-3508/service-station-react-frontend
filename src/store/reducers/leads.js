@@ -253,12 +253,14 @@ export const uploadUserDocuments = createAsyncThunk('', async (leadId, documents
     const formData = new FormData();
   
     documents.forEach((document, index) => {
+        formData.append(`files[${index}]`, document);
       // formData.append(`file${index}`, document);
-      formData.append(`files`, document);
+    //   formData.append(`files`, document);
     });
     
+    console.log("FormData:", formData);
   
-    const response = await axios.post(`/api/v1/media/multiple-document-upload`, formData, {
+    const response = await axios.post(`/api/v1/media/multiple-document-upload/${leadId}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -282,13 +284,15 @@ export const uploadUserDocuments = createAsyncThunk('', async (leadId, documents
     throw new Error('Failed to upload user document');
   });
 
-export const uploadLeadImage = createAsyncThunk('', async (image) => {
+export const uploadLeadImage = createAsyncThunk('upload/leadImage', async ({ leadId, file }, { dispatch }) => {
     try {
 
+        console.log("leadId", leadId);
+        console.log("file", file);
         dispatch(
             openSnackbar({
                 open: true,
-                message: 'Uploading image...',
+                message: 'Uploading file...',
                 variant: 'alert',
                 alert: {
                     color: 'info'
@@ -298,9 +302,9 @@ export const uploadLeadImage = createAsyncThunk('', async (image) => {
         );
 
         let formData = new FormData();
-        formData.append("file", image);
+        formData.append("file", file);
 
-        const response = await axios.post(`/api/v1/media/file-upload`, formData, {
+        const response = await axios.post(`/api/v1/media/file-upload/${leadId}`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }

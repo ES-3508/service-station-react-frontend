@@ -25,11 +25,12 @@ const AddNote = ({lead, onCancel}) => {
     onSubmit: async (values, { setSubmitting }) => {
       try {
         console.log('values add note', values);
-        dispatch(createLeadNote(lead._id, values));
-        resetForm();
-        dispatch()
-        setSubmitting(false);
-        onCancel();
+        dispatch(createLeadNote(lead._id, values)).then(
+          onCancel(),
+          resetForm(),
+          setSubmitting(false)
+        )
+        // dispatch()
       } catch (error) {
         console.error(error);
       }

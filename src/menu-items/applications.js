@@ -275,12 +275,12 @@ const applications = {
         },
       ]
     },
-    // {
-    //   id: 'client-portal',
-    //   title: <FormattedMessage id="Client Portal (Testing)" />,
-    //   type: 'item',
-    //   url: 'apps/lead/lead-view'
-    // },
+    {
+      id: 'client-portal',
+      title: <FormattedMessage id="Client Portal (Testing)" />,
+      type: 'item',
+      url: 'apps/lead/lead-view'
+    },
   ]
 };
 
