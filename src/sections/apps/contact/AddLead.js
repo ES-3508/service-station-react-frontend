@@ -297,13 +297,13 @@ const AddLead = ({ lead, onCancel }) => {
                       <Stack spacing={1.25}>
                         {/* <InputLabel htmlFor="customer-last-name">Last Name</InputLabel> */}
                         <TextField
-                        label='Last Name'
+                          label="Last Name"
                           fullWidth
                           id="lead-last-name"
                           placeholder="Enter Customer Last Name"
                           {...getFieldProps('contactInformation.lastName')}
-                        //   error={Boolean(touched.contactInformation?.lastName && errors.contactInformation?.lastName)}
-                        // helperText={touched.contactInformation?.lastName && errors.contactInformation?.lastName}
+                          // error={Boolean(touched.lastName && errors.lastName)}
+                          // helperText={touched.lastName && errors.lastName}
                         />
                       </Stack>
                     </Grid>

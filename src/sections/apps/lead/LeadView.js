@@ -257,7 +257,7 @@ const AddLead = ({ lead, onCancel }) => {
           <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
             <Grid container justifyContent="space-between" alignItems="center">
               <Grid item>
-                <DialogTitle sx={{ fontSize: 32, p: 3.5 }}>{lead ? 'Edit Lead  ' : 'Create Lead'}</DialogTitle>
+                <DialogTitle sx={{ fontSize: 32, p: 3.5 }}>{lead ? 'View Lead ' : 'Create Lead'}</DialogTitle>
               </Grid>
               <Grid item>
                 {lead && (
@@ -622,9 +622,9 @@ const AddLead = ({ lead, onCancel }) => {
                     <Button color="error" onClick={onCancel}>
                       Cancel
                     </Button>
-                    <Button type="submit" variant="contained" disabled={isSubmitting}>
+                    {/* <Button type="submit" variant="contained" disabled={isSubmitting}>
                       {lead ? 'Edit' : 'Add'}
-                    </Button>
+                    </Button> */}
                   </Stack>
                 </Grid>
               </Grid>
