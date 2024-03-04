@@ -38,6 +38,18 @@ import ChipSelect from 'sections/components-overview/select/ChipSelect';
   // ==============================|| ACCOUNT PROFILE - BASIC ||============================== //
   
   const TabLead = () => {
+
+    const [openModal, setOpenModal] = useState(false);
+
+  const handleOpenModal = () => {
+    onCancel();
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+  
     const matchDownMD = useMediaQuery((theme) => theme.breakpoints.down('md'));
     
     const roles = ['User', 'Admin', 'Staff', 'Manager'];

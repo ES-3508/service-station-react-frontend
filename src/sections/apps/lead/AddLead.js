@@ -392,8 +392,6 @@ const AddLead = ({ lead, onCancel }) => {
                       </Stack>
                     </Grid>
 
-                    
-
                     {/* Industry Category */}
 
                     <Grid item xs={12} sm={6}>
@@ -425,8 +423,6 @@ const AddLead = ({ lead, onCancel }) => {
                       </FormControl>
                     </Grid>
                     {/* Industry Category end */}
-
-                    
                   </Grid>
                 </Grid>
                 {/* end of contact information */}

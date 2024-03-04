@@ -44,6 +44,7 @@ import { useSelector } from 'store';
 import { dispatch } from 'store';
 import { getLeads, uploadLeadImage, uploadUserDocuments } from 'store/reducers/leads';
 import IconButton from 'components/@extended/IconButton';
+import ConvertToProject from './ConvertToProject';
 
 const avatarImage = require.context('assets/images/users', true);
 
@@ -55,6 +56,17 @@ const TabLead = () => {
     leads: { leads, total },
     action
   } = useSelector((state) => state.leads);
+
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleOpenModal = () => {
+    // onCancel();
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
 
   const selectedLead = leads.find((lead) => lead._id === id);
   console.log('selected lead', selectedLead);
@@ -137,14 +149,22 @@ const TabLead = () => {
   };
   return (
     <Grid container spacing={3}>
-      <Grid item xs={9}></Grid> {/* Empty space to push buttons to the right */}
+      <Grid item xs={9}>
+        {' '}
+        <Typography variant="h2">
+          {selectedLead?.contactInformation?.firstName}
+          {` `}
+          {selectedLead?.contactInformation?.lastName}
+        </Typography>
+      </Grid>{' '}
+      {/* Empty space to push buttons to the right */}
       <Grid item xs={1} sx={{ textAlign: 'right', paddingRight: '2x' }}>
         <Button variant="contained" color="secondary" size="small">
           Message
         </Button>
       </Grid>
       <Grid item xs={2} sx={{ textAlign: 'left', paddingLeft: '2px' }}>
-        <Button variant="contained" color="primary" size="small">
+        <Button variant="contained" color="primary" size="small" onClick={handleOpenModal}>
           Convert to Project
         </Button>
       </Grid>
@@ -260,11 +280,73 @@ const TabLead = () => {
       </Grid>
       <Grid item xs={12} sm={7} md={8} xl={9}>
         <Grid container spacing={3}>
-          <Grid item xs={12}>
+          {/* <Grid item xs={12}>
             <MainCard title="Task">
               <Typography color="secondary"></Typography>
             </MainCard>
+          </Grid> */}
+
+          <Grid item xs={12}>
+            <MainCard title="Notes" sx={{ position: 'relative' }}>
+              <Grid item xs={1}>
+                <Button
+                  variant="text"
+                  color="primary"
+                  size="small"
+                  sx={{ position: 'absolute', right: '15px', top: '15px' }}
+                  startIcon={<PlusOutlined />}
+                  onClick={handleAddNote}
+                >
+                  {' '}
+                  Add Note{' '}
+                </Button>
+
+                <Dialog
+                  maxWidth="sm"
+                  TransitionComponent={PopupTransition}
+                  keepMounted
+                  fullWidth
+                  onClose={handleAddNote}
+                  open={addNote}
+                  sx={{ '& .MuiDialog-paper': { p: 0 }, transition: 'transform 225ms' }}
+                  aria-describedby="alert-dialog-slide-description"
+                >
+                  <AddNote lead={selectedLead} onCancel={handleAddNote} />
+                </Dialog>
+              </Grid>
+              {selectedLead?.leadNote?.map((note, index) => (
+                // <Grid item xs={12} key={index} width="100%">
+                <Card
+                  key={index}
+                  sx={{
+                    maxWidth: '100%',
+                    width: '100%',
+                    padding: '10px',
+                    boxShadow: 'none',
+                    borderBottom: 'solid 1px',
+                    borderColor: '#dbdbdb',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between'
+                  }}
+                >
+                  <Typography>{note.note}</Typography>
+                  {/* <Tooltip title="Delete Lead Note" placement="top">
+                    <IconButton
+                      // onClick={() => deleteHandler(lead)}
+                      size="large"
+                      color="error"
+                    >
+                      <DeleteFilled />
+                    </IconButton>
+                  </Tooltip> */}
+                </Card>
+                // </Grid>
+              ))}
+            </MainCard>
           </Grid>
+
           <Grid item xs={12}>
             <MainCard title="Files" sx={{ position: 'relative' }}>
               <Grid item xs={1}>
@@ -313,66 +395,6 @@ const TabLead = () => {
             </MainCard>
           </Grid>
 
-          <Grid item xs={12}>
-            <MainCard title="Notes" sx={{ position: 'relative' }}>
-              <Grid item xs={1}>
-                <Button
-                  variant="text"
-                  color="primary"
-                  size="small"
-                  sx={{ position: 'absolute', right: '15px', top: '15px' }}
-                  startIcon={<PlusOutlined />}
-                  onClick={handleAddNote}
-                >
-                  {' '}
-                  Add Note{' '}
-                </Button>
-
-                <Dialog
-                  maxWidth="sm"
-                  TransitionComponent={PopupTransition}
-                  keepMounted
-                  fullWidth
-                  onClose={handleAddNote}
-                  open={addNote}
-                  sx={{ '& .MuiDialog-paper': { p: 0 }, transition: 'transform 225ms' }}
-                  aria-describedby="alert-dialog-slide-description"
-                >
-                  <AddNote lead={selectedLead} onCancel={handleAddNote} />
-                </Dialog>
-              </Grid>
-              {selectedLead?.leadNote?.map((note, index) => (
-                // <Grid item xs={12} key={index} width="100%">
-                <Card
-                  key={index}
-                  sx={{
-                    maxWidth: '100%',
-                    width: '100%',
-                    padding: '10px',
-                    boxShadow: 'none',
-                    borderBottom: 'solid 1px',
-                    borderColor: '#dbdbdb',
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'space-between'
-                  }}
-                >
-                  <Typography>{note.note}</Typography>
-                  <Tooltip title="Delete Lead Note" placement="top">
-                    <IconButton
-                      // onClick={() => deleteHandler(lead)}
-                      size="large"
-                      color="error"
-                    >
-                      <DeleteFilled />
-                    </IconButton>
-                  </Tooltip>
-                </Card>
-                // </Grid>
-              ))}
-            </MainCard>
-          </Grid>
           {/* <Grid item xs={12}>
             <MainCard title="Date and Location">
               <GoogleMapAutocomplete />
@@ -426,6 +448,9 @@ const TabLead = () => {
                   />
                 )}
               />
+              <Dialog open={openModal} onClose={handleCloseModal}>
+                <ConvertToProject lead={selectedLead} onCancel={handleCloseModal} />
+              </Dialog>
             </MainCard>
           </Grid>
         </Grid>
