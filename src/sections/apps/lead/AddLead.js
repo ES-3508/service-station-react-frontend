@@ -516,7 +516,7 @@ const AddLead = ({ lead, onCancel }) => {
                           fullWidth
                           id="scope"
                           placeholder="Project Size / Scope"
-                          {...getFieldProps('age')}
+                          {...getFieldProps('projectSize')}
                           error={Boolean(touched.age && errors.age)}
                           helperText={touched.age && errors.age}
                         />
