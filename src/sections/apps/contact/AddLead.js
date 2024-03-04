@@ -252,7 +252,7 @@ const AddLead = ({ lead, onCancel }) => {
           <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
           <Grid container justifyContent="space-between" alignItems="center">
               <Grid item>
-                <DialogTitle sx={{ fontSize: 32, p: 3.5 }}>{lead ? 'View Contact' : 'Create Contact'}</DialogTitle>
+                <DialogTitle sx={{ fontSize: 32, p: 3.5 }}>{lead ? 'Edit Contact' : 'Create Contact'}</DialogTitle>
               </Grid>
               {/* <Grid item>
                 {lead && (
@@ -362,21 +362,7 @@ const AddLead = ({ lead, onCancel }) => {
                     </Grid>
 
 
-                    {/* company name */}
-                   <Grid item xs={12}>
-                      <Stack spacing={1.25}>
-                        {/* <InputLabel htmlFor="customer-company-name">Company Name</InputLabel> */}
-                        <TextField
-                        label='Company Name'
-                          fullWidth
-                          id="customer-company-name"
-                          placeholder="Enter Customer Company Name"
-                          {...getFieldProps('contactInformation.company')}
-                          error={Boolean(touched.name && errors.name)}
-                          helperText={touched.name && errors.name}
-                        />
-                      </Stack>
-                   </Grid>
+                    
 
                    {/* address */}
                    <Grid item xs={12}>
@@ -394,54 +380,24 @@ const AddLead = ({ lead, onCancel }) => {
                       </Stack>
                    </Grid>
 
-                    {/* Industry Category */}
-                    
+                   {/* company name */}
+                   <Grid item xs={12}>
+                      <Stack spacing={1.25}>
+                        {/* <InputLabel htmlFor="customer-company-name">Company Name</InputLabel> */}
+                        <TextField
+                        label='Company Name'
+                          fullWidth
+                          id="customer-company-name"
+                          placeholder="Enter Customer Company Name"
+                          {...getFieldProps('contactInformation.company')}
+                          error={Boolean(touched.name && errors.name)}
+                          helperText={touched.name && errors.name}
+                        />
+                      </Stack>
+                   </Grid>
 
-                    <Grid item xs={12} sm={6}>                   
-                      <FormControl fullWidth>
-                        <InputLabel htmlFor="customer-industry-category">Industry Category</InputLabel>
-                        <Select
-                          labelId="contactInformation.industry"
-                          id="contactInformation.industry"
-                          placeholder="Industry Category"
-                          {...getFieldProps('contactInformation.industry')}
-                          onChange={(event) => setFieldValue('contactInformation.industry', event.target.value)}
-                        >
-                          <MenuItem value={'Consulting'}>Consulting</MenuItem>
-                            <MenuItem value={'Analyst'}>Analyst</MenuItem>
-                            <MenuItem value={'Developer'}>Developer</MenuItem>
-                            <MenuItem value={'Quality Assurance'}>Quality Assurance</MenuItem>
-                        </Select>
-                      </FormControl>
-                    </Grid>
-                          {/* Industry Category end */}
-                    
-                    {/* project type for create             */}
-                    {!lead &&(
-                      <>
-                        <Grid item xs={6} sm={6}>
-                        
-                        {/* Project TYPE */}
-                        <FormControl fullWidth>
-                          <InputLabel htmlFor="project-type-label">Project TYPE</InputLabel>
-                          <Select
-                            labelId="project-type"
-                            id="project-type"
-                            placeholder="Project Type"
-                            {...getFieldProps('projectType')}
-                            onChange={(event) => setFieldValue('projectType', event.target.value)}
-                          >
-                            <MenuItem value={'Electrical'}>Electrical</MenuItem>
-                            <MenuItem value={'Civil'}>Civil</MenuItem>
-                            <MenuItem value={'Robotics'}>Robotics</MenuItem>
-                            <MenuItem value={'Network'}>Network</MenuItem>
-                          </Select>
-                        </FormControl>
-                        </Grid>
-                        
-                      </>
-                      
-                      )}
+                    {/* Industry Category */}
+                   
 
                     
 

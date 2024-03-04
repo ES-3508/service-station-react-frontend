@@ -409,7 +409,7 @@ const LeadListPage = () => {
       },
       
       {
-        Header: 'Second Name',
+        Header: 'Last Name',
         accessor: 'contactInformation.lastName',
         // Cell: CustomCell
       },

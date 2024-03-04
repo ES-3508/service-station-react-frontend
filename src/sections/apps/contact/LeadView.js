@@ -352,6 +352,23 @@ const ViewLead = ({ lead, onCancel }) => {
                       </Stack>
                     </Grid>
 
+                    {/* address */}
+                    <Grid item xs={12}>
+                      <Stack spacing={1.25}>
+                        {/* <InputLabel htmlFor="lead-address">Address</InputLabel> */}
+                        <TextField
+                          label="Address"
+                          disabled={true}
+                          fullWidth
+                          id="lead-address"
+                          placeholder="Enter lead Adderess"
+                          {...getFieldProps('name')}
+                          error={Boolean(touched.name && errors.name)}
+                          helperText={touched.name && errors.name}
+                        />
+                      </Stack>
+                    </Grid>
+
                     {/* company name */}
                     <Grid item xs={12}>
                       <Stack spacing={1.25}>
@@ -369,53 +386,14 @@ const ViewLead = ({ lead, onCancel }) => {
                       </Stack>
                     </Grid>
 
-                    {/* Industry Category */}
-                    <Grid item xs={12}>
-                      <Stack spacing={1.25}>
-                        <InputLabel disabled={true} htmlFor="customer-industry-category">
-                          Industry Category
-                        </InputLabel>
-                        <Select
-                          label="Industry Category"
-                          labelId="lead-industry-category"
-                          id="categoryasd"
-                          disabled={true}
-                          placeholder="Select category"
-                          {...getFieldProps('contactInformation.industry')}
-                          onChange={(event) => {
-                            setFieldValue('contactInformation.industry', event.target.value);
-                          }}
-                        >
-                          <MenuItem value={'Consulting'}>Consulting</MenuItem>
-                          <MenuItem value={'Analyst'}>Analyst</MenuItem>
-                          <MenuItem value={'Developer'}>Developer</MenuItem>
-                          <MenuItem value={'Quality Assurance'}>Quality Assurance</MenuItem>
-                        </Select>
-                      </Stack>
-                    </Grid>
-                    {/* Industry Category end */}
+                    
 
-                    {/* address */}
-                    <Grid item xs={12}>
-                      <Stack spacing={1.25}>
-                        {/* <InputLabel htmlFor="lead-address">Address</InputLabel> */}
-                        <TextField
-                          label="Address"
-                          disabled={true}
-                          fullWidth
-                          id="lead-address"
-                          placeholder="Enter lead Adderess"
-                          {...getFieldProps('name')}
-                          error={Boolean(touched.name && errors.name)}
-                          helperText={touched.name && errors.name}
-                        />
-                      </Stack>
-                    </Grid>
+                    
                   </Grid>
                 </Grid>
                 {/* end of contact information */}
 
-                {/* project type for create             */}
+              
 
                 <Divider />
               </Grid>

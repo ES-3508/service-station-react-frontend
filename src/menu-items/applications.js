@@ -167,7 +167,7 @@ const applications = {
       children: [
         {
           id: 'list',
-          title: <FormattedMessage id="All Inovoices" />,
+          title: <FormattedMessage id="All Invoices" />,
           type: 'item',
           url: '/apps/invoice/list'
         },

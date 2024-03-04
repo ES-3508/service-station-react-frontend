@@ -78,7 +78,6 @@ import AlertProjectDelete from './AlertProjectDelete';
 // ==============================|| CUSTOMER ADD / EDIT / DELETE ||============================== //
 
 const AddProject = ({ project, onCancel }) => {
-
   const [openAlert, setOpenAlert] = useState(false);
 
   const [deletingProject, setDeletingProject] = useState({
@@ -97,12 +96,12 @@ const AddProject = ({ project, onCancel }) => {
     setDeletingProject({
       _id: project._id,
       name: project.projectName
-    })
-    setOpenAlert(true)
-  }
+    });
+    setOpenAlert(true);
+  };
 
   const ProjectSchema = Yup.object().shape({
-    projectName: Yup.string().max(255).required('Project name is required'),
+    projectName: Yup.string().max(255).required('Project name is required')
     // clientName: Yup.string().max(255).required('Client name is required'),
     // asignTo: Yup.string().max(255)
     //   .optional(),
@@ -120,16 +119,19 @@ const AddProject = ({ project, onCancel }) => {
     // status: Yup.mixed().oneOf([ProjectStatus.PENDING, ProjectStatus.VERIFIED, ProjectStatus.REJECTED]).default(ProjectStatus.PENDING)
   });
 
-  const defaultValues = useMemo(() => ({
-    projectName: project ? project.projectName : '',
-    clientName: project ? project.clientName : '',
-    asignTo: project ? project.asignTo : '',
-    asignBy: project ? project.asignBy : '',
-    startDate: project ? new Date(project.startDate) : new Date(),
-    endDate: project ? new Date(project.endDate) : null,
-    description: project ? project?.description : '',
-    status: project ? project?.status : ProjectStatus.PENDING,
-  }), [project])
+  const defaultValues = useMemo(
+    () => ({
+      projectName: project ? project.projectName : '',
+      clientName: project ? project.clientName : '',
+      asignTo: project ? project.asignTo : '',
+      asignBy: project ? project.asignBy : '',
+      startDate: project ? new Date(project.startDate) : new Date(),
+      endDate: project ? new Date(project.endDate) : null,
+      description: project ? project?.description : '',
+      status: project ? project?.status : ProjectStatus.PENDING
+    }),
+    [project]
+  );
 
   const formik = useFormik({
     enableReinitialize: true,
@@ -138,44 +140,45 @@ const AddProject = ({ project, onCancel }) => {
     validationSchema: ProjectSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-
         if (project) {
-
           if (values.files) {
-            dispatch(uploadProjectAttachment(values.files[0]))
-              .then((fileUrl) => {
-                if (fileUrl) {
-                  dispatch(updateProject(project._id, {
-                    ...values, imageUrl: fileUrl.payload
-                  }));
-                }
-              })
+            dispatch(uploadProjectAttachment(values.files[0])).then((fileUrl) => {
+              if (fileUrl) {
+                dispatch(
+                  updateProject(project._id, {
+                    ...values,
+                    imageUrl: fileUrl.payload
+                  })
+                );
+              }
+            });
           } else {
-            dispatch(updateProject(project._id, {
-              ...values,
-              imageUrl: project.imageUrl,
-            }));
+            dispatch(
+              updateProject(project._id, {
+                ...values,
+                imageUrl: project.imageUrl
+              })
+            );
           }
 
           resetForm();
         } else {
-
           if (values.files) {
-            dispatch(uploadProjectAttachment(values.files[0]))
-              .then((fileUrl) => {
-                if (fileUrl) {
-                  dispatch(createProject({
+            dispatch(uploadProjectAttachment(values.files[0])).then((fileUrl) => {
+              if (fileUrl) {
+                dispatch(
+                  createProject({
                     ...values,
-                    imageUrl: fileUrl.payload,
-                  }))
-                }
-              })
+                    imageUrl: fileUrl.payload
+                  })
+                );
+              }
+            });
           } else {
-            dispatch(createProject(values))
+            dispatch(createProject(values));
           }
 
           resetForm();
-
         }
 
         setSubmitting(false);
@@ -186,7 +189,7 @@ const AddProject = ({ project, onCancel }) => {
     }
   });
 
-  const {  errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue, resetForm, values } = formik;
+  const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue, resetForm, values } = formik;
 
   return (
     <>
@@ -272,31 +275,28 @@ const AddProject = ({ project, onCancel }) => {
                       </Stack>
                     </Grid>
                     <Grid item xs={6} sm={6}>
-                        
-                        {/* Project TYPE */}
-                        <FormControl fullWidth>
-                          <InputLabel htmlFor="project-type-label">Project Type</InputLabel>
-                          <Select
-                            labelId="project-type"
-                            id="project-type"
-                            placeholder="Project Type"
-                            {...getFieldProps('projectType')}
-                            onChange={(event) => setFieldValue('projectType', event.target.value)}
-                          >
-                            <MenuItem value={'Electrical'}>Electrical</MenuItem>
-                            <MenuItem value={'Civil'}>Civil</MenuItem>
-                            <MenuItem value={'Robotics'}>Robotics</MenuItem>
-                            <MenuItem value={'Network'}>Network</MenuItem>
-                          </Select>
-                        </FormControl>
-                        </Grid>
+                      {/* Project TYPE */}
+                      <FormControl fullWidth>
+                        <InputLabel htmlFor="project-type-label">Project Type</InputLabel>
+                        <Select
+                          labelId="project-type"
+                          id="project-type"
+                          placeholder="Project Type"
+                          {...getFieldProps('projectType')}
+                          onChange={(event) => setFieldValue('projectType', event.target.value)}
+                        >
+                          <MenuItem value={'Glass'}>Glass</MenuItem>
+                          <MenuItem value={'Electrical'}>Electrical</MenuItem>
+                          <MenuItem value={'Building'}>Building</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Grid>
                     {/* end of client name */}
                     {/* status */}
                     <Grid item xs={6}>
                       <Stack spacing={1.25}>
-                        
                         <FormControl fullWidth>
-                        <InputLabel htmlFor="project-status-label">Status</InputLabel>
+                          <InputLabel htmlFor="project-status-label">Status</InputLabel>
                           <Select
                             labelId="project-status"
                             id="column-hiding"
@@ -335,7 +335,11 @@ const AddProject = ({ project, onCancel }) => {
                         <InputLabel>Start Date</InputLabel>
                         <FormControl sx={{ width: '100%' }} error={Boolean(touched.startDate && errors.startDate)}>
                           <LocalizationProvider dateAdapter={AdapterDateFns}>
-                            <DatePicker format="dd/MM/yyyy" value={values.startDate} onChange={(newValue) => setFieldValue('startDate', newValue)} />
+                            <DatePicker
+                              format="dd/MM/yyyy"
+                              value={values.startDate}
+                              onChange={(newValue) => setFieldValue('startDate', newValue)}
+                            />
                           </LocalizationProvider>
                         </FormControl>
                       </Stack>
@@ -383,14 +387,15 @@ const AddProject = ({ project, onCancel }) => {
                     </Grid> */}
                     {/* end of attachment */}
 
-                    {project?.imageUrl && !values.files && (<img
-                      src={project?.imageUrl}
-                      style={{
-                        width: 'calc(100% - 16px)',
-                        height: 'calc(100% - 16px)',
-                      }}
-                    />)}
-
+                    {project?.imageUrl && !values.files && (
+                      <img
+                        src={project?.imageUrl}
+                        style={{
+                          width: 'calc(100% - 16px)',
+                          height: 'calc(100% - 16px)'
+                        }}
+                      />
+                    )}
 
                     {/* bottom content */}
                     {/* <Grid item xs={12}>
@@ -446,7 +451,9 @@ const AddProject = ({ project, onCancel }) => {
           </Form>
         </LocalizationProvider>
       </FormikProvider>
-      {!isCreating && <AlertProjectDelete title={deletingProject.name} projectId={deletingProject._id} open={openAlert} handleClose={handleAlertClose} />}
+      {!isCreating && (
+        <AlertProjectDelete title={deletingProject.name} projectId={deletingProject._id} open={openAlert} handleClose={handleAlertClose} />
+      )}
     </>
   );
 };

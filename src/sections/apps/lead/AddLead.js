@@ -119,20 +119,16 @@ const AddLead = ({ lead, onCancel }) => {
     //   .nullable(),
     contactInformation: Yup.object().shape({
       firstName: Yup.string().required('First Name is required'),
-    //   lastName: Yup.string().required('Last Name is required'),
-    //   surName: Yup.string(),
-    //   company: Yup.string(),
-    //   companyNumber: Yup.string(),
-    //   industry: Yup.string(),
-    //   address: Yup.string(),
-    phone1: Yup.string()
-    .matches(/^\+?[0-9]+$/, 'Phone number must contain only numeric characters and may start with a "+" sign')
-    ,
-  phone2: Yup.string()
-    .matches(/^\+?[0-9]+$/, 'Phone number must contain only numeric characters and may start with a "+" sign')
-    ,
-    email: Yup.string().email('Invalid email address'),
-    }),
+      //   lastName: Yup.string().required('Last Name is required'),
+      //   surName: Yup.string(),
+      //   company: Yup.string(),
+      //   companyNumber: Yup.string(),
+      //   industry: Yup.string(),
+      //   address: Yup.string(),
+      phone1: Yup.string().matches(/^\+?[0-9]+$/, 'Phone number must contain only numeric characters and may start with a "+" sign'),
+      phone2: Yup.string().matches(/^\+?[0-9]+$/, 'Phone number must contain only numeric characters and may start with a "+" sign'),
+      email: Yup.string().email('Invalid email address')
+    })
     // descriptionInformation: Yup.array().of(
     //   Yup.object().shape({
     //     note: Yup.string(),
@@ -293,7 +289,7 @@ const AddLead = ({ lead, onCancel }) => {
                           {...getFieldProps('contactInformation.firstName')}
                           onChange={(event) => setFieldValue('contactInformation.firstName', event.target.value)}
                           error={Boolean(touched.contactInformation?.firstName && errors.contactInformation?.firstName)}
-                        helperText={touched.contactInformation?.firstName && errors.contactInformation?.firstName}
+                          helperText={touched.contactInformation?.firstName && errors.contactInformation?.firstName}
                         />
                       </FormControl>
                     </Grid>
@@ -364,22 +360,6 @@ const AddLead = ({ lead, onCancel }) => {
                       </Stack>
                     </Grid>
 
-                    {/* company name */}
-                    <Grid item xs={12}>
-                      <Stack spacing={1.25}>
-                        {/* <InputLabel htmlFor="customer-company-name">Company Name</InputLabel> */}
-                        <TextField
-                          label="Company Name"
-                          fullWidth
-                          id="customer-company-name"
-                          placeholder="Enter Customer Company Name"
-                          {...getFieldProps('contactInformation.company')}
-                          error={Boolean(touched.name && errors.name)}
-                          helperText={touched.name && errors.name}
-                        />
-                      </Stack>
-                    </Grid>
-
                     {/* address */}
                     <Grid item xs={12}>
                       <Stack spacing={1.25}>
@@ -396,6 +376,24 @@ const AddLead = ({ lead, onCancel }) => {
                       </Stack>
                     </Grid>
 
+                    {/* company name */}
+                    <Grid item xs={12}>
+                      <Stack spacing={1.25}>
+                        {/* <InputLabel htmlFor="customer-company-name">Company Name</InputLabel> */}
+                        <TextField
+                          label="Company Name"
+                          fullWidth
+                          id="customer-company-name"
+                          placeholder="Enter Customer Company Name"
+                          {...getFieldProps('contactInformation.company')}
+                          error={Boolean(touched.name && errors.name)}
+                          helperText={touched.name && errors.name}
+                        />
+                      </Stack>
+                    </Grid>
+
+                    
+
                     {/* Industry Category */}
 
                     <Grid item xs={12} sm={6}>
@@ -408,38 +406,27 @@ const AddLead = ({ lead, onCancel }) => {
                           {...getFieldProps('contactInformation.industry')}
                           onChange={(event) => setFieldValue('contactInformation.industry', event.target.value)}
                         >
-                          <MenuItem value={'Consulting'}>Consulting</MenuItem>
-                          <MenuItem value={'Analyst'}>Analyst</MenuItem>
-                          <MenuItem value={'Developer'}>Developer</MenuItem>
-                          <MenuItem value={'Quality Assurance'}>Quality Assurance</MenuItem>
+                          <MenuItem value={'Technology'}>Technology</MenuItem>
+                          <MenuItem value={'Healthcare'}>Healthcare</MenuItem>
+                          <MenuItem value={'Finance'}>Finance</MenuItem>
+                          <MenuItem value={'Retail'}>Retail</MenuItem>
+                          <MenuItem value={'Manufacturing'}>Manufacturing</MenuItem>
+                          <MenuItem value={'Transportation and Logistics'}>Transportation and Logistics</MenuItem>
+                          <MenuItem value={'Hospitality and Tourism'}>Hospitality and Tourism</MenuItem>
+                          <MenuItem value={'Real Estate'}>Real Estate</MenuItem>
+                          <MenuItem value={'Education'}>Education</MenuItem>
+                          <MenuItem value={'Entertainment and Media'}>Entertainment and Media</MenuItem>
+                          <MenuItem value={'Food and Beverage'}>Food and Beverage</MenuItem>
+                          <MenuItem value={'Agriculture'}>Agriculture</MenuItem>
+                          <MenuItem value={'Construction'}>Construction</MenuItem>
+                          <MenuItem value={'Energy and Utilities'}>Energy and Utilities</MenuItem>
+                          <MenuItem value={'Professional Services'}>Professional Services</MenuItem>
                         </Select>
                       </FormControl>
                     </Grid>
                     {/* Industry Category end */}
 
-                    {/* project type for create             */}
-                    {!lead && (
-                      <>
-                        <Grid item xs={6} sm={6}>
-                          {/* Project TYPE */}
-                          <FormControl fullWidth>
-                            <InputLabel htmlFor="project-type-label">Project TYPE</InputLabel>
-                            <Select
-                              labelId="project-type"
-                              id="project-type"
-                              placeholder="Project Type"
-                              {...getFieldProps('projectType')}
-                              onChange={(event) => setFieldValue('projectType', event.target.value)}
-                            >
-                              <MenuItem value={'Electrical'}>Electrical</MenuItem>
-                              <MenuItem value={'Civil'}>Civil</MenuItem>
-                              <MenuItem value={'Robotics'}>Robotics</MenuItem>
-                              <MenuItem value={'Network'}>Network</MenuItem>
-                            </Select>
-                          </FormControl>
-                        </Grid>
-                      </>
-                    )}
+                    
                   </Grid>
                 </Grid>
                 {/* end of contact information */}
@@ -517,10 +504,9 @@ const AddLead = ({ lead, onCancel }) => {
                           {...getFieldProps('projectType')}
                           onChange={(event) => setFieldValue('projectType', event.target.value)}
                         >
+                          <MenuItem value={'Glass'}>Glass</MenuItem>
                           <MenuItem value={'Electrical'}>Electrical</MenuItem>
-                          <MenuItem value={'Civil'}>Civil</MenuItem>
-                          <MenuItem value={'Robotics'}>Robotics</MenuItem>
-                          <MenuItem value={'Network'}>Network</MenuItem>
+                          <MenuItem value={'Building'}>Building</MenuItem>
                         </Select>
                       </FormControl>
                     </Grid>
