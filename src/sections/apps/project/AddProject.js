@@ -275,7 +275,7 @@ const AddProject = ({ project, onCancel }) => {
                         
                         {/* Project TYPE */}
                         <FormControl fullWidth>
-                          <InputLabel htmlFor="project-type-label">Project TYPE</InputLabel>
+                          <InputLabel htmlFor="project-type-label">Project Type</InputLabel>
                           <Select
                             labelId="project-type"
                             id="project-type"

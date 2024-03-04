@@ -250,18 +250,18 @@ const AddLead = ({ lead, onCancel }) => {
               <Grid item>
                 <DialogTitle sx={{ fontSize: 32, p: 3.5 }}>{lead ? 'View Contact' : 'Create Contact'}</DialogTitle>
               </Grid>
-              <Grid item>
+              {/* <Grid item>
                 {lead && (
                     <Button variant="contained" color="primary" size="small" sx={{marginRight:'20px'}}>
                     Convert to Project  <CaretRightOutlined/>
                   </Button>
                 )}
                 
-              </Grid>
+              </Grid> */}
             </Grid>
             <Divider />
             <DialogContent sx={{ pt: 0.8 }}>
-              <Grid container spacing={1}>
+              <Grid container spacing={2}>
                 <Grid item xs={12}> 
                 </Grid>
 
@@ -269,7 +269,7 @@ const AddLead = ({ lead, onCancel }) => {
                 <DialogTitle>Contact information </DialogTitle> 
 
                 <Grid item xs={12}>
-                  <Grid container spacing={1}>
+                  <Grid container spacing={3}>
                     {/* first name */}
                     <Grid item xs={12} sm={6}>
                       

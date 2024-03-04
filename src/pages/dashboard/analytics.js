@@ -80,22 +80,22 @@ const DashboardAnalytics = () => {
           <WelcomeBanner />
         </Grid>
         <Grid item xs={12} sm={6} md={4} lg={3}>
-          <AnalyticsDataCard title="Total Users" count="78,250" percentage={70.5}>
+          <AnalyticsDataCard title="Total Users" count="78" percentage={70.5}>
             <UsersCardChart />
           </AnalyticsDataCard>
         </Grid>
         <Grid item xs={12} sm={6} md={4} lg={3}>
-          <AnalyticsDataCard title="Total Order" count="18,800" percentage={27.4} isLoss color="warning">
+          <AnalyticsDataCard title="Total Leads" count="18" percentage={27.4} isLoss color="warning">
             <OrdersCardChart />
           </AnalyticsDataCard>
         </Grid>
         <Grid item xs={12} sm={6} md={4} lg={3}>
-          <AnalyticsDataCard title="Total Sales" count="$35,078" percentage={27.4} isLoss color="warning">
+          <AnalyticsDataCard title="Total Projects" count="15" percentage={27.4} isLoss color="warning">
             <SalesCardChart />
           </AnalyticsDataCard>
         </Grid>
         <Grid item xs={12} sm={6} md={4} lg={3}>
-          <AnalyticsDataCard title="Total Marketing" count="$1,12,083" percentage={70.5}>
+          <AnalyticsDataCard title="Total Transactions" count="$ 1100" percentage={70.5}>
             <MarketingCardChart />
           </AnalyticsDataCard>
         </Grid>

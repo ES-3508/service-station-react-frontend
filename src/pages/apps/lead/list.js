@@ -46,16 +46,7 @@ import AlertLeadDelete from 'sections/apps/lead/AlertLeadDelete';
 import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 
 // assets
-import {
-  CloseOutlined,
-  PlusOutlined,
-  EyeTwoTone,
-  EditTwoTone,
-  DeleteTwoTone,
-  PhoneOutlined,
-  UnorderedListOutlined,
-  AppstoreOutlined
-} from '@ant-design/icons';
+import {CloseOutlined, PlusOutlined, EyeTwoTone, EditTwoTone, DeleteTwoTone, PhoneOutlined, UnorderedListOutlined, AppstoreOutlined, ConsoleSqlOutlined} from '@ant-design/icons';
 import { dispatch, useSelector } from 'store';
 import { getLeads } from 'store/reducers/leads';
 import LeadCardPage from './card';
@@ -236,6 +227,22 @@ const SelectionHeader = ({ getToggleAllPageRowsSelectedProps }) => (
 
 const IndexCell = ({ row, state }) => {
   return <Typography variant="subtitle1">{Number(row.id) + 1 + state.pageIndex * state.pageSize}</Typography>;
+}
+
+const CustomCell = ({ row }) => {
+  // const { values } = row;
+  return (
+    <Stack direction="row" spacing={1.5} alignItems="center">
+      {/* <Avatar alt="Avatar 1" size="sm" src={values.imageUrl} /> */}
+      <Stack spacing={0}>
+        {console.log(row,'=============================================================================Row')}
+        <Typography variant="subtitle1">{row.firstName}</Typography>
+        {/* <Typography variant="caption" color="textSecondary">
+          {values.email}
+        </Typography> */}
+      </Stack>
+    </Stack>
+  );
 };
 
 const NumberFormatCell = ({ value }) => <PatternFormat displayType="text" format="+1 (###) ###-####" mask="_" defaultValue={value} />;
@@ -342,7 +349,7 @@ const ActionCell = (row, setLead, setLeadDeleteId, handleAdd, handleView, handle
   );
 };
 
-const CustomCell = (row, setLead, handleOpenTabLead) => {
+const CustomCell2 = (row, setLead, handleOpenTabLead) => {
   const { values } = row;
   console.log('values name ', row.values._id);
   const {
@@ -368,7 +375,7 @@ const CustomCell = (row, setLead, handleOpenTabLead) => {
           //   handleOpenTabLead();
           // }}
         >
-          {values?.contactInformation?.firstName}
+          {values?.contactInformation?.firstName}{` `}{values?.contactInformation?.lastName}
         </Typography>
         </Link>
       </Stack>
@@ -445,16 +452,26 @@ const LeadListPage = () => {
         Cell: IndexCell
       },
       {
-        Header: 'First Name',
+        Header: 'Lead Name',
         accessor: 'contactInformation',
-        Cell: ({row}) => CustomCell(row, setLead, handleOpenTabLead)
-        // Cell: CustomCell
+        Cell: ({row}) => CustomCell2(row, setLead, handleOpenTabLead)
+        // Cell: ({ value }) => {
+        //   if (value === null) {
+        //     return ''; // Or you can return any other representation of a blank cell
+        //   }
+        //   return (value.firstName+' '+value.lastName);
+        // }
       },
       {
-        Header: 'Second Name',
-        accessor: 'contactInformation.lastName'
-        // Cell: CustomCell
+        Header: 'Phone Number',
+        accessor: 'contactInformation.phone1',
+       
       },
+      // {
+      //   Header: 'Second Name',
+      //   accessor: 'contactInformation.lastName',
+      //   // Cell: CustomCell
+      // },
       // {
       //   Header: 'Namel',
       //   accessor: 'name',
