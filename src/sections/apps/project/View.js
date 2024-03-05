@@ -214,7 +214,7 @@ const handleChange = (event, fieldName) => {
                 <FormControl fullWidth>
                   <InputLabel htmlFor="project-type-label" sx={{position:'absolute', top: '20%', background:'transparent !important' }}>Status</InputLabel>
                   <Select
-                    sx={{height: '70px', position:'relative', backgroundColor: getBackgroundColor('sendInvoice'), borderRadius:'20px'}}
+                    sx={{height: '70px', position:'relative', backgroundColor: getBackgroundColor('sendInvoice'), borderRadius:'8px'}}
                     labelId="project-type-lable"
                     id="project-type"
                     placeholder="Status"
@@ -234,7 +234,7 @@ const handleChange = (event, fieldName) => {
                 <FormControl fullWidth>
                   <InputLabel htmlFor="project-type-label" sx={{position:'absolute', top: '20%', background:'transparent !important'}}>Status</InputLabel>
                   <Select
-                  sx={{height: '70px', position:'relative', backgroundColor: getBackgroundColor('depositPaid'), borderRadius:'20px'}}
+                  sx={{height: '70px', position:'relative', backgroundColor: getBackgroundColor('depositPaid'), borderRadius:'8px'}}
                     labelId="project-type"
                     id="project-type"
                     placeholder="Status"
@@ -254,7 +254,7 @@ const handleChange = (event, fieldName) => {
                 <FormControl fullWidth>
                   <InputLabel htmlFor="project-type-label" sx={{position:'absolute', top: '20%', background:'transparent !important'}}>Status</InputLabel>
                   <Select
-                  sx={{height: '70px', position:'relative', backgroundColor: getBackgroundColor('questionnaire'), borderRadius:'20px'}}
+                  sx={{height: '70px', position:'relative', backgroundColor: getBackgroundColor('questionnaire'), borderRadius:'8px'}}
                     labelId="project-type"
                     id="project-type"
                     placeholder="Status"
@@ -274,7 +274,7 @@ const handleChange = (event, fieldName) => {
                 <FormControl fullWidth>
                   <InputLabel htmlFor="project-type-label" sx={{position:'absolute', top: '20%', background:'transparent !important'}}>Status</InputLabel>
                   <Select
-                  sx={{height: '70px', position:'relative', backgroundColor: getBackgroundColor('projectDate'), borderRadius:'20px'}}
+                  sx={{height: '70px', position:'relative', backgroundColor: getBackgroundColor('projectDate'), borderRadius:'8px'}}
                     labelId="project-type"
                     id="project-type"
                     placeholder="Status"
@@ -294,7 +294,7 @@ const handleChange = (event, fieldName) => {
                 <FormControl fullWidth>
                   <InputLabel htmlFor="project-type-label" sx={{position:'absolute', top: '20%', background:'transparent !important'}}>Status</InputLabel>
                   <Select
-                  sx={{height: '70px', position:'relative', backgroundColor: getBackgroundColor('revisions'), borderRadius:'20px'}}
+                  sx={{height: '70px', position:'relative', backgroundColor: getBackgroundColor('revisions'), borderRadius:'8px'}}
                     labelId="project-type"
                     id="project-type"
                     placeholder="Status"
@@ -314,7 +314,7 @@ const handleChange = (event, fieldName) => {
                 <FormControl fullWidth>
                   <InputLabel htmlFor="project-type-label" sx={{position:'absolute', top: '20%', background:'transparent !important'}}>Status</InputLabel>
                   <Select
-                  sx={{height: '70px', position:'relative', backgroundColor: getBackgroundColor('referrals'), borderRadius:'20px'}}
+                  sx={{height: '70px', position:'relative', backgroundColor: getBackgroundColor('referrals'), borderRadius:'8px'}}
                     labelId="project-type"
                     id="project-type"
                     placeholder="Status"
