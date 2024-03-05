@@ -30,15 +30,16 @@ const Calendar = () => {
   const matchDownSM = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
   const [loading, setLoading] = useState(true);
-  const { calendarView, events, isModalOpen, selectedRange } = useSelector((state) => state.calendar);
+  const { calendarView, events, isModalOpen, selectedRange,action } = useSelector((state) => state.calendar);
 
-  const selectedEvent = useSelector((state) => {
-    const { events, selectedEventId } = state.calendar;
-    if (selectedEventId) {
-      return events.find((event) => event.id === selectedEventId);
-    }
-    return null;
-  });
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  // const selectedEvent = useSelector((state) => {
+  //   const { events, selectedEventId } = state.calendar;
+  //   if (selectedEventId) {
+  //     return events.find((event) => event.id === selectedEventId);
+  //   }
+  //   return null;
+  // });
 
   useEffect(() => {
     const newView = matchDownSM ? 'listWeek' : 'dayGridMonth';
@@ -46,7 +47,7 @@ const Calendar = () => {
     const eventCall = dispatch(getEvents());
     Promise.all([viewCall, eventCall]).then(() => setLoading(false));
     // eslint-disable-next-line
-  }, []);
+  }, [action]);
 
   const calendarRef = useRef(null);
 
@@ -119,7 +120,10 @@ const Calendar = () => {
   };
 
   const handleEventSelect = (arg) => {
-    dispatch(selectEvent(arg.event.id));
+    console.log(arg,'arg _--------------------------------')
+    setSelectedEvent(events.find((event) => event._id === arg.event._def.extendedProps._id));
+
+    dispatch(selectEvent(arg.event._def.extendedProps._id));
   };
 
   const handleEventUpdate = async ({ event }) => {

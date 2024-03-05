@@ -11,7 +11,8 @@ const initialState = {
   isLoader: false,
   isModalOpen: false,
   selectedEventId: null,
-  selectedRange: null
+  selectedRange: null,
+  action:false
 };
 
 // ==============================|| CALENDAR - SLICE ||============================== //
@@ -53,7 +54,8 @@ const calendar = createSlice({
     createEvent(state, action) {
       state.isLoader = false;
       state.isModalOpen = false;
-      state.events = action.payload;
+      state.action=!state.action;
+      // state.events = action.payload;
     },
 
     // update event
@@ -61,6 +63,7 @@ const calendar = createSlice({
       state.isLoader = false;
       state.isModalOpen = false;
       state.events = action.payload;
+      state.action=!state.action;
     },
 
     // delete event
@@ -69,6 +72,7 @@ const calendar = createSlice({
       state.isModalOpen = false;
       const deleteEvent = state.events.filter((user) => user.id !== eventId);
       state.events = deleteEvent;
+      state.action=!state.action;
     },
 
     // select date range
@@ -93,11 +97,15 @@ export default calendar.reducer;
 
 export const { selectEvent, toggleModal, updateCalendarView } = calendar.actions;
 
-export function getEvents() {
+export function getEvents(pageIndex = 0, pageSize = 10, query,start,end) {
   return async () => {
     dispatch(calendar.actions.loading());
     try {
-      const response = await axios.get('/api/calendar/events');
+      let requestUrl= 'api/v1/event'
+      // if(start && end){
+      //   requestUrl=requestUrl+`start=${start}&end=${end}`
+      // }
+      const response = await axios.get(requestUrl);
       dispatch(calendar.actions.setEvents(response.data.events));
     } catch (error) {
       dispatch(calendar.actions.hasError(error));
@@ -107,9 +115,10 @@ export function getEvents() {
 
 export function createEvent(newEvent) {
   return async () => {
+    console.log(newEvent)
     dispatch(calendar.actions.loading());
     try {
-      const response = await axios.post('/api/calendar/events/add', newEvent);
+      const response = await axios.post('/api/v1/event/', newEvent);
       dispatch(calendar.actions.createEvent(response.data));
     } catch (error) {
       dispatch(calendar.actions.hasError(error));
@@ -121,9 +130,10 @@ export function updateEvent(eventId, updateEvent) {
   return async () => {
     dispatch(calendar.actions.loading());
     try {
-      const response = await axios.post('/api/calendar/events/update', {
-        eventId,
-        update: updateEvent
+      let  requestUrl=`/api/v1/event/${eventId}/update`
+      const response = await axios.put(requestUrl, {
+        
+        updateEvent
       });
       dispatch(calendar.actions.updateEvent(response.data.events));
     } catch (error) {
@@ -136,7 +146,9 @@ export function deleteEvent(eventId) {
   return async () => {
     dispatch(calendar.actions.loading());
     try {
-      await axios.post('/api/calendar/events/delete', { eventId });
+      const response = await axios.delete(`/api/v1/event/${eventId}/delete`);
+
+      // await axios.post('/api/calendar/events/delete', { eventId });
       dispatch(calendar.actions.deleteEvent({ eventId }));
     } catch (error) {
       dispatch(calendar.actions.hasError(error));

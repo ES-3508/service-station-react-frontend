@@ -14,7 +14,9 @@ import {
   Grid,
   InputAdornment,
   InputLabel,
+  MenuItem,
   RadioGroup,
+  Select,
   Stack,
   Switch,
   TextField,
@@ -47,6 +49,7 @@ const getInitialValues = (event, range) => {
     description: '',
     color: '#1890ff',
     textColor: '#fff',
+    eventType: '',
     allDay: false,
     start: range ? new Date(range.start) : new Date(),
     end: range ? new Date(range.end) : new Date()
@@ -58,6 +61,25 @@ const getInitialValues = (event, range) => {
 
   return newEvent;
 };
+
+// const getInitialValues = (event) => {
+//   const newEvent = {
+//     title: event ? event.title : '',
+//     description: event ? event.description : '',
+//     color: '#1890ff',
+//     textColor: '#fff',
+//     eventType: event ? event.description : '',
+//     allDay: false,
+//     start: event ? new Date(event.start) : new Date(),
+//     end: event ? new Date(event.end) : new Date()
+//   };
+
+//   if (event || range) {
+//     return _.merge({}, newEvent, event);
+//   }
+
+//   return newEvent;
+// };
 
 // ==============================|| CALENDAR EVENT ADD / EDIT / DELETE ||============================== //
 
@@ -157,15 +179,15 @@ const AddEventFrom = ({ event, range, onCancel }) => {
 
   const EventSchema = Yup.object().shape({
     title: Yup.string().max(255).required('Title is required'),
-    description: Yup.string().max(5000),
+    // description: Yup.string().max(5000),
     end: Yup.date().when('start', (start, schema) => start && schema.min(start, 'End date must be later than start date')),
-    start: Yup.date(),
-    color: Yup.string().max(255),
-    textColor: Yup.string().max(255)
+    start: Yup.date()
+    // color: Yup.string().max(255),
+    // textColor: Yup.string().max(255)
   });
 
   const deleteHandler = () => {
-    dispatch(deleteEvent(event?.id));
+    dispatch(deleteEvent(event?._id));
     dispatch(
       openSnackbar({
         open: true,
@@ -188,6 +210,7 @@ const AddEventFrom = ({ event, range, onCancel }) => {
           title: values.title,
           description: values.description,
           color: values.color,
+          eventType: values.eventType,
           textColor: values.textColor,
           allDay: values.allDay,
           start: values.start,
@@ -195,7 +218,7 @@ const AddEventFrom = ({ event, range, onCancel }) => {
         };
 
         if (event) {
-          dispatch(updateEvent(event.id, newEvent));
+          dispatch(updateEvent(event._id, newEvent));
           dispatch(
             openSnackbar({
               open: true,
@@ -239,6 +262,7 @@ const AddEventFrom = ({ event, range, onCancel }) => {
           <Divider />
           <DialogContent sx={{ p: 2.5 }}>
             <Grid container spacing={3}>
+              {/* title */}
               <Grid item xs={12}>
                 <Stack spacing={1.25}>
                   <InputLabel htmlFor="cal-title">Title</InputLabel>
@@ -252,6 +276,26 @@ const AddEventFrom = ({ event, range, onCancel }) => {
                   />
                 </Stack>
               </Grid>
+
+              {/* event Type */}
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth>
+                  <InputLabel htmlFor="event-type-label">Event Type</InputLabel>
+                  <Select
+                    labelId="event-type"
+                    id="event-type"
+                    placeholder="Event Type"
+                    {...getFieldProps('eventType')}
+                    onChange={(event) => setFieldValue('eventType', event.target.value)}
+                  >
+                    <MenuItem value={'Call'}>Call</MenuItem>
+                    <MenuItem value={'Email'}>Email</MenuItem>
+                    <MenuItem value={'Meeting'}>Meeting</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+
+              {/* description */}
               <Grid item xs={12}>
                 <Stack spacing={1.25}>
                   <InputLabel htmlFor="cal-description">Description</InputLabel>
@@ -267,9 +311,13 @@ const AddEventFrom = ({ event, range, onCancel }) => {
                   />
                 </Stack>
               </Grid>
+
+              {/* All day */}
               <Grid item xs={12}>
                 <FormControlLabel control={<Switch checked={values.allDay} {...getFieldProps('allDay')} />} label="All day" />
               </Grid>
+
+              {/* start date */}
               <Grid item xs={12} md={6}>
                 <Stack spacing={1.25}>
                   <InputLabel htmlFor="cal-start-date">Start Date</InputLabel>
@@ -292,6 +340,8 @@ const AddEventFrom = ({ event, range, onCancel }) => {
                   {touched.start && errors.start && <FormHelperText error={true}>{errors.start}</FormHelperText>}
                 </Stack>
               </Grid>
+
+              {/* End date */}
               <Grid item xs={12} md={6}>
                 <Stack spacing={1.25}>
                   <InputLabel htmlFor="cal-end-date">End Date</InputLabel>
@@ -314,6 +364,8 @@ const AddEventFrom = ({ event, range, onCancel }) => {
                   {touched.end && errors.end && <FormHelperText error={true}>{errors.end}</FormHelperText>}
                 </Stack>
               </Grid>
+
+              {/* background color */}
               <Grid item xs={12}>
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
@@ -337,6 +389,8 @@ const AddEventFrom = ({ event, range, onCancel }) => {
                   </Grid>
                 </Grid>
               </Grid>
+
+              {/* text color */}
               <Grid item xs={12}>
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
