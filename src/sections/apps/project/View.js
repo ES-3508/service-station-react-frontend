@@ -468,7 +468,8 @@ const handleChange = (event, fieldName) => {
               </MainCard>
             </Grid> */}
             <Grid item xs={12}>
-              <MainCard title="Tags">
+              { false && (
+                <MainCard title="Tags">
                 <Autocomplete
                   id="skills"
                   multiple
@@ -519,6 +520,8 @@ const handleChange = (event, fieldName) => {
                   <ConvertToProject lead={selectedLead} onCancel={handleCloseModal} />
                 </Dialog> */}
               </MainCard>
+              )}
+              
             </Grid>
           </Grid>
         </Grid>
