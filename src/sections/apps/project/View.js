@@ -189,11 +189,11 @@ const handleChange = (event, fieldName) => {
     <Grid container spacing={3}>
       <Grid item xs={11}>
         <Grid container spacing={7}>
-          <Grid item xs={12}>
+          <Grid item xs={11}>
             <Typography variant="h2">{selectedLead?.projectName}</Typography>
           </Grid>
-          <Grid item xs={1} sm={1}></Grid>
-          <Grid item xs={12} sm={10}>
+          {/* <Grid item xs={1} sm={1}></Grid> */}
+          {/* <Grid item xs={12} sm={12}>
             <Grid container columnGap={2}>
               <Grid item xs={3.8} sx={{backgroundColor:'black'}} borderRadius={2} padding={2}>
               <Typography variant='h5' sx={{color:'white'}} textAlign='center'>Pre-Booking</Typography>
@@ -207,14 +207,13 @@ const handleChange = (event, fieldName) => {
               <Typography variant='h5' sx={{color:'white'}} textAlign='center'>Followup</Typography>
               </Grid>
             </Grid>
-            {/* =================================================== */}
             <Grid container spacing={3} paddingTop={3}>
-              <Grid item xs={1.9}>
+              <Grid item xs={1.2}>
                 <Typography paddingBottom={2} variant='h5' textAlign='center'>Survey</Typography>
                 <FormControl fullWidth>
                   <InputLabel htmlFor="project-type-label" sx={{position:'absolute', top: '20%', background:'transparent !important' }}>Status</InputLabel>
                   <Select
-                    sx={{height: '70px', position:'relative', backgroundColor: getBackgroundColor('sendInvoice'), borderRadius:'20px'}}
+                    sx={{height: '70px', position:'relative', backgroundColor: getBackgroundColor('sendInvoice'), borderRadius:'8px'}}
                     labelId="project-type-lable"
                     id="project-type"
                     placeholder="Status"
@@ -229,7 +228,7 @@ const handleChange = (event, fieldName) => {
                 </FormControl>
               </Grid>
 
-              <Grid item xs={1.9}>
+              <Grid item xs={1.2}>
               <Typography paddingBottom={2} variant='h5' textAlign='center'>Frames Ordered</Typography>
                 <FormControl fullWidth>
                   <InputLabel htmlFor="project-type-label" sx={{position:'absolute', top: '20%', background:'transparent !important'}}>Status</InputLabel>
@@ -249,7 +248,7 @@ const handleChange = (event, fieldName) => {
                 </FormControl>
               </Grid>
 
-              <Grid item xs={1.9}>
+              <Grid item xs={1.2}>
               <Typography paddingBottom={2} variant='h5' textAlign='center'>Glass Ordered</Typography>
                 <FormControl fullWidth>
                   <InputLabel htmlFor="project-type-label" sx={{position:'absolute', top: '20%', background:'transparent !important'}}>Status</InputLabel>
@@ -269,7 +268,7 @@ const handleChange = (event, fieldName) => {
                 </FormControl>
               </Grid>
 
-              <Grid item xs={1.9}>
+              <Grid item xs={1.2}>
               <Typography paddingBottom={2} variant='h5' textAlign='center'>Order Complete</Typography>
                 <FormControl fullWidth>
                   <InputLabel htmlFor="project-type-label" sx={{position:'absolute', top: '20%', background:'transparent !important'}}>Status</InputLabel>
@@ -289,7 +288,7 @@ const handleChange = (event, fieldName) => {
                 </FormControl>
               </Grid>
 
-              <Grid item xs={1.9}>
+              <Grid item xs={1.2}>
               <Typography paddingBottom={2} variant='h5' textAlign='center'>In Production</Typography>
                 <FormControl fullWidth>
                   <InputLabel htmlFor="project-type-label" sx={{position:'absolute', top: '20%', background:'transparent !important'}}>Status</InputLabel>
@@ -309,7 +308,7 @@ const handleChange = (event, fieldName) => {
                 </FormControl>
               </Grid>
 
-              <Grid item xs={1.9}>
+              <Grid item xs={1.2}>
               <Typography paddingBottom={2} variant='h5' textAlign='center'>Delivery</Typography>
                 <FormControl fullWidth>
                   <InputLabel htmlFor="project-type-label" sx={{position:'absolute', top: '20%', background:'transparent !important'}}>Status</InputLabel>
@@ -328,9 +327,89 @@ const handleChange = (event, fieldName) => {
                   </Select>
                 </FormControl>
               </Grid>
+
+              <Grid item xs={1.2}>
+              <Typography paddingBottom={2} variant='h5' textAlign='center'>Installation Date</Typography>
+                <FormControl fullWidth>
+                  <InputLabel htmlFor="project-type-label" sx={{position:'absolute', top: '20%', background:'transparent !important'}}>Status</InputLabel>
+                  <Select
+                  sx={{height: '70px', position:'relative', backgroundColor: getBackgroundColor('referrals'), borderRadius:'20px'}}
+                    labelId="project-type"
+                    id="project-type"
+                    placeholder="Status"
+                    onChange={(event) => handleChange(event, 'referrals')}
+                    // {...getFieldProps('projectType')}
+                    // onChange={(event) => setFieldValue('projectType', event.target.value)}
+                  >
+                    <MenuItem value={'Started'} sx={{backgroundColor: '#c62e51', color:'white'}}>Started</MenuItem>
+                    <MenuItem value={'Paused'} sx={{backgroundColor:'#d59143', color:'white'}}>Paused</MenuItem>
+                    <MenuItem value={'Done'} sx={{backgroundColor:'#5cb554' , color:'white'}}>Done</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+
+              <Grid item xs={1.2}>
+              <Typography paddingBottom={2} variant='h5' textAlign='center'>Dispatch Invoice Paid</Typography>
+                <FormControl fullWidth>
+                  <InputLabel htmlFor="project-type-label" sx={{position:'absolute', top: '20%', background:'transparent !important'}}>Status</InputLabel>
+                  <Select
+                  sx={{height: '70px', position:'relative', backgroundColor: getBackgroundColor('referrals'), borderRadius:'20px'}}
+                    labelId="project-type"
+                    id="project-type"
+                    placeholder="Status"
+                    onChange={(event) => handleChange(event, 'referrals')}
+                    // {...getFieldProps('projectType')}
+                    // onChange={(event) => setFieldValue('projectType', event.target.value)}
+                  >
+                    <MenuItem value={'Started'} sx={{backgroundColor: '#c62e51', color:'white'}}>Started</MenuItem>
+                    <MenuItem value={'Paused'} sx={{backgroundColor:'#d59143', color:'white'}}>Paused</MenuItem>
+                    <MenuItem value={'Done'} sx={{backgroundColor:'#5cb554' , color:'white'}}>Done</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+
+              <Grid item xs={1.2}>
+              <Typography paddingBottom={2} variant='h5' textAlign='center'>Installers Remidail Works</Typography>
+                <FormControl fullWidth>
+                  <InputLabel htmlFor="project-type-label" sx={{position:'absolute', top: '20%', background:'transparent !important'}}>Status</InputLabel>
+                  <Select
+                  sx={{height: '70px', position:'relative', backgroundColor: getBackgroundColor('referrals'), borderRadius:'20px'}}
+                    labelId="project-type"
+                    id="project-type"
+                    placeholder="Status"
+                    onChange={(event) => handleChange(event, 'referrals')}
+                    // {...getFieldProps('projectType')}
+                    // onChange={(event) => setFieldValue('projectType', event.target.value)}
+                  >
+                    <MenuItem value={'Started'} sx={{backgroundColor: '#c62e51', color:'white'}}>Started</MenuItem>
+                    <MenuItem value={'Paused'} sx={{backgroundColor:'#d59143', color:'white'}}>Paused</MenuItem>
+                    <MenuItem value={'Done'} sx={{backgroundColor:'#5cb554' , color:'white'}}>Done</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+
+              <Grid item xs={1.2}>
+              <Typography paddingBottom={2} variant='h5' textAlign='center'>Complete</Typography>
+                <FormControl fullWidth>
+                  <InputLabel htmlFor="project-type-label" sx={{position:'absolute', top: '20%', background:'transparent !important'}}>Status</InputLabel>
+                  <Select
+                  sx={{height: '70px', position:'relative', backgroundColor: getBackgroundColor('Complete'), borderRadius:'20px'}}
+                    labelId="project-type"
+                    id="project-type"
+                    placeholder="Status"
+                    onChange={(event) => handleChange(event, 'Complete')}
+                    // {...getFieldProps('projectType')}
+                    // onChange={(event) => setFieldValue('projectType', event.target.value)}
+                  >
+                    <MenuItem value={'Started'} sx={{backgroundColor: '#c62e51', color:'white'}}>Started</MenuItem>
+                    <MenuItem value={'Paused'} sx={{backgroundColor:'#d59143', color:'white'}}>Paused</MenuItem>
+                    <MenuItem value={'Done'} sx={{backgroundColor:'#5cb554' , color:'white'}}>Done</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
             </Grid>
-          </Grid>
-          <Grid item xs={1} sm={1}></Grid>
+          </Grid> */}
+          {/* <Grid item xs={1} sm={1}></Grid> */}
         </Grid>
       </Grid>
       {/* Empty space to push buttons to the right */}
