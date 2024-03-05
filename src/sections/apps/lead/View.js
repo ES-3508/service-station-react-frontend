@@ -72,6 +72,11 @@ const TabLead = () => {
   };
 
   const selectedLead = leads.find((lead) => lead._id === id);
+
+  useEffect(()=>{
+    dispatch(getLeads());
+  },[action]);
+
   console.log('selected lead', selectedLead);
   const matchDownMD = useMediaQuery((theme) => theme.breakpoints.down('md'));
   const fileInput = React.useRef(null);
@@ -453,7 +458,8 @@ const TabLead = () => {
             </MainCard>
           </Grid> */}
           <Grid item xs={12}>
-            <MainCard title="Tags">
+            { false && (
+              <MainCard title="Tags">
               <Autocomplete
                 id="skills"
                 multiple
@@ -504,6 +510,8 @@ const TabLead = () => {
                 <ConvertToProject lead={selectedLead} onCancel={handleCloseModal} />
               </Dialog>
             </MainCard>
+            )}
+            
           </Grid>
         </Grid>
       </Grid>
