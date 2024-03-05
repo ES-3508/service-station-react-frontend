@@ -72,6 +72,11 @@ const TabLead = () => {
   };
 
   const selectedLead = leads.find((lead) => lead._id === id);
+
+  useEffect(()=>{
+    dispatch(getLeads());
+  },[action]);
+
   console.log('selected lead', selectedLead);
   const matchDownMD = useMediaQuery((theme) => theme.breakpoints.down('md'));
   const fileInput = React.useRef(null);
