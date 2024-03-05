@@ -30,9 +30,9 @@ const Calendar = () => {
   const matchDownSM = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
   const [loading, setLoading] = useState(true);
-  const { calendarView, events, isModalOpen, selectedRange,action } = useSelector((state) => state.calendar);
+  const { calendarView, events, isModalOpen, selectedRange,action,selectedEventId } = useSelector((state) => state.calendar);
 
-  const [selectedEvent, setSelectedEvent] = useState(null);
+  // const [selectedEvent, setSelectedEvent] = useState(null);
   // const selectedEvent = useSelector((state) => {
   //   const { events, selectedEventId } = state.calendar;
   //   if (selectedEventId) {
@@ -121,9 +121,9 @@ const Calendar = () => {
 
   const handleEventSelect = (arg) => {
     console.log(arg,'arg _--------------------------------')
-    setSelectedEvent(events.find((event) => event._id === arg.event._def.extendedProps._id));
+    // setSelectedEvent(events.find((event) => event._id === arg.event._def.extendedProps._id));
 
-    dispatch(selectEvent(arg.event._def.extendedProps._id));
+    dispatch(selectEvent(events.find((event) => event._id === arg.event._def.extendedProps._id)));
   };
 
   const handleEventUpdate = async ({ event }) => {
@@ -191,7 +191,7 @@ const Calendar = () => {
         open={isModalOpen}
         sx={{ '& .MuiDialog-paper': { p: 0 } }}
       >
-        <AddEventForm event={selectedEvent} range={selectedRange} onCancel={handleModal} />
+        <AddEventForm event={selectedEventId} range={selectedRange} onCancel={handleModal} />
       </Dialog>
       <Tooltip title="Add New Event">
         <SpeedDial
