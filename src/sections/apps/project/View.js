@@ -823,8 +823,7 @@ const TabLead = () => {
               </MainCard>
             </Grid> */}
             <Grid item xs={12}>
-              { false && (
-                <MainCard title="Tags">
+              <MainCard title="Tags">
                 <Autocomplete
                   id="skills"
                   multiple
@@ -875,8 +874,6 @@ const TabLead = () => {
                   <ConvertToProject lead={selectedLead} onCancel={handleCloseModal} />
                 </Dialog> */}
               </MainCard>
-              )}
-              
             </Grid>
           </Grid>
         </Grid>

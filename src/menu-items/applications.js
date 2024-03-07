@@ -140,7 +140,7 @@ const applications = {
         },
         {
           id: 'workflow-list',
-          title: <FormattedMessage id="All Workflows" />,
+          title: <FormattedMessage id="Workflows" />,
           type: 'item',
           url: '/apps/project/workflow-list'
         }

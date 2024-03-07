@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { useEffect, useMemo, useState } from 'react';
+// import { useTheme } from '@mui/material/styles';
 
 // material-ui
 import {
@@ -133,16 +134,16 @@ const CellEdit = ({ value: initialValue, row: { index }, column: { id, dataType 
             onBlur={onBlur}
           >
             <MenuItem value="" selected={true}>
-              <Chip color="error" label="Status" size="small" variant="light" />
+              <Chip color="error" label="Status" size="large" variant="dark" />
             </MenuItem>
             <MenuItem value="Started">
-              <Chip color="error" label="Started" size="small" variant="light" />
+              <Chip color="error" label="Started" size="large" variant="dark" />
             </MenuItem>
             <MenuItem value="Paused">
-              <Chip color="success" label="Paused" size="small" variant="light" />
+              <Chip color="warning" label="Paused" size="large" variant="dark" />
             </MenuItem>
             <MenuItem value="Done">
-              <Chip color="info" label="Done" size="small" variant="light" />
+              <Chip color="success" label="Done" size="large" variant="dark" />
             </MenuItem>
           </Select>
         </>
@@ -197,6 +198,8 @@ ReactTable.propTypes = {
 };
 
 function ReactTable({ columns, updateData, skipPageReset }) {
+  const theme = useTheme();
+
   const defaultColumn = useMemo(
     () => ({
       Filter: DefaultColumnFilter,
@@ -231,9 +234,9 @@ function ReactTable({ columns, updateData, skipPageReset }) {
         {headerGroups.map((headerGroup) => (
           <TableRow key={headerGroup.id} {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
-              <TableCell key={column.id} {...column.getHeaderProps()}>
-                {column.render('Header')}
-              </TableCell>
+              <TableCell key={column.id} {...column.getHeaderProps()} style={{ width: column.id === 'projectName' ? '300px' : 'auto' }}>
+              {column.render('Header')}
+            </TableCell>
             ))}
           </TableRow>
         ))}
@@ -244,7 +247,23 @@ function ReactTable({ columns, updateData, skipPageReset }) {
           return (
             <TableRow key={row.id} {...row.getRowProps()}>
               {row.cells.map((cell) => (
-                <TableCell key={cell.column.id} {...cell.getCellProps()}>
+                <TableCell
+                  key={cell.column.id}
+                  {...cell.getCellProps()}
+                  style={{
+                    padding: '12px', // Adjust padding as needed
+                    borderRadius: '4px',
+                    border: '10px solid #ffffff',
+                    backgroundColor:
+                      cell.value === 'Started'
+                        ? theme.palette.error.main
+                        : cell.value === 'Paused'
+                        ? theme.palette.warning.main
+                        : cell.value === 'Done'
+                        ? theme.palette.success.main
+                        : '#f5f5f5' // Default to gray-100fff' : '#000000' // White color for text if value matches, otherwise black
+                  }}
+                >
                   {cell.render('Cell')}
                 </TableCell>
               ))}
@@ -264,19 +283,38 @@ const WorkflowListPage = () => {
   const [mode, setMode] = useState('TABLE');
   const [data, setData] = useState(() => makeData(10));
   const [skipPageReset, setSkipPageReset] = useState(false);
+
+  const ProjectNameCell = ({ value }) => {
+    return (
+      <TableCell
+        style={{
+          width: '300px', // Set fixed width for the "Project Name" column
+          overflow: 'hidden', // Prevent content from overflowing
+          whiteSpace: 'nowrap', // Prevent text wrapping
+          textOverflow: 'ellipsis',// Show ellipsis (...) for overflowing text
+          fontWeight: 'bold', // Apply bold font weight
+          backgroundColor: '#f5f5f5',// backgroundColor: 'white', // Set background color to white
+          color: 'black' // Set text color to black
+        }}
+      >
+        {value}
+      </TableCell>
+    );
+  };
+
   const columns = useMemo(
     () => [
       {
-        Header: 'Project Name',
-        accessor: 'projectName',
-        dataType: 'text'
-      },
-      {
-        Header: 'Lead Name',
-        accessor: 'projectName',
-        dataType: 'text',
-        id: 'projectLead'
-      },
+      Header: 'Project Name',
+      accessor: 'projectName',
+      Cell: ({ cell: { value } }) => <ProjectNameCell value={value} /> // Use the custom cell component for the "Project Name" column
+    },
+      // {
+      //   Header: 'Lead Name',
+      //   accessor: 'projectName',
+      //   dataType: 'text',
+      //   id: 'projectLead'
+      // },
       {
         Header: 'Survey',
         accessor: 'projectStatus.survey',
