@@ -32,6 +32,7 @@ const AppContactCard = Loadable(lazy(() => import('pages/apps/contact/card')));
 
 const AppProjectList = Loadable(lazy(() => import('pages/apps/projects/list')));
 const AppProjectCard = Loadable(lazy(() => import('pages/apps/projects/card')));
+const AppWorkflowList = Loadable(lazy(() => import('pages/apps/projects/workflow-list')));
 
 const AppUserList = Loadable(lazy(() => import('pages/apps/user/list')));
 const AppRoleList = Loadable(lazy(() => import('pages/apps/user/role-list')));
@@ -262,6 +263,10 @@ const MainRoutes = {
                 {
                   path: 'project-list',
                   element: <AppProjectList />
+                },
+                {
+                  path: 'workflow-list',
+                  element: <AppWorkflowList />
                 },
                 {
                   path: 'project-card',

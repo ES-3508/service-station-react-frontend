@@ -147,7 +147,7 @@ const TabLead = () => {
     console.log('file', file);
     if (file) {
       console.log('filr>>>', file);
-      dispatch(uploadLeadImage({ leadId: selectedLead._id, file: file })); // Dispatch the uploadLeadImage thunk with the selected file
+      dispatch(uploadLeadImage({ leadId: selectedLead._id, file: file, schemaName:'lead' })); // Dispatch the uploadLeadImage thunk with the selected file
     }
   };
 
@@ -377,9 +377,12 @@ const TabLead = () => {
                       Remove Note
                     </Button>
                   </Card>
-                  <AlertDeletenote title={deletingNote?.noteId?.createdBy} deletingNote={deletingNote} open={open}
-                   handleClose={handleClose} type='notedelete'
-                   />
+                  {deletingNote.noteId && (
+                    <AlertDeletenote title={deletingNote?.noteId?.createdBy} deletingNote={deletingNote} open={open}
+                    handleClose={handleClose} type='notedelete'
+                    />
+                  )}
+                  
                   </>
               ))}
             </MainCard>
@@ -446,7 +449,10 @@ const TabLead = () => {
                     Remove File
                   </Button>
                 </Card>
-                <AlertDeletenote title={deletingFile?.fileId?.createdBy} deletingNote={deletingFile} open={open} type={'filedelete'} handleClose={handleClose}/>
+                {deletingFile.fileId && (
+                  <AlertDeletenote title={deletingFile?.fileId?.createdBy} deletingNote={deletingFile} open={open} type={'filedelete'} handleClose={handleClose}/>
+                )}
+                
                 </>
               ))}
             </MainCard>

@@ -137,6 +137,12 @@ const applications = {
           title: <FormattedMessage id="All Projects" />,
           type: 'item',
           url: '/apps/project/project-list'
+        },
+        {
+          id: 'workflow-list',
+          title: <FormattedMessage id="All Workflows" />,
+          type: 'item',
+          url: '/apps/project/workflow-list'
         }
         // {
         //   id: 'project-card',

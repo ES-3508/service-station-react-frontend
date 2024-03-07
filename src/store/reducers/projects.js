@@ -163,6 +163,7 @@ export function createProject(values) {
 export function updateProject(projectId, values) {
     return async () => {
         try {
+            console.log("update project value>>>>>", values);
             const response = await axios.put(`/api/v1/project/${projectId}/update`, values);
 
             if (response.status === 200) {
@@ -188,6 +189,46 @@ export function updateProject(projectId, values) {
                 openSnackbar({
                     open: true,
                     message: 'Project could not update.',
+                    variant: 'alert',
+                    alert: {
+                        color: 'error'
+                    },
+                    close: false
+                })
+            );
+            dispatch(projects.actions.hasError(err));
+        }
+    }
+}
+
+export function updateProjectStatus(projectId, values) {
+    return async () => {
+        try {
+            const response = await axios.put(`/api/v1/project/${projectId}/update-status`, values);
+
+            if (response.status === 200) {
+
+                setActionProject();
+
+                dispatch(
+                    openSnackbar({
+                        open: true,
+                        message: 'Project status updated successfully.',
+                        variant: 'alert',
+                        alert: {
+                            color: 'success'
+                        },
+                        close: false
+                    })
+                );
+            }
+
+
+        } catch (err) {
+            dispatch(
+                openSnackbar({
+                    open: true,
+                    message: 'Project status could not update.',
                     variant: 'alert',
                     alert: {
                         color: 'error'
@@ -282,13 +323,13 @@ export function deleteProject(projectId) {
     };
 }
 
-export const uploadProjectAttachment = createAsyncThunk('', async (image) => {
+export const uploadProjectAttachment = createAsyncThunk('upload/leadImage', async ({ leadId, file, schemaName }, { dispatch }) => {
     try {
 
         dispatch(
             openSnackbar({
                 open: true,
-                message: 'Uploading image...',
+                message: 'Uploading file...',
                 variant: 'alert',
                 alert: {
                     color: 'info'
@@ -298,9 +339,9 @@ export const uploadProjectAttachment = createAsyncThunk('', async (image) => {
         );
 
         let formData = new FormData();
-        formData.append("file", image);
+        formData.append("file", file);
 
-        const response = await axios.post(`/api/v1/media/file-upload`, formData, {
+        const response = await axios.post(`/api/v1/media/file-upload/${leadId}/${schemaName}`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
@@ -308,10 +349,11 @@ export const uploadProjectAttachment = createAsyncThunk('', async (image) => {
 
         if (response.status === 200) {
 
+            setActionProject();
             dispatch(
                 openSnackbar({
                     open: true,
-                    message: 'Image uploaded successfully',
+                    message: 'Project attachment uploaded successfully',
                     variant: 'alert',
                     alert: {
                         color: 'success'
@@ -335,7 +377,7 @@ export const uploadProjectAttachment = createAsyncThunk('', async (image) => {
                 close: false
             })
         );
-        dispatch(customers.actions.hasError(err));
+        dispatch(projects.actions.hasError(err));
     }
 });
 
@@ -370,4 +412,128 @@ export function getProjectAttachment(url) {
             dispatch(projects.actions.hasError(error));
         }
     };
+}
+
+export function createProjectNote(leadId, values) {
+    return async () => {
+        try {
+            const response = await axios.post(`/api/v1/project/${leadId}/notes`, {
+                ...values,
+            });
+
+            if (response.status === 200) {
+
+                setActionProject();
+
+                dispatch(
+                    openSnackbar({
+                        open: true,
+                        message: 'Project note added successfully.',
+                        variant: 'alert',
+                        alert: {
+                            color: 'success'
+                        },
+                        close: false
+                    })
+                );
+            }
+
+
+        } catch (err) {
+            dispatch(
+                openSnackbar({
+                    open: true,
+                    message: 'Project note could not add.',
+                    variant: 'alert',
+                    alert: {
+                        color: 'error'
+                    },
+                    close: false
+                })
+            );
+            dispatch(projects.actions.hasError(err));
+        }
+    }
+}
+
+export function deleteProjectNote(leadId, noteId) {
+    return async () => {
+        console.log("leadId", leadId);
+        console.log("noteid", noteId);
+        try {
+            const response = await axios.delete(`/api/v1/project/${leadId}/notes/${noteId}`);
+            if (response.status === 200) {
+
+                dispatch(projects.actions.deleteProjectSuccess(response.data));
+
+                setActionProject();
+
+                dispatch(
+                    openSnackbar({
+                        open: true,
+                        message: 'Project note deleted successfully.',
+                        variant: 'alert',
+                        alert: {
+                            color: 'success'
+                        },
+                        close: false
+                    })
+                );
+            }
+        } catch (error) {
+            dispatch(
+                openSnackbar({
+                    open: true,
+                    message: 'Project note deleted failed.',
+                    variant: 'alert',
+                    alert: {
+                        color: 'error'
+                    },
+                    close: false
+                })
+            );
+            dispatch(projects.actions.hasError(error));
+        }
+    }
+}
+
+export function deleteProjectFile(leadId, fileId) {
+    return async () => {
+        console.log("leadId", leadId);
+        console.log("fileId", fileId);
+        try {
+            const response = await axios.delete(`/api/v1/project/${leadId}/files/${fileId}`);
+            if (response.status === 200) {
+
+                dispatch(projects.actions.deleteProjectSuccess(response.data));
+
+                setActionProject();
+
+                dispatch(
+                    openSnackbar({
+                        open: true,
+                        message: 'Project file deleted successfully.',
+                        variant: 'alert',
+                        alert: {
+                            color: 'success'
+                        },
+                        close: false
+                    })
+                );
+            }
+        } catch (error) {
+            dispatch(
+                openSnackbar({
+                    open: true,
+                    message: 'Project file deleted failed.',
+                    variant: 'alert',
+                    alert: {
+                        color: 'error'
+                    },
+                    close: false
+                })
+            );
+            dispatch(projects.actions.hasError(error));
+        }
+    }
 }
