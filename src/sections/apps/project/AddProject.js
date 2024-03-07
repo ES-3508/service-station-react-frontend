@@ -129,7 +129,7 @@ const AddProject = ({ project, onCancel }) => {
       startDate: project ? new Date(project.startDate) : new Date(),
       endDate: project ? new Date(project.endDate) : null,
       description: project ? project?.description : '',
-      projectStatus: project ? project?.projectStatus : ProjectStatuses.PENDING
+      status: project ? project?.status : ProjectStatuses.PENDING
     }),
     [project]
   );
@@ -304,7 +304,7 @@ const AddProject = ({ project, onCancel }) => {
                             placeholder="Status"
                             // displayEmpty
                             {...getFieldProps('status')}
-                            onChange={(event) => setFieldValue('projectStatus', event.target.value)}
+                            onChange={(event) => setFieldValue('status', event.target.value)}
                             input={<OutlinedInput id="select-column-hiding" placeholder="Sort by" />}
                             renderValue={(selected) => {
                               if (!selected) {

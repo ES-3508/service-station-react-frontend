@@ -366,7 +366,7 @@ export const uploadUserDocuments = createAsyncThunk('', async (leadId, documents
     throw new Error('Failed to upload user document');
   });
 
-export const uploadLeadImage = createAsyncThunk('upload/leadImage', async ({ leadId, file }, { dispatch }) => {
+export const uploadLeadImage = createAsyncThunk('upload/leadImage', async ({ leadId, file, schemaName }, { dispatch }) => {
     try {
 
         console.log("leadId", leadId);
@@ -386,7 +386,7 @@ export const uploadLeadImage = createAsyncThunk('upload/leadImage', async ({ lea
         let formData = new FormData();
         formData.append("file", file);
 
-        const response = await axios.post(`/api/v1/media/file-upload/${leadId}`, formData, {
+        const response = await axios.post(`/api/v1/media/file-upload/${leadId}/${schemaName}`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
