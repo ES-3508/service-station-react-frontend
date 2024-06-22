@@ -292,7 +292,6 @@ const ProductList = () => {
 
   useEffect(() => {
     dispatch(getProducts());
-    // 
   }, []);
 
   const columns = useMemo(
@@ -351,7 +350,6 @@ const ProductList = () => {
         Cell: ({ row }) => ActionCell(row, theme)
       }
     ],
-    // 
     [theme]
   );
 

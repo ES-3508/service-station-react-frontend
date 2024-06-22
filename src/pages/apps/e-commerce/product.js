@@ -71,8 +71,6 @@ const ProductsPage = () => {
     if (cart.checkout.step > 2) {
       dispatch(resetCart());
     }
-
-    // 
   }, []);
 
   const [openFilterDrawer, setOpenFilterDrawer] = useState(true);
@@ -99,7 +97,6 @@ const ProductsPage = () => {
 
   useEffect(() => {
     filterData();
-    // 
   }, [filter]);
 
   let productResult = <></>;

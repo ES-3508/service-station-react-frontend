@@ -5,6 +5,8 @@ import MainLayout from 'layout/MainLayout';
 import CommonLayout from 'layout/CommonLayout';
 import Loadable from 'components/Loadable';
 import AuthGuard from 'utils/route-guard/AuthGuard';
+import TabLead from 'sections/apps/lead/View';
+import TabProject from 'sections/apps/project/View';
 
 // render - dashboard
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/default')));
@@ -20,6 +22,20 @@ const AppChat = Loadable(lazy(() => import('pages/apps/chat')));
 const AppCalendar = Loadable(lazy(() => import('pages/apps/calendar')));
 const AppCustomerList = Loadable(lazy(() => import('pages/apps/customer/list')));
 const AppCustomerCard = Loadable(lazy(() => import('pages/apps/customer/card')));
+
+const AppLeadList = Loadable(lazy(() => import('pages/apps/lead/list')));
+const AppLeadCard = Loadable(lazy(() => import('pages/apps/lead/card')));
+
+const AppContactList = Loadable(lazy(() => import('pages/apps/contact/list')));
+const AppContactCard = Loadable(lazy(() => import('pages/apps/contact/card')));
+
+
+const AppProjectList = Loadable(lazy(() => import('pages/apps/projects/list')));
+const AppProjectCard = Loadable(lazy(() => import('pages/apps/projects/card')));
+const AppWorkflowList = Loadable(lazy(() => import('pages/apps/projects/workflow-list')));
+
+const AppUserList = Loadable(lazy(() => import('pages/apps/user/list')));
+const AppRoleList = Loadable(lazy(() => import('pages/apps/user/role-list')));
 
 const AppKanban = Loadable(lazy(() => import('pages/apps/kanban')));
 const AppKanbanBacklogs = Loadable(lazy(() => import('sections/apps/kanban/Backlogs')));
@@ -132,7 +148,7 @@ const MainRoutes = {
           children: [
             {
               path: 'default',
-              element: <DashboardDefault />
+              element: <DashboardAnalytics />
             },
             {
               path: 'analytics',
@@ -168,20 +184,20 @@ const MainRoutes = {
               path: 'calendar',
               element: <AppCalendar />
             },
-            {
-              path: 'kanban',
-              element: <AppKanban />,
-              children: [
-                {
-                  path: 'backlogs',
-                  element: <AppKanbanBacklogs />
-                },
-                {
-                  path: 'board',
-                  element: <AppKanbanBoard />
-                }
-              ]
-            },
+            // {
+            //   path: 'kanban',
+            //   element: <AppKanban />,
+            //   children: [
+            //     {
+            //       path: 'backlogs',
+            //       element: <AppKanbanBacklogs />
+            //     },
+            //     {
+            //       path: 'board',
+            //       element: <AppKanbanBoard />
+            //     }
+            //   ]
+            // },
             {
               path: 'customer',
               children: [
@@ -193,6 +209,105 @@ const MainRoutes = {
                   path: 'customer-card',
                   element: <AppCustomerCard />
                 }
+              ]
+            },
+            {
+              path: 'lead',
+              children: [
+                {
+                  path: 'lead-list',
+                  element: <AppLeadList />
+                },
+                {
+                  path: 'lead-card',
+                  element: <AppLeadCard />
+                },
+                {
+                  path: 'lead-view/:id',
+                  element: <TabLead />
+                }
+              ]
+            },
+            {
+              path: 'lead',
+              children: [
+                {
+                  path: 'lead-list',
+                  element: <AppCustomerList /> 
+
+                },
+                {
+                  path: 'lead-card',
+                  element: <AppCustomerCard />
+                }
+              ]
+            },
+            {
+              path: 'contact',
+              children: [
+                {
+                  path: 'contact-list',
+                  element: <AppContactList /> 
+
+                },
+                {
+                  path: 'contact-card',
+                  element: <AppContactCard />
+                }
+              ]
+            },
+
+            {
+              path: 'project',
+              children: [
+                {
+                  path: 'project-list',
+                  element: <AppProjectList />
+                },
+                {
+                  path: 'workflow-list',
+                  element: <AppWorkflowList />
+                },
+                {
+                  path: 'project-card',
+                  element: <AppProjectCard />
+                },
+                {
+                  path: 'project-view/:id',
+                  element: <TabProject />
+                },
+                {
+                  path: ':id',
+                  children: [
+                    {
+                      path: 'kanban',
+                      element: <AppKanban />,
+                      children: [
+                        {
+                          path: 'backlogs',
+                          element: <AppKanbanBacklogs />
+                        },
+                        {
+                          path: 'board',
+                          element: <AppKanbanBoard />
+                        }
+                      ]
+                    },
+                  ]
+                }
+              ]
+            },
+            {
+              path: 'user',
+              children: [
+                {
+                  path: 'user-list',
+                  element: <AppUserList />
+                },
+                {
+                  path: 'role-list',
+                  element: <AppRoleList />
+                },
               ]
             },
             {

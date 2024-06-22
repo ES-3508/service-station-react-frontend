@@ -31,6 +31,7 @@ const SingleFileUpload = ({ error, file, setFieldValue, sx }) => {
   const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
     accept: {
       'image/*': []
+      // 'file/*':[]
     },
     multiple: false,
     onDrop: (acceptedFiles) => {

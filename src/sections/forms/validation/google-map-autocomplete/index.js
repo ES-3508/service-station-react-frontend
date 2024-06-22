@@ -44,8 +44,8 @@ function GoogleMapAutocomplete() {
   });
 
   return (
-    <MainCard title="Google Map Autocomplete (Address)">
-      <form onSubmit={formik.handleSubmit} id="google-map-forms">
+    // <MainCard title="Google Map Autocomplete (Address)">
+    //   <form onSubmit={formik.handleSubmit} id="google-map-forms">
         <Grid container spacing={3.5}>
           <Grid item xs={12}>
             <GoogleMaps formik={formik} />
@@ -157,18 +157,18 @@ function GoogleMapAutocomplete() {
             <Divider />
           </Grid>
           <Grid item xs={12}>
-            <Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={2}>
+            {/* <Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={2}>
               <Button variant="outlined" color="secondary" type="reset" onClick={() => formik.resetForm()}>
                 Undo Changes
               </Button>
               <Button variant="contained" type="submit" disabled={formik.isSubmitting}>
                 Update
               </Button>
-            </Stack>
+            </Stack> */}
           </Grid>
         </Grid>
-      </form>
-    </MainCard>
+    //   </form>
+    // </MainCard>
   );
 }
 

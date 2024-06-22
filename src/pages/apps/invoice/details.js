@@ -49,7 +49,6 @@ const Details = () => {
 
   useEffect(() => {
     dispatch(getInvoiceSingleList(Number(id))).then(() => setLoading(false));
-    // 
   }, [id]);
 
   const today = new Date(`${list?.date}`).toLocaleDateString('en-GB', {

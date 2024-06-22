@@ -59,7 +59,7 @@ export default function LatestOrder() {
           <TableBody>
             {rows.map((row, index) => (
               <TableRow hover key={index}>
-                <TableCell sx={{ pl: 3 }}>{row.customer}</TableCell>
+                <TableCell sx={{ pl: 3 }}>{row.project}</TableCell>
                 <TableCell>{row.cid}</TableCell>
                 <TableCell>
                   <CardMedia component="img" image={row.photo} title="image" sx={{ width: 20, height: 'auto' }} />

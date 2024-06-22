@@ -10,9 +10,9 @@ import MainCard from 'components/MainCard';
 // assets
 import { UploadOutlined } from '@ant-design/icons';
 
-// ==============================|| ADD NEW PRODUCT - MAIN ||============================== //
+// ==============================|| ADD NEW Material - MAIN ||============================== //
 
-function AddNewProduct() {
+function AddNewMaterial() {
   const history = useNavigate();
   const prices = [
     {
@@ -87,19 +87,19 @@ function AddNewProduct() {
             <MainCard>
               <Grid container spacing={1} direction="column">
                 <Grid item xs={12}>
-                  <InputLabel sx={{ mb: 1 }}>Product Name</InputLabel>
-                  <TextField placeholder="Enter product name" fullWidth />
+                  <InputLabel sx={{ mb: 1 }}>Material Name</InputLabel>
+                  <TextField placeholder="Enter Material name" fullWidth />
                 </Grid>
                 <Grid item xs={12}>
-                  <InputLabel sx={{ mb: 1 }}>Product Description</InputLabel>
-                  <TextField placeholder="Enter product description" fullWidth multiline rows={3} />
+                  <InputLabel sx={{ mb: 1 }}>Material Description</InputLabel>
+                  <TextField placeholder="Enter Material description" fullWidth multiline rows={3} />
                 </Grid>
                 <Grid item xs={12}>
                   <InputLabel sx={{ mb: 1 }}>Category</InputLabel>
                   <TextField placeholder="Enter your category" fullWidth />
                 </Grid>
                 <Grid item xs={12}>
-                  <InputLabel sx={{ mb: 1 }}>Price</InputLabel>
+                  <InputLabel sx={{ mb: 1 }}>Purchased Price</InputLabel>
                   <TextField placeholder="Select Price" fullWidth select value={price} onChange={handlePrice}>
                     {prices.map((option) => (
                       <MenuItem key={option.value} value={option.value}>
@@ -151,7 +151,7 @@ function AddNewProduct() {
                       Cancel
                     </Button>
                     <Button variant="contained" sx={{ textTransform: 'none' }}>
-                      Add new Product
+                      Add New Material
                     </Button>
                   </Stack>
                 </Grid>
@@ -164,4 +164,4 @@ function AddNewProduct() {
   );
 }
 
-export default AddNewProduct;
+export default AddNewMaterial;
