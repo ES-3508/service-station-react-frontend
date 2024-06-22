@@ -393,7 +393,7 @@ export const uploadLeadImage = createAsyncThunk('upload/leadImage', async ({ lea
         });
 
         if (response.status === 200) {
-
+            setActionLead();
             dispatch(
                 openSnackbar({
                     open: true,

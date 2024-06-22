@@ -6,6 +6,7 @@ import { dispatch } from 'store';
 
 const initialState = {
   calendarView: 'dayGridMonth',
+  
   error: false,
   events: [],
   isLoader: false,
