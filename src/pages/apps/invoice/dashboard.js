@@ -46,8 +46,8 @@ const Dashboard = () => {
       color: theme.palette.error
     },
     {
-      title: 'Overdue',
-      count: '£5678.09',
+      title: 'Electricity',
+      count: 'LKR 21 350',
       percentage: -4.7,
       isLoss: true,
       invoice: '5',

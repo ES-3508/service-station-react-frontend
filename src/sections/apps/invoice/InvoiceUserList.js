@@ -19,7 +19,7 @@ import Avatar5 from 'assets/images/users/avatar-9.png';
 const InvoiceUserList = () => {
   return (
     <MainCard
-      title="Recent Invoice"
+      title="Recent Services"
       secondary={
         <IconButton edge="end" aria-label="comments" color="secondary">
           <MoreOutlined style={{ fontSize: '1.15rem' }} />
@@ -34,14 +34,14 @@ const InvoiceUserList = () => {
             </Grid>
             <Grid item xs zeroMinWidth>
               <Typography align="left" variant="subtitle1">
-                David Jones -{' '}
+                අමරසිංහ පෙරේරා -{' '}
                 <Typography color="secondary" component="span">
                   {' '}
-                  #790841
+                  KA - 1234
                 </Typography>
               </Typography>
               <Typography align="left" color="primary">
-                $329.20
+                LKR 39,200
               </Typography>
             </Grid>
             <Grid item>
@@ -54,18 +54,18 @@ const InvoiceUserList = () => {
         <Grid item xs={12}>
           <Grid container spacing={2} alignItems="center">
             <Grid item>
-              <Avatar alt="User 1" src={Avatar2} />
+              <Avatar alt="User 2" src={Avatar2} />
             </Grid>
             <Grid item xs zeroMinWidth>
               <Typography align="left" variant="subtitle1">
-                Jenny Jones -{' '}
+                කුමුදු කුමාර -{' '}
                 <Typography color="secondary" component="span">
                   {' '}
-                  #790841
+                  KA - 5678
                 </Typography>
               </Typography>
               <Typography align="left" color="primary">
-                $182.89
+                LKR 12,890
               </Typography>
             </Grid>
             <Grid item>
@@ -78,23 +78,23 @@ const InvoiceUserList = () => {
         <Grid item xs={12}>
           <Grid container spacing={2} alignItems="center">
             <Grid item>
-              <Avatar alt="User 1" src={Avatar3} />
+              <Avatar alt="User 3" src={Avatar3} />
             </Grid>
             <Grid item xs zeroMinWidth>
               <Typography align="left" variant="subtitle1">
-                Harry Ben -{' '}
+                ලක්ෂාන් ජයසේකර -{' '}
                 <Typography color="secondary" component="span">
                   {' '}
-                  #790841
+                  KA - 9101
                 </Typography>
               </Typography>
               <Typography align="left" color="primary">
-                3 week ago
+                LKR 40,000
               </Typography>
             </Grid>
             <Grid item>
               <Typography align="left" variant="caption" color="secondary">
-                5 min ago
+                3 weeks ago
               </Typography>
             </Grid>
           </Grid>
@@ -102,23 +102,23 @@ const InvoiceUserList = () => {
         <Grid item xs={12}>
           <Grid container spacing={2} alignItems="center">
             <Grid item>
-              <Avatar alt="User 1" src={Avatar4} />
+              <Avatar alt="User 4" src={Avatar4} />
             </Grid>
             <Grid item xs zeroMinWidth>
               <Typography align="left" variant="subtitle1">
-                Jenifer Vintage -{' '}
+                සචිත්ර වීරසිංහ -{' '}
                 <Typography color="secondary" component="span">
                   {' '}
-                  #790841
+                  KA - 1121
                 </Typography>
               </Typography>
               <Typography align="left" color="primary">
-                $182.89
+                LKR 12,890
               </Typography>
             </Grid>
             <Grid item>
               <Typography align="left" variant="caption" color="secondary">
-                3 week ago
+                3 weeks ago
               </Typography>
             </Grid>
           </Grid>
@@ -126,18 +126,18 @@ const InvoiceUserList = () => {
         <Grid item xs={12}>
           <Grid container spacing={2} alignItems="center">
             <Grid item>
-              <Avatar alt="User 1" src={Avatar5} />
+              <Avatar alt="User 5" src={Avatar5} />
             </Grid>
             <Grid item xs zeroMinWidth>
               <Typography align="left" variant="subtitle1">
-                Stebin Ben -{' '}
+                අමල් සෙනෙවිරත්න -{' '}
                 <Typography color="secondary" component="span">
                   {' '}
-                  #790841
+                  KA - 3141
                 </Typography>
               </Typography>
               <Typography align="left" color="primary">
-                $324.00
+                LKR 24,000
               </Typography>
             </Grid>
             <Grid item>

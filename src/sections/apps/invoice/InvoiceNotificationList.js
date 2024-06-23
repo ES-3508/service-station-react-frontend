@@ -31,15 +31,15 @@ const InvoiceNotificationList = () => {
         <Grid item xs={12}>
           <Grid container spacing={2} alignItems="center">
             <Grid item>
-              <Avatar alt="User 1" color="success">
+              <Avatar alt="Notification 1" color="success">
                 <DownloadOutlined />
               </Avatar>
             </Grid>
             <Grid item xs zeroMinWidth>
               <Typography align="left" variant="subtitle1">
-                Johnny sent you an invoice billed{' '}
+                Filter stocks are running low.{' '}
                 <Link component={RouterLink} to="#" underline="hover">
-                  $1,000.
+                  Order now.
                 </Link>
               </Typography>
               <Typography align="left" variant="caption" color="secondary">
@@ -54,15 +54,15 @@ const InvoiceNotificationList = () => {
         <Grid item xs={12}>
           <Grid container spacing={2} alignItems="center">
             <Grid item>
-              <Avatar alt="User 2">
+              <Avatar alt="Notification 2">
                 <FileTextOutlined />
               </Avatar>
             </Grid>
             <Grid item xs zeroMinWidth>
               <Typography align="left" variant="subtitle1">
-                Sent an invoice to Aida Bugg amount of{' '}
+                Today's income has reached{' '}
                 <Link component={RouterLink} to="#" underline="hover">
-                  $200.
+                  LKR 200,000.
                 </Link>
               </Typography>
               <Typography align="left" variant="caption" color="secondary">
@@ -77,13 +77,13 @@ const InvoiceNotificationList = () => {
         <Grid item xs={12}>
           <Grid container spacing={2} alignItems="center">
             <Grid item>
-              <Avatar alt="User 2" color="error">
+              <Avatar alt="Notification 3" color="error">
                 <SettingOutlined />
               </Avatar>
             </Grid>
             <Grid item xs zeroMinWidth>
               <Typography align="left" variant="subtitle1">
-                There was a failure to your setup
+                There was a failure in your setup
               </Typography>
               <Typography align="left" variant="caption" color="secondary">
                 7 hours ago
@@ -97,14 +97,19 @@ const InvoiceNotificationList = () => {
         <Grid item xs={12}>
           <Grid container spacing={2} alignItems="center">
             <Grid item>
-              <Avatar alt="User 2">C</Avatar>
+              <Avatar alt="Notification 4">
+                <FileTextOutlined />
+              </Avatar>
             </Grid>
             <Grid item xs zeroMinWidth>
               <Typography align="left" variant="subtitle1">
-                Cristina danny invited to you join Meeting
+                Maximum income for today{' '}
+                <Link component={RouterLink} to="#" underline="hover">
+                  LKR 500,000.
+                </Link>
               </Typography>
               <Typography align="left" variant="caption" color="secondary">
-                7 hours ago
+                1 hour ago
               </Typography>
             </Grid>
             <Grid item>
@@ -112,25 +117,6 @@ const InvoiceNotificationList = () => {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={12}>
-          <Grid container spacing={2} alignItems="center">
-            <Grid item>
-              <Avatar alt="User 2">C</Avatar>
-            </Grid>
-            <Grid item xs zeroMinWidth>
-              <Typography align="left" variant="subtitle1">
-                Cristina danny invited to you join Meeting
-              </Typography>
-              <Typography align="left" variant="caption" color="secondary">
-                7 hours ago
-              </Typography>
-            </Grid>
-            <Grid item>
-              <LinkOutlined style={iconSX} />
-            </Grid>
-          </Grid>
-        </Grid>
-
         <Grid item xs={12}>
           <Button fullWidth variant="outlined" color="secondary">
             View All

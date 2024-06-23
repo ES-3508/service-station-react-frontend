@@ -120,11 +120,11 @@ const InvoicePieChart = () => {
             <Grid item xs sx={DotSize}>
               <Dot color="warning" size={12} />
               <Typography align="left" variant="subtitle1" color="textSecondary">
-                Pending
+                Parts
               </Typography>
             </Grid>
             <Grid item sx={ExpenseSize}>
-              $3,202
+            LKR 40 000
             </Grid>
           </Grid>
         </Grid>
@@ -134,11 +134,11 @@ const InvoicePieChart = () => {
             <Grid item xs sx={DotSize}>
               <Dot color="success" size={12} />
               <Typography align="left" variant="subtitle1" color="textSecondary">
-                Paid
+                Service charge
               </Typography>
             </Grid>
             <Grid item sx={ExpenseSize}>
-              $45,050
+            LKR 50 000
             </Grid>
           </Grid>
         </Grid>
@@ -148,11 +148,11 @@ const InvoicePieChart = () => {
             <Grid item xs sx={DotSize}>
               <Dot color="error" size={12} />
               <Typography align="left" variant="subtitle1" color="textSecondary">
-                Overdue
+                Electricity
               </Typography>
             </Grid>
             <Grid item sx={ExpenseSize}>
-              $25,000
+              LKR 70 000
             </Grid>
           </Grid>
         </Grid>
@@ -162,11 +162,11 @@ const InvoicePieChart = () => {
             <Grid item xs sx={DotSize}>
               <Dot sx={{ bgcolor: theme.palette.primary.lighter }} size={12} />
               <Typography align="left" variant="subtitle1" color="textSecondary">
-                Draft
+                Water
               </Typography>
             </Grid>
             <Grid item sx={ExpenseSize}>
-              $7,694
+            LKR 75 694
             </Grid>
           </Grid>
         </Grid>
