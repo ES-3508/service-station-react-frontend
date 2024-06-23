@@ -71,7 +71,7 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
   const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
 
   const filterTypes = useMemo(() => renderFilterTypes, []);
-  const sortBy = { id: 'projectName', desc: false };
+  const sortBy = { id: 'serviceDate', desc: false };
 
   const [query, setQuery] = useState('')
   const [numOfPages, setNumOfPages] = useState(10)
@@ -418,13 +418,6 @@ const ProjectListPage = () => {
 
   const columns = useMemo(
     () => [
-      // {
-      //   title: 'Row Selection',
-      //   Header: SelectionHeader,
-      //   accessor: 'selection',
-      //   Cell: SelectionCell,
-      //   disableSortBy: true
-      // },
       {
         Header: ' ',
         accessor: '_id',
@@ -432,25 +425,8 @@ const ProjectListPage = () => {
         Cell: IndexCell,
       },
       {
-        Header: 'Project Name',
-        accessor: 'projectName',
-        Cell: ({ row }) => CustomCell2(row, setProject)
-      },
-      
-      {
-        Header: 'Project Total',
-        accessor: 'projecTotal',
-        Cell: ({ value }) => {
-          return '$ 0.0'
-        }
-      },
-      // {
-      //   Header: 'Client Name',
-      //   accessor: 'clientName',
-      // },
-      {
-        Header: 'Start Date',
-        accessor: 'startDate',
+        Header: 'Service Date',
+        accessor: 'serviceDate',
         Cell: ({ value }) => {
           if (value === null) {
             return ''; // Or you can return any other representation of a blank cell
@@ -462,16 +438,34 @@ const ProjectListPage = () => {
           return `${day}/${month}/${year}`;
         }
       },
-      // {
-      //   Header: 'End Date',
-      //   accessor: 'endDate',
-      //   Cell: EndDateCell
-      // },
-      // {
-      //   Header: 'Attachment',
-      //   accessor: 'imageUrl',
-      //   Cell: CustomCell
-      // },
+      {
+        Header: 'Next Service Date',
+        accessor: 'nextServiceDate',
+        Cell: ({ value }) => {
+          if (value === null) {
+            return ''; // Or you can return any other representation of a blank cell
+          }
+          const date = new Date(value);
+          const day = date.getDate().toString().padStart(2, '0');
+          const month = (date.getMonth() + 1).toString().padStart(2, '0'); 
+          const year = date.getFullYear();
+          return `${day}/${month}/${year}`;
+        }
+      },
+      {
+        Header: 'Service Charge',
+        accessor: 'serviceCharge',
+        Cell: ({ value }) => {
+          return `$ ${value.toFixed(2)}`;
+        }
+      },
+      {
+        Header: 'Total Price',
+        accessor: 'totalPrice',
+        Cell: ({ value }) => {
+          return `$ ${value.toFixed(2)}`;
+        }
+      },
       {
         Header: 'Status',
         accessor: 'status',
@@ -488,9 +482,9 @@ const ProjectListPage = () => {
         Cell: ({ row }) => ActionCell(row, setProject, setDeletingProject, handleAdd, handleClose, theme)
       }
     ],
-    // 
     [theme]
   );
+  
 
   // const renderRowSubComponent = useCallback(({ row }) => {
   //   console.log('DEVELOPER ROW ', data.find((customer) => customer._id === row.values._id));
@@ -502,10 +496,10 @@ const ProjectListPage = () => {
     useEffect(() => {
         dispatch(getProjectAnalytics());
     }, [])
-
+    // Cell: ({ row }) => ActionCell(row, setProject, setDeletingProject, handleAdd, handleClose, theme)
   return (
     <>
-        <Grid container spacing={3}>
+        {/* <Grid container spacing={3}>
             <Grid item xs={12} lg={3} sm={6}>
                 <ReportCard primary={totalProjects} secondary="Total Projects" color={theme.palette.secondary.main} iconPrimary={EyeOutlined} />
             </Grid>
@@ -514,7 +508,7 @@ const ProjectListPage = () => {
                     <ReportCard primary={analytics[key]} secondary={`${key.length === 0 ? key : key.charAt(0).toUpperCase() + key.slice(1)} Projects`} color={theme.palette.secondary.main} iconPrimary={EyeOutlined} />
                 </Grid>
             ))}
-        </Grid>
+        </Grid> */}
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.5 }}>
         <IconButton size="large" color={mode === "TABLE" ? "primary" : "secondary"} onClick={() => setMode("TABLE")}>
           <UnorderedListOutlined />

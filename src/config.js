@@ -110,7 +110,7 @@ const config = {
    * 'theme7'
    * 'theme8'
    */
-  presetColor: 'theme7',
+  presetColor: 'theme6',
 
   /**
    * the props used for default theme direction

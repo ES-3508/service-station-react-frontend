@@ -196,231 +196,141 @@ const AddProject = ({ project, onCancel }) => {
     <>
       <FormikProvider value={formik}>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-            <DialogTitle>{project ? 'Edit Project' : 'Create Project'}</DialogTitle>
+        <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
+            <DialogTitle>{project ? 'Edit Service' : 'Create Service'}</DialogTitle>
             <Divider />
             <DialogContent sx={{ p: 2.5 }}>
               <Grid container spacing={3}>
-                {/* <Grid item xs={12} md={3}>
-                  <Stack direction="row" justifyContent="center" sx={{ mt: 3 }}>
-                    <FormLabel
-                      htmlFor="change-avtar"
-                      sx={{
-                        position: 'relative',
-                        borderRadius: '50%',
-                        overflow: 'hidden',
-                        '&:hover .MuiBox-root': { opacity: 1 },
-                        cursor: 'pointer'
-                      }}
-                    >
-                      <Avatar alt="Avatar 1" src={avatar} sx={{ width: 72, height: 72, border: '1px dashed' }} />
-                      <Box
-                        sx={{
-                          position: 'absolute',
-                          top: 0,
-                          left: 0,
-                          backgroundColor: theme.palette.mode === ThemeMode.DARK ? 'rgba(255, 255, 255, .75)' : 'rgba(0,0,0,.65)',
-                          width: '100%',
-                          height: '100%',
-                          opacity: 0,
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center'
-                        }}
-                      >
-                        <Stack spacing={0.5} alignItems="center">
-                          <CameraOutlined style={{ color: theme.palette.secondary.lighter, fontSize: '2rem' }} />
-                          <Typography sx={{ color: 'secondary.lighter' }}>Upload</Typography>
-                        </Stack>
-                      </Box>
-                    </FormLabel>
-                    <TextField
-                      type="file"
-                      id="change-avtar"
-                      placeholder="Outlined"
-                      variant="outlined"
-                      sx={{ display: 'none' }}
-                      onChange={(e) => setSelectedImage(e.target.files?.[0])}
-                    />
-                  </Stack>
-                </Grid> */}
                 <Grid item xs={12}>
                   <Grid container spacing={3}>
-                    {/* name */}
+                    {/* Service Date */}
                     <Grid item xs={12}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="project-name">Project Name ( or Lead Name)</InputLabel>
-                        <TextField
-                          fullWidth
-                          id="project-name"
-                          placeholder="Enter Project Name"
-                          {...getFieldProps('projectName')}
-                          error={Boolean(touched.projectName && errors.projectName)}
-                          helperText={touched.projectName && errors.projectName}
-                        />
-                      </Stack>
-                    </Grid>
-                    {/* end of name */}
-                    {/* client name */}
-                    {/* <Grid item xs={12}>
-                      <Stack spacing={1.25}>
-                        <InputLabel htmlFor="client-name">Contact Name</InputLabel>
-                        <TextField
-                          fullWidth
-                          id="client-name"
-                          placeholder="Enter Contact Name"
-                          {...getFieldProps('clientName')}
-                          error={Boolean(touched.clientName && errors.clientName)}
-                          helperText={touched.clientName && errors.clientName}
-                        />
-                      </Stack>
-                    </Grid> */}
-                    <Grid item xs={6} sm={6}>
-                      {/* Project TYPE */}
-                      <FormControl fullWidth>
-                        <InputLabel htmlFor="project-type-label">Project Type</InputLabel>
-                        <Select
-                          labelId="project-type"
-                          id="project-type"
-                          placeholder="Project Type"
-                          {...getFieldProps('projectType')}
-                          onChange={(event) => setFieldValue('projectType', event.target.value)}
-                        >
-                          <MenuItem value={'Glass'}>Glass</MenuItem>
-                          <MenuItem value={'Electrical'}>Electrical</MenuItem>
-                          <MenuItem value={'Building'}>Building</MenuItem>
-                        </Select>
-                      </FormControl>
-                    </Grid>
-                    {/* end of client name */}
-                    {/* status */}
-                    <Grid item xs={6}>
-                      <Stack spacing={1.25}>
-                        <FormControl fullWidth>
-                          <InputLabel htmlFor="project-status-label">Status</InputLabel>
-                          <Select
-                            labelId="project-status"
-                            id="column-hiding"
-                            placeholder="Status"
-                            // displayEmpty
-                            {...getFieldProps('status')}
-                            onChange={(event) => setFieldValue('status', event.target.value)}
-                            input={<OutlinedInput id="select-column-hiding" placeholder="Sort by" />}
-                            renderValue={(selected) => {
-                              if (!selected) {
-                                return <Typography variant="subtitle1">Select Status</Typography>;
-                              }
-
-                              return <Typography variant="subtitle2">{selected}</Typography>;
-                            }}
-                          >
-                            {Object.values(ProjectStatuses).map((column) => (
-                              <MenuItem key={column} value={column}>
-                                <ListItemText primary={column} />
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </FormControl>
-                        {touched.status && errors.status && (
-                          <FormHelperText error id="standard-weight-helper-text-email-login" sx={{ pl: 1.75 }}>
-                            {errors.status}
-                          </FormHelperText>
-                        )}
-                      </Stack>
-                    </Grid>
-                    {/* end of status */}
-
-                    {/* start date */}
-                    <Grid item xs={6} md={6}>
-                      <Stack spacing={1}>
-                        <InputLabel>Start Date</InputLabel>
-                        <FormControl sx={{ width: '100%' }} error={Boolean(touched.startDate && errors.startDate)}>
+                        <InputLabel htmlFor="service-date">Service Date</InputLabel>
+                        <FormControl sx={{ width: '100%' }} error={Boolean(touched.serviceDate && errors.serviceDate)}>
                           <LocalizationProvider dateAdapter={AdapterDateFns}>
                             <DatePicker
                               format="dd/MM/yyyy"
-                              value={values.startDate}
-                              onChange={(newValue) => setFieldValue('startDate', newValue)}
+                              value={values.serviceDate}
+                              onChange={(newValue) => setFieldValue('serviceDate', newValue)}
                             />
                           </LocalizationProvider>
                         </FormControl>
+                        {touched.serviceDate && errors.serviceDate && <FormHelperText error={true}>{errors.serviceDate}</FormHelperText>}
                       </Stack>
-                      {touched.startDate && errors.startDate && <FormHelperText error={true}>{errors.startDate}</FormHelperText>}
                     </Grid>
-                    {/* end of start date */}
-
-                    {/* end date */}
-                    {/* <Grid item xs={12} md={6}>
-                      <Stack spacing={1}>
-                        <InputLabel>End Date</InputLabel>
-                        <FormControl sx={{ width: '100%' }} error={Boolean(touched.endDate && errors.endDate)}>
-                          <LocalizationProvider dateAdapter={AdapterDateFns}>
-                            <DatePicker format="dd/MM/yyyy" value={values.endDate} onChange={(newValue) => setFieldValue('endDate', newValue)} />
-                          </LocalizationProvider>
-                        </FormControl>
-                      </Stack>
-                      {touched.endDate && errors.endDate && <FormHelperText error={true}>{errors.endDate}</FormHelperText>}
-                    </Grid> */}
-                    {/* end of end date */}
-
-                    {/* description */}
+                    {/* Next Service Date */}
                     <Grid item xs={12}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="project-description">Description</InputLabel>
+                        <InputLabel htmlFor="next-service-date">Next Service Date</InputLabel>
+                        <FormControl sx={{ width: '100%' }} error={Boolean(touched.nextServiceDate && errors.nextServiceDate)}>
+                          <LocalizationProvider dateAdapter={AdapterDateFns}>
+                            <DatePicker
+                              format="dd/MM/yyyy"
+                              value={values.nextServiceDate}
+                              onChange={(newValue) => setFieldValue('nextServiceDate', newValue)}
+                            />
+                          </LocalizationProvider>
+                        </FormControl>
+                        {touched.nextServiceDate && errors.nextServiceDate && <FormHelperText error={true}>{errors.nextServiceDate}</FormHelperText>}
+                      </Stack>
+                    </Grid>
+                    {/* Note */}
+                    <Grid item xs={12}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="note">Note</InputLabel>
                         <TextField
                           fullWidth
-                          id="project-description"
+                          id="note"
                           multiline
                           rows={2}
-                          placeholder="Enter Description"
-                          {...getFieldProps('description')}
-                          error={Boolean(touched.description && errors.description)}
-                          helperText={touched.description && errors.description}
+                          placeholder="Enter Note"
+                          {...getFieldProps('note')}
+                          error={Boolean(touched.note && errors.note)}
+                          helperText={touched.note && errors.note}
                         />
                       </Stack>
                     </Grid>
-                    {/* end of description */}
-                    {/* attachment */}
-                    {/* <Grid item xs={12}>
-                      <Stack spacing={1.5}>
-                        <InputLabel htmlFor="project-attachment">Attachment</InputLabel>
-                        <UploadSingleFile setFieldValue={setFieldValue} file={values.files} />
+                    {/* Services */}
+                    <Grid item xs={12}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="services">Services</InputLabel>
+                        <TextField
+                          fullWidth
+                          id="services"
+                          placeholder="Enter Services (Comma separated)"
+                          {...getFieldProps('services')}
+                          error={Boolean(touched.services && errors.services)}
+                          helperText={touched.services && errors.services}
+                        />
                       </Stack>
-                    </Grid> */}
-                    {/* end of attachment */}
-
-                    {project?.imageUrl && !values.files && (
-                      <img
-                        src={project?.imageUrl}
-                        style={{
-                          width: 'calc(100% - 16px)',
-                          height: 'calc(100% - 16px)'
-                        }}
-                      />
-                    )}
-
-                    {/* bottom content */}
-                    {/* <Grid item xs={12}>
-                      <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
-                        <Stack spacing={0.5}>
-                          <Typography variant="subtitle1">Make Contact Info Public</Typography>
-                          <Typography variant="caption" color="textSecondary">
-                            Means that anyone viewing your profile will be able to see your contacts details
-                          </Typography>
-                        </Stack>
-                        <FormControlLabel control={<Switch defaultChecked sx={{ mt: 0 }} />} label="" labelPlacement="start" />
+                    </Grid>
+                    {/* Service Charge */}
+                    <Grid item xs={12}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="service-charge">Service Charge</InputLabel>
+                        <TextField
+                          fullWidth
+                          id="service-charge"
+                          placeholder="Enter Service Charge"
+                          {...getFieldProps('serviceCharge')}
+                          error={Boolean(touched.serviceCharge && errors.serviceCharge)}
+                          helperText={touched.serviceCharge && errors.serviceCharge}
+                        />
                       </Stack>
-                      <Divider sx={{ my: 2 }} />
-                      <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
-                        <Stack spacing={0.5}>
-                          <Typography variant="subtitle1">Available to hire</Typography>
-                          <Typography variant="caption" color="textSecondary">
-                            Toggling this will let your teammates know that you are available for acquiring new projects
-                          </Typography>
-                        </Stack>
-                        <FormControlLabel control={<Switch sx={{ mt: 0 }} />} label="" labelPlacement="start" />
+                    </Grid>
+                    {/* Item List */}
+                    <Grid item xs={12}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="item-list">Item List</InputLabel>
+                        <Grid container spacing={2}>
+                          <Grid item xs={4}>
+                            <TextField
+                              fullWidth
+                              id="item-name"
+                              placeholder="Item Name"
+                              {...getFieldProps('itemList.name')}
+                              error={Boolean(touched.itemList?.name && errors.itemList?.name)}
+                              helperText={touched.itemList?.name && errors.itemList?.name}
+                            />
+                          </Grid>
+                          <Grid item xs={4}>
+                            <TextField
+                              fullWidth
+                              id="item-qty"
+                              placeholder="Quantity"
+                              {...getFieldProps('itemList.qty')}
+                              error={Boolean(touched.itemList?.qty && errors.itemList?.qty)}
+                              helperText={touched.itemList?.qty && errors.itemList?.qty}
+                            />
+                          </Grid>
+                          <Grid item xs={4}>
+                            <TextField
+                              fullWidth
+                              id="item-price"
+                              placeholder="Price"
+                              {...getFieldProps('itemList.price')}
+                              error={Boolean(touched.itemList?.price && errors.itemList?.price)}
+                              helperText={touched.itemList?.price && errors.itemList?.price}
+                            />
+                          </Grid>
+                        </Grid>
                       </Stack>
-                    </Grid> */}
-                    {/* end of bottom content */}
+                    </Grid>
+                    {/* Total Price */}
+                    <Grid item xs={12}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="total-price">Total Price</InputLabel>
+                        <TextField
+                          fullWidth
+                          id="total-price"
+                          placeholder="Enter Total Price"
+                          {...getFieldProps('totalPrice')}
+                          error={Boolean(touched.totalPrice && errors.totalPrice)}
+                          helperText={touched.totalPrice && errors.totalPrice}
+                        />
+                      </Stack>
+                    </Grid>
                   </Grid>
                 </Grid>
               </Grid>

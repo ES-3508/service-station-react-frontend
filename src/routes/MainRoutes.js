@@ -148,7 +148,7 @@ const MainRoutes = {
           children: [
             {
               path: 'default',
-              element: <DashboardAnalytics />
+              element: <AppInvoiceDashboard/>
             },
             {
               path: 'analytics',
@@ -313,10 +313,10 @@ const MainRoutes = {
             {
               path: 'invoice',
               children: [
-                {
-                  path: 'dashboard',
-                  element: <AppInvoiceDashboard />
-                },
+                // {
+                //   path: 'dashboard',
+                //   element: <AppInvoiceDashboard />
+                // },
                 {
                   path: 'create',
                   element: <AppInvoiceCreate />

@@ -21,28 +21,29 @@ const Dashboard = () => {
 
   const widgetData = [
     {
-      title: 'Total',
-      count: '£5678.09',
+      title: 'Total income',
+      count: 'LKR 1 500 000',
       percentage: 20.3,
       isLoss: true,
-      invoice: '3',
+      invoice: '125',
       color: theme.palette.warning
     },
+    
     {
-      title: 'Paid',
-      count: '£5678.09',
-      percentage: -8.73,
-      isLoss: true,
-      invoice: '5',
-      color: theme.palette.error
-    },
-    {
-      title: 'Pending',
-      count: '£5678.09',
+      title: 'Spare parts cost',
+      count: 'LKR 220 350',
       percentage: 1.73,
       isLoss: false,
       invoice: '20',
       color: theme.palette.success
+    },
+    {
+      title: 'Vehicles',
+      count: '123',
+      percentage: -8.73,
+      isLoss: true,
+      invoice: '5',
+      color: theme.palette.error
     },
     {
       title: 'Overdue',

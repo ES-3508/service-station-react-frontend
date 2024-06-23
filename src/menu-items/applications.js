@@ -61,28 +61,7 @@ const applications = {
     //   url: '/apps/kanban/board'
     // },
 
-    {
-      id: 'Lead',
-      title: <FormattedMessage id="Lead" />,
-      // type: 'collapse',
-      icon: icons.FilterOutlined,
-      type: 'item',
-      url: '/apps/lead/lead-list'
-      // children: [
-      //   {
-      //     id: 'lead-list',
-      //     title: <FormattedMessage id="All Leads" />,
-      //     type: 'item',
-      //     url: '/apps/lead/lead-list'
-      //   },
-      //   {
-      //     id: 'customer-card',
-      //     title: <FormattedMessage id="Client Portal" />,
-      //     type: 'item',
-      //     url: 'apps/lead/lead-view'
-      //   }
-      // ]
-    },
+    
 
     // {
     //   id: 'Contact',
@@ -107,7 +86,7 @@ const applications = {
 
     {
       id: 'contact',
-      title: <FormattedMessage id="Contacts" />,
+      title: <FormattedMessage id="Customers" />,
       type: 'item',
       icon: icons.UsergroupDeleteOutlined,
       url: '/apps/contact/contact-list'
@@ -127,30 +106,53 @@ const applications = {
       // ]
     },
     {
+      id: 'Lead',
+      title: <FormattedMessage id="Vehicles" />,
+      // type: 'collapse',
+      icon: icons.FilterOutlined,
+      type: 'item',
+      url: '/apps/lead/lead-list'
+      // children: [
+      //   {
+      //     id: 'lead-list',
+      //     title: <FormattedMessage id="All Leads" />,
+      //     type: 'item',
+      //     url: '/apps/lead/lead-list'
+      //   },
+      //   {
+      //     id: 'customer-card',
+      //     title: <FormattedMessage id="Client Portal" />,
+      //     type: 'item',
+      //     url: 'apps/lead/lead-view'
+      //   }
+      // ]
+    },
+    {
       id: 'project',
-      title: <FormattedMessage id="Projects" />,
-      type: 'collapse',
+      title: <FormattedMessage id="Services" />,
+      type: 'item',
       icon: icons.BuildOutlined,
-      children: [
-        {
-          id: 'project-list',
-          title: <FormattedMessage id="All Projects" />,
-          type: 'item',
-          url: '/apps/project/project-list'
-        },
-        {
-          id: 'workflow-list',
-          title: <FormattedMessage id="Workflows" />,
-          type: 'item',
-          url: '/apps/project/workflow-list'
-        }
-        // {
-        //   id: 'project-card',
-        //   title: <FormattedMessage id="cards" />,
-        //   type: 'item',
-        //   url: '/apps/project/project-card'
-        // }
-      ]
+      url: '/apps/project/project-list'
+      // children: [
+      //   {
+      //     id: 'project-list',
+      //     title: <FormattedMessage id="All Services" />,
+      //     type: 'item',
+      //     url: '/apps/project/project-list'
+      //   },
+      //   {
+      //     id: 'workflow-list',
+      //     title: <FormattedMessage id="Workflows" />,
+      //     type: 'item',
+      //     url: '/apps/project/workflow-list'
+      //   }
+      //   // {
+      //   //   id: 'project-card',
+      //   //   title: <FormattedMessage id="cards" />,
+      //   //   type: 'item',
+      //   //   url: '/apps/project/project-card'
+      //   // }
+      // ]
     },
     {
       id: 'calendar',
@@ -162,7 +164,7 @@ const applications = {
     {
       id: 'invoice',
       title: <FormattedMessage id="invoice" />,
-      url: '/apps/invoice/dashboard',
+      // url: '/apps/invoice/dashboard',
       type: 'collapse',
       icon: icons.FileTextOutlined,
       breadcrumbs: true,

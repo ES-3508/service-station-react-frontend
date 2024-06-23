@@ -153,7 +153,7 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
           <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
             <SortingSelect sortBy={sortBy.id} setSortBy={setSortBy} allColumns={allColumns} />
             <Button variant="contained" color="primary" startIcon={<PlusOutlined />} onClick={handleAdd} size="small">
-              Add Lead
+              Add Vehicel
             </Button>
 
             <CSVExport data={selectedFlatRows.length > 0 ? selectedFlatRows.map((d) => d.original) : leads} filename={'lead-list.csv'} />
@@ -450,13 +450,6 @@ const LeadListPage = () => {
 
   const columns = useMemo(
     () => [
-      // {
-      //   title: 'Row Selection',
-      //   Header: SelectionHeader,
-      //   accessor: 'selection',
-      //   Cell: SelectionCell,
-      //   disableSortBy: true
-      // },
       {
         Header: '#',
         accessor: '_id',
@@ -464,44 +457,35 @@ const LeadListPage = () => {
         Cell: IndexCell
       },
       {
-        Header: 'Lead Name',
-        accessor: 'contactInformation',
+        Header: 'Number Plate',
+        accessor: 'vehicleInformation.numberPlate',
         Cell: ({ row }) => CustomCell2(row, setLead, handleOpenTabLead)
-        // Cell: ({ value }) => {
-        //   if (value === null) {
-        //     return ''; // Or you can return any other representation of a blank cell
-        //   }
-        //   return (value.firstName+' '+value.lastName);
-        // }
       },
       {
-        Header: 'Phone Number',
-        accessor: 'contactInformation.phone1'
-      },
-      // {
-      //   Header: 'Second Name',
-      //   accessor: 'contactInformation.lastName',
-      //   // Cell: CustomCell
-      // },
-      // {
-      //   Header: 'Namel',
-      //   accessor: 'name',
-      //   // Cell: CustomCell
-      // },
-
-      {
-        Header: 'Project Type',
-        accessor: 'projectType'
-        // Cell: ProjectType
+        Header: 'Manufacturer',
+        accessor: 'vehicleInformation.manufacturer'
       },
       {
-        Header: 'Source',
-        //manual edit
-        accessor: 'source',
+        Header: 'Model',
+        accessor: 'vehicleInformation.model'
+      },
+      {
+        Header: 'Manufacture Year',
+        accessor: 'vehicleInformation.manufactureYear',
         Cell: ({ value }) => {
-          return `Manual Entry`;
+          if (value === null) {
+            return ''; // Or you can return any other representation of a blank cell
+          }
+          return value;
         }
       },
+      // {
+      //   Header: 'Source',
+      //   accessor: 'source',
+      //   Cell: ({ value }) => {
+      //     return `Manual Entry`;
+      //   }
+      // },
       {
         Header: 'Created',
         accessor: 'created',
@@ -516,7 +500,6 @@ const LeadListPage = () => {
           return `${day}/${month}/${year}`;
         }
       },
-
       {
         Header: 'Status',
         accessor: 'accountStatus',
@@ -529,6 +512,7 @@ const LeadListPage = () => {
         Cell: ({ row }) => ActionCell(row, setLead, setDeletingLead, handleAdd, handleView, handleClose, theme)
       }
     ],
+    
     //
     [theme]
   );

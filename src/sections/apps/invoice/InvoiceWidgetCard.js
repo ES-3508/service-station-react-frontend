@@ -46,8 +46,8 @@ const TableWidgetCard = ({ color, title, count, percentage, isLoss, invoice, isA
           <Stack spacing={0.25}>
             <Typography variant="h5">{count}</Typography>
             <Stack direction="row" spacing={1} alignItems="center">
-              <Typography variant="h5">{invoice}</Typography>
-              <Typography color="secondary">invoices</Typography>
+              {/* <Typography variant="h5">{invoice}</Typography> */}
+              {/* <Typography color="secondary">invoices</Typography> */}
             </Stack>
           </Stack>
         </Grid>
