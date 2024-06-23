@@ -152,7 +152,7 @@ const MainRoutes = {
             },
             {
               path: 'analytics',
-              element: <DashboardAnalytics />
+              element: <AppInvoiceDashboard />
             }
           ]
         },
