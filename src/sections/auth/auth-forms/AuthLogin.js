@@ -51,7 +51,7 @@ const AuthLogin = ({ isDemo = false }) => {
     <>
       <Formik
         initialValues={{
-          email: 'admin@toucan-glass.co.uk',
+          email: 'admin@coltexbiz.com',
           password: '123456',
           submit: null
         }}
