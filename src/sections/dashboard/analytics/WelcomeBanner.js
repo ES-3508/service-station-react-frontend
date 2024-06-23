@@ -47,7 +47,8 @@ const WelcomeBanner = () => {
         </Grid>
         <Grid item sm={6} xs={12} sx={{ display: { xs: 'none', sm: 'initial' } }}>
           <Stack sx={{ position: 'relative', pr: { sm: 3, md: 8 } }} justifyContent="center" alignItems="flex-end">
-            <img src={WelcomeImage} alt="Welcome" />
+          <img src={WelcomeImage} alt="Welcome" style={{ height: '25%', maxHeight:'250px' }} />
+
             <Box sx={{ position: 'absolute', bottom: 0, right: '10%' }}>
               <img src={WelcomeImageArrow} alt="Welcome Arrow" />
             </Box>
