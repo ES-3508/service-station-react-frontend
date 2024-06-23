@@ -89,7 +89,7 @@ const DashboardDefault = () => {
         <AnalyticEcommerce title="Total Leads" count="18" percentage={27.4} isLoss color="warning" extra="1,943" />
       </Grid>
       <Grid item xs={12} sm={6} md={4} lg={3}>
-        <AnalyticEcommerce title="Total Sales" count="$35,078" percentage={27.4} isLoss color="warning" extra="$20,395" />
+        <AnalyticEcommerce title="Total Sales" count="LKR 35,078" percentage={27.4} isLoss color="warning" extra="LKR 20,395" />
       </Grid>
 
       <Grid item md={8} sx={{ display: { sm: 'none', md: 'block', lg: 'none' } }} />
@@ -140,7 +140,7 @@ const DashboardDefault = () => {
               <Typography variant="h6" color="textSecondary">
                 This Week Statistics
               </Typography>
-              <Typography variant="h3">$7,650</Typography>
+              <Typography variant="h3">LKR 7,650</Typography>
             </Stack>
           </Box>
           <MonthlyBarChart />
@@ -245,7 +245,7 @@ const DashboardDefault = () => {
               <ListItemSecondaryAction>
                 <Stack alignItems="flex-end">
                   <Typography variant="subtitle1" noWrap>
-                    + $1,430
+                    + LKR 1,430
                   </Typography>
                   <Typography variant="h6" color="secondary" noWrap>
                     78%
@@ -268,7 +268,7 @@ const DashboardDefault = () => {
               <ListItemSecondaryAction>
                 <Stack alignItems="flex-end">
                   <Typography variant="subtitle1" noWrap>
-                    + $302
+                    + LKR 302
                   </Typography>
                   <Typography variant="h6" color="secondary" noWrap>
                     8%
@@ -291,7 +291,7 @@ const DashboardDefault = () => {
               <ListItemSecondaryAction>
                 <Stack alignItems="flex-end">
                   <Typography variant="subtitle1" noWrap>
-                    + $682
+                    + LKR 682
                   </Typography>
                   <Typography variant="h6" color="secondary" noWrap>
                     16%

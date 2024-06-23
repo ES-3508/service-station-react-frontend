@@ -29,10 +29,10 @@ const WelcomeBanner = () => {
         <Grid item md={6} sm={6} xs={12}>
           <Stack spacing={2} sx={{ padding: 3.4 }}>
             <Typography variant="h2" color={theme.palette.background.paper}>
-              Welcome to Toucan Dashboard
+              Welcome to Service Station Dashboard
             </Typography>
             <Typography variant="h6" color={theme.palette.background.paper}>
-              Toucan Electrical is a leading provider of electrical services to commercial and residential clients throughout Kent, Surrey, Essex, and Hertfordshire.
+            Auto Service is your trusted partner in maintaining your vehicle's top performance and appearance. We specialize in a range of services to ensure your car runs smoothly and looks pristine.
             </Typography>
             <Box>
               <Button
