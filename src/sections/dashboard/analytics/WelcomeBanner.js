@@ -7,7 +7,7 @@ import MainCard from 'components/MainCard';
 import { ThemeDirection } from 'config';
 
 //asset
-import WelcomeImage from 'assets/images/analytics/welcome-banner.png';
+import WelcomeImage from 'assets/images/analytics/banner.png';
 import WelcomeImageArrow from 'assets/images/analytics/welcome-arrow.png';
 
 // ==============================|| ANALYTICS - WELCOME ||============================== //
