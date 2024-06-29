@@ -51,6 +51,7 @@ import { dispatch, useSelector } from 'store';
 import { getLeads } from 'store/reducers/leads';
 import LeadCardPage from "./card";
 import ViewLead from 'sections/apps/contact/LeadView';
+import { getContacts } from 'store/reducers/contact';
 
 
 // ==============================|| REACT TABLE ||============================== //
@@ -65,10 +66,11 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
   const [query, setQuery] = useState('')
   const [numOfPages, setNumOfPages] = useState(10)
 
-  const { leads: {
-    leads,
+  const { contacts: {
+    contacts,
     total,
-  }, action } = useSelector((state) => state.leads);
+  }, action } = useSelector((state) => state.contacts);
+  console.log(contacts);
 
   const {
     getTableProps,
@@ -90,9 +92,9 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
   } = useTable(
     {
       columns,
-      data: leads,
+      data: contacts,
       filterTypes,
-      initialState: { pageIndex: 0, pageSize: 10, hiddenColumns: ['age', 'address', 'imageUrl', 'zipCode', 'web', 'description'] },
+      initialState: { pageIndex: 0, pageSize: 10, hiddenColumns: [] },
       manualPagination: true,
       pageCount: Math.ceil(total / numOfPages),
       autoResetPage: false,
@@ -106,13 +108,13 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
   );
 
   useEffect(() => {
-    dispatch(getLeads(pageIndex, pageSize, query));
+    dispatch(getContacts(pageIndex, pageSize, query));
   }, [pageIndex, pageSize, query, action])
 
  
   const renderRowSubComponent = useCallback(({ row }) => {
-    return <LeadView data={leads.find((lead) => lead._id === row.values._id)} />;
-  }, [leads]);
+    return <LeadView data={contacts.find((lead) => lead._id === row.values._id)} />;
+  }, [contacts]);
 
 
   return (
@@ -144,7 +146,7 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
               Add Contact
             </Button>
             
-            <CSVExport data={selectedFlatRows.length > 0 ? selectedFlatRows.map((d) => d.original) : leads} filename={'lead-list.csv'} />
+            <CSVExport data={selectedFlatRows.length > 0 ? selectedFlatRows.map((d) => d.original) : contacts} filename={'customer-list.csv'} />
           </Stack>
         </Stack>
 
@@ -267,14 +269,14 @@ const ActionCell = (row, setLead, setLeadDeleteId, handleAdd, handleView, handle
     <EyeTwoTone twoToneColor={theme.palette.secondary.main} />
   );
 
-  const { leads: {
-    leads,
+  const { contacts: {
+    contacts,
     total,
-  }, action } = useSelector((state) => state.leads);
+  }, action } = useSelector((state) => state.contacts);
  
   const filterLeadsById = (_id) => {
     console.log(_id,"idddddddddd")
-    const selectedLead = leads.find((lead) => lead._id === _id);
+    const selectedLead = contacts.find((lead) => lead._id === _id);
     // Do something with the selected lead, for example, set it in state
     setLead(selectedLead);
   };
@@ -328,7 +330,8 @@ const ActionCell = (row, setLead, setLeadDeleteId, handleAdd, handleView, handle
             handleClose();
             setLeadDeleteId({
               _id: row.values._id,
-              created: row.values.created
+              created: row.values.created,
+              email: row.values.email
             });
           }}
         >
@@ -370,7 +373,8 @@ const LeadListPage = () => {
   const [lead, setLead] = useState();
   const [deletingLead, setDeletingLead] = useState({
     _id: null,
-    created: ''
+    created: '',
+    email: ''
   });
 
   const handleAdd = () => {
@@ -404,23 +408,18 @@ const LeadListPage = () => {
       },
       {
         Header: 'First Name',
-        accessor: 'contactInformation.firstName',
+        accessor: 'firstName',
         // Cell: CustomCell
       },
       
       {
         Header: 'Last Name',
-        accessor: 'contactInformation.lastName',
+        accessor: 'lastName',
         // Cell: CustomCell
       },
-      // {
-      //   Header: 'Name',
-      //   accessor: 'name',
-      //   // Cell: CustomCell
-      // },
       {
         Header: 'Email',
-        accessor: 'contactInformation.email',
+        accessor: 'email',
         // Cell: ProjectType
       },
       // {
@@ -450,7 +449,7 @@ const LeadListPage = () => {
      
       {
         Header: 'Address',
-        accessor: 'contactInformation.address',
+        accessor: 'address',
         // Cell: StatusCell
       },
       {
@@ -485,7 +484,7 @@ const LeadListPage = () => {
                         getHeaderProps={(column) => column.getSortByToggleProps()}
                     />
                 </ScrollX>
-                <AlertLeadDelete title={deletingLead?.created} leadId={deletingLead._id} open={open} handleClose={handleClose} />
+                <AlertLeadDelete title={deletingLead?.email} leadId={deletingLead._id} open={open} handleClose={handleClose} />
                 {/* add user dialog */}
                 <Dialog
                     maxWidth="sm"

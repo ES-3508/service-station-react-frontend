@@ -46,13 +46,13 @@ import { openSnackbar } from 'store/reducers/snackbar';
 
 // assets
 import { CameraOutlined, CaretRightOutlined, DeleteFilled } from '@ant-design/icons';
-import {  deleteLead, updateLead, uploadLeadImage } from 'store/reducers/leads';
+import { deleteLead, updateLead, uploadLeadImage } from 'store/reducers/leads';
 import { createLead } from 'store/reducers/leads';
+import { createContact, updateContact } from 'store/reducers/contact';
 
 // ==============================|| CUSTOMER ADD / EDIT / DELETE ||============================== //
 
 const AddLead = ({ lead, onCancel }) => {
-
   const [openAlert, setOpenAlert] = useState(false);
 
   // const { uploadedImageUrl } = useSelector((state) => state.leads);
@@ -80,108 +80,36 @@ const AddLead = ({ lead, onCancel }) => {
   }, [selectedImage]);
 
   useEffect(() => {
-    console.log(lead,'lead //////////////////////////////////////////')
+    console.log(lead, 'lead //////////////////////////////////////////');
     if (lead) {
       setAvatar(lead.imageUrl);
     }
-  }, [lead])
+  }, [lead]);
 
   const deleteHandler = async (lead) => {
     setDeletingLead({
       _id: lead._id,
       name: lead.name
-    })
-    setOpenAlert(true)
-  }
+    });
+    setOpenAlert(true);
+  };
 
   const LeadSchema = Yup.object().shape({
-    // priorityLevel: Yup.string(),
-    // companyType: Yup.string(),
-    // leadOwner: Yup.string(),
-    // startDate: Yup.date(),
-    // endDate: Yup.date()
-    //   .when(
-    //     'startDate',
-    //     (date, schema) => date && schema.min(date, "End date can't be before start date")
-    //   )
-    //   .nullable(),
-    contactInformation: Yup.object().shape({
-      firstName: Yup.string().required('First Name is required'),
-    //   lastName: Yup.string().required('Last Name is required'),
-    //   surName: Yup.string(),
-    //   company: Yup.string(),
-    //   companyNumber: Yup.string(),
-    //   industry: Yup.string(),
-    //   address: Yup.string(),
-    phone1: Yup.string()
-    .matches(/^\+?[0-9]+$/, 'Phone number must contain only numeric characters and may start with a "+" sign')
-    ,
-  phone2: Yup.string()
-    .matches(/^\+?[0-9]+$/, 'Phone number must contain only numeric characters and may start with a "+" sign')
-    ,
-    email: Yup.string().email('Invalid email address'),
-    }),
-    // descriptionInformation: Yup.array().of(
-    //   Yup.object().shape({
-    //     note: Yup.string(),
-    //     // fileName: Yup.string(),
-    //     files: Yup.mixed(),
-    //     // Remove createdBy, updatedBy, createdAt, and updatedAt
-    //   })
-    // ),
-
-    // projectType: Yup.string(),
-    // projectSize: Yup.string(),
-    // currency: Yup.string(),
-    // budgetEstimate: Yup.string(),
-    // expectedStart: Yup.date(),
-    // expectedCompletion: Yup.date()
-    //   .when(
-    //     'expectedStart',
-    //     (date, schema) => date && schema.min(date, "End date can't be before start date")
-    //   )
-    //   .nullable(),
+    firstName: Yup.string().required('First Name is required'),
+    phone1: Yup.string().matches(/^\+?[0-9]+$/, 'Phone number must contain only numeric characters and may start with a "+" sign'),
+    phone2: Yup.string().matches(/^\+?[0-9]+$/, 'Phone number must contain only numeric characters and may start with a "+" sign'),
+    email: Yup.string().email('Invalid email address')
   });
 
-  const defaultValues  = useMemo(
+  const defaultValues = useMemo(
     () => ({
-      priorityLevel: lead?.priorityLevel || '',
-      companyType: lead?.companyType || '',
-      leadOwner: lead?.leadOwner || '',
-
-      startDate: lead?.startDate ? new Date(lead.startDate) : new Date(),
-      endDate: lead?.endDate ? new Date(lead.endDate) : new Date(),
-      contactInformation: {
-        firstName: lead?.contactInformation?.firstName || '',
-        lastName: lead?.contactInformation?.lastName || '',
-        company: lead?.contactInformation?.company || '',
-        companyNumber: lead?.contactInformation?.companyNumber || '',
-        industry: lead?.contactInformation?.industry || '',
-        address: lead?.contactInformation?.address || '',
-        phone1: lead?.contactInformation?.phone1 || '',
-        phone2: lead?.contactInformation?.phone2 || '',
-        email: lead?.contactInformation?.email || '',
-      },
-
-      projectType: lead?.projectType || '',
-      projectSize: lead?.projectSize || '',
-      budgetEstimate: lead?.budgetEstimate || '',
-      currency: lead ? lead.currency : '',
-      expectedStart: lead?.expectedStart
-        ? new Date(lead.expectedStart)
-        : new Date(),
-      expectedCompletion: lead?.expectedCompletion
-        ? new Date(lead.expectedCompletion)
-        : null,
-
-      // descriptionInformation: [
-      //   {
-      //     note: lead?.descriptionInformation[0].note || '',
-      //     // fileName: lead?.descriptionInformation[0].fileName || '',
-      //     files: lead?.descriptionInformation[0].files || false,
-      //   },
-      // ],
-      // document: lead?.document || false,
+      firstName: lead?.firstName || '',
+      lastName: lead?.lastName || '',
+      company: lead?.company || '',
+      address: lead?.address || '',
+      phone1: lead?.phone1 || '',
+      phone2: lead?.phone2 || '',
+      email: lead?.email || ''
     }),
     [lead]
   );
@@ -193,46 +121,49 @@ const AddLead = ({ lead, onCancel }) => {
     validationSchema: LeadSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-
+        console.log('submit lead', values);
         if (lead) {
-
           if (selectedImage) {
-            dispatch(uploadLeadImage(selectedImage))
-              .then((fileUrl) => {
-                setSelectedImage(undefined);
-                if (fileUrl) {
-                  dispatch(updateLead(lead._id, {
-                    ...values, imageUrl: fileUrl.payload
-                  }));
-                }
-              })
+            dispatch(uploadLeadImage(selectedImage)).then((fileUrl) => {
+              setSelectedImage(undefined);
+              if (fileUrl) {
+                dispatch(
+                  updateContact(lead._id, {
+                    ...values,
+                    imageUrl: fileUrl.payload
+                  })
+                );
+              }
+            });
           } else {
-            dispatch(updateLead(lead._id, {
-              ...values,
-              imageUrl: lead.imageUrl,
-            }));
+            dispatch(
+              updateContact(lead._id, {
+                ...values,
+                imageUrl: lead.imageUrl
+              })
+            );
           }
 
           resetForm();
         } else {
-
           if (selectedImage) {
-            dispatch(uploadLeadImage(selectedImage))
-              .then((fileUrl) => {
-                setSelectedImage(undefined);
-                if (fileUrl) {
-                  dispatch(createLead({
-                    ...values, imageUrl: fileUrl.payload
-                  }))
-                }
-              })
+            dispatch(uploadLeadImage(selectedImage)).then((fileUrl) => {
+              setSelectedImage(undefined);
+              if (fileUrl) {
+                dispatch(
+                  createContact({
+                    ...values,
+                    imageUrl: fileUrl.payload
+                  })
+                );
+              }
+            });
           } else {
-            console.log('create values ', values )
-            dispatch(createLead(values))
+            console.log('create values ', values);
+            dispatch(createContact(values));
           }
 
           resetForm();
-
         }
 
         setSubmitting(false);
@@ -250,7 +181,7 @@ const AddLead = ({ lead, onCancel }) => {
       <FormikProvider value={formik}>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-          <Grid container justifyContent="space-between" alignItems="center">
+            <Grid container justifyContent="space-between" alignItems="center">
               <Grid item>
                 <DialogTitle sx={{ fontSize: 32, p: 3.5 }}>{lead ? 'Edit Contact' : 'Create Contact'}</DialogTitle>
               </Grid>
@@ -266,34 +197,31 @@ const AddLead = ({ lead, onCancel }) => {
             <Divider />
             <DialogContent sx={{ pt: 0.8 }}>
               <Grid container spacing={2}>
-                <Grid item xs={12}> 
-                </Grid>
+                <Grid item xs={12}></Grid>
 
                 {/* ===================================+++++++++++++++++++++++++++++++++++++++++++++++++++++++++================================         */}
-                <DialogTitle>Contact information </DialogTitle> 
+                <DialogTitle>Contact information </DialogTitle>
 
                 <Grid item xs={12}>
                   <Grid container spacing={3}>
                     {/* first name */}
                     <Grid item xs={12} sm={6}>
-                      
                       {/* <Stack spacing={1.25}> */}
-                        <FormControl fullWidth>
+                      <FormControl fullWidth>
                         <TextField
                           id="firstName"
                           label="First Name"
                           // placeholder="1st LEG VOYAGE"
-                          {...getFieldProps('contactInformation.firstName')}
-                          onChange={(event) => setFieldValue('contactInformation.firstName', event.target.value)}
-                          error={Boolean(touched.contactInformation?.firstName && errors.contactInformation?.firstName)}
-                        helperText={touched.contactInformation?.firstName && errors.contactInformation?.firstName}
+                          {...getFieldProps('firstName')}
+                          onChange={(event) => setFieldValue('firstName', event.target.value)}
+                          error={Boolean(touched.firstName && errors.firstName)}
+                          helperText={touched.firstName && errors.firstName}
                         />
                       </FormControl>
-                        
                     </Grid>
 
-                   {/* last name */}
-                   <Grid item xs={12} sm={6}>
+                    {/* last name */}
+                    <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
                         {/* <InputLabel htmlFor="customer-last-name">Last Name</InputLabel> */}
                         <TextField
@@ -301,7 +229,7 @@ const AddLead = ({ lead, onCancel }) => {
                           fullWidth
                           id="lead-last-name"
                           placeholder="Enter Customer Last Name"
-                          {...getFieldProps('contactInformation.lastName')}
+                          {...getFieldProps('lastName')}
                           // error={Boolean(touched.lastName && errors.lastName)}
                           // helperText={touched.lastName && errors.lastName}
                         />
@@ -313,19 +241,17 @@ const AddLead = ({ lead, onCancel }) => {
                       <Stack spacing={1.25}>
                         {/* <InputLabel htmlFor="customer-phone 1">Phone Number 1</InputLabel> */}
                         <TextField
-                          label='Phone Number 1'
+                          label="Phone Number 1"
                           fullWidth
-                          type='tel'
+                          type="tel"
                           id="lead-phone 1"
                           placeholder="Enter Phone Number 1"
-                          {...getFieldProps('contactInformation.phone1')}
-                          error={Boolean(touched.contactInformation?.phone1 && errors.contactInformation?.phone1)}
-                          helperText={touched.contactInformation?.phone1 && errors.contactInformation?.phone1}
-                      
+                          {...getFieldProps('phone1')}
+                          error={Boolean(touched.phone1 && errors.phone1)}
+                          helperText={touched.phone1 && errors.phone1}
                         />
                       </Stack>
                     </Grid>
-                
 
                     {/* phone 2*/}
                     <Grid item xs={12} sm={6}>
@@ -337,9 +263,9 @@ const AddLead = ({ lead, onCancel }) => {
                           type="tel"
                           id="lead-phone 2"
                           placeholder="Enter Phone Number 2"
-                          {...getFieldProps('contactInformation.phone2')}
-                          error={Boolean(touched.contactInformation?.phone2 && errors.contactInformation?.phone2)}
-                          helperText={touched.contactInformation?.phone2 && errors.contactInformation?.phone2}
+                          {...getFieldProps('phone2')}
+                          error={Boolean(touched.phone2 && errors.phone2)}
+                          helperText={touched.phone2 && errors.phone2}
                         />
                       </Stack>
                     </Grid>
@@ -349,70 +275,55 @@ const AddLead = ({ lead, onCancel }) => {
                       <Stack spacing={1.25}>
                         {/* <InputLabel htmlFor="lead-email">Email</InputLabel> */}
                         <TextField
-                          label='Email'
+                          label="Email"
                           fullWidth
                           id="lead-email"
                           placeholder="Enter Customer Email"
-                          {...getFieldProps('contactInformation.email')}
-                          error={Boolean(touched.contactInformation?.email && errors.contactInformation?.email)}
-                          helperText={touched.contactInformation?.email && errors.contactInformation?.email}
-                        
+                          {...getFieldProps('email')}
+                          error={Boolean(touched.email && errors.email)}
+                          helperText={touched.email && errors.email}
                         />
                       </Stack>
                     </Grid>
 
-
-                    
-
-                   {/* address */}
-                   <Grid item xs={12}>
+                    {/* address */}
+                    <Grid item xs={12}>
                       <Stack spacing={1.25}>
                         {/* <InputLabel htmlFor="lead-address">Address</InputLabel> */}
                         <TextField
-                          label='Address'
+                          label="Address"
                           fullWidth
                           id="lead-address"
                           placeholder="Enter lead Adderess"
-                          {...getFieldProps('name')}
-                          error={Boolean(touched.name && errors.name)}
-                          helperText={touched.name && errors.name}
+                          {...getFieldProps('address')}
+                          error={Boolean(touched.address && errors.address)}
+                          helperText={touched.address && errors.address}
                         />
                       </Stack>
-                   </Grid>
+                    </Grid>
 
-                   {/* company name */}
-                   <Grid item xs={12}>
+                    {/* company name */}
+                    <Grid item xs={12}>
                       <Stack spacing={1.25}>
                         {/* <InputLabel htmlFor="customer-company-name">Company Name</InputLabel> */}
                         <TextField
-                        label='Company Name'
+                          label="Company Name"
                           fullWidth
                           id="customer-company-name"
                           placeholder="Enter Customer Company Name"
-                          {...getFieldProps('contactInformation.company')}
-                          error={Boolean(touched.name && errors.name)}
-                          helperText={touched.name && errors.name}
+                          {...getFieldProps('company')}
+                          error={Boolean(touched.company && errors.company)}
+                          helperText={touched.company && errors.company}
                         />
                       </Stack>
-                   </Grid>
+                    </Grid>
 
                     {/* Industry Category */}
-                   
-
-                    
-
-                    
-
                   </Grid>
                 </Grid>
                 {/* end of contact information */}
-
-               
-   
-
               </Grid>
             </DialogContent>
-
 
             <Divider />
             <DialogActions sx={{ p: 2.5 }}>
@@ -441,7 +352,9 @@ const AddLead = ({ lead, onCancel }) => {
           </Form>
         </LocalizationProvider>
       </FormikProvider>
-      {!isCreating && <AlertLeadDelete title={deletingLead.name} leadId={deletingLead._id} open={openAlert} handleClose={handleAlertClose} />}
+      {!isCreating && (
+        <AlertLeadDelete title={deletingLead.name} leadId={deletingLead._id} open={openAlert} handleClose={handleAlertClose} />
+      )}
     </>
   );
 };

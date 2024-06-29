@@ -94,84 +94,21 @@ const ViewLead = ({ lead, onCancel }) => {
   };
 
   const LeadSchema = Yup.object().shape({
-    // priorityLevel: Yup.string(),
-    // companyType: Yup.string(),
-    // leadOwner: Yup.string(),
-    // startDate: Yup.date(),
-    // endDate: Yup.date()
-    //   .when(
-    //     'startDate',
-    //     (date, schema) => date && schema.min(date, "End date can't be before start date")
-    //   )
-    //   .nullable(),
-    // contactInformation: Yup.object().shape({
-    //   firstName: Yup.string().required('First Name is required'),
-    //   lastName: Yup.string().required('Last Name is required'),
-    //   surName: Yup.string(),
-    //   company: Yup.string(),
-    //   companyNumber: Yup.string(),
-    //   industry: Yup.string(),
-    //   address: Yup.string(),
-    //   phone1: Yup.string(),
-    //   phone2: Yup.string(),
-    //   email: Yup.string().email('Incorrect email address'),
-    // }),
-    // descriptionInformation: Yup.array().of(
-    //   Yup.object().shape({
-    //     note: Yup.string(),
-    //     // fileName: Yup.string(),
-    //     files: Yup.mixed(),
-    //     // Remove createdBy, updatedBy, createdAt, and updatedAt
-    //   })
-    // ),
-    // projectType: Yup.string(),
-    // projectSize: Yup.string(),
-    // currency: Yup.string(),
-    // budgetEstimate: Yup.string(),
-    // expectedStart: Yup.date(),
-    // expectedCompletion: Yup.date()
-    //   .when(
-    //     'expectedStart',
-    //     (date, schema) => date && schema.min(date, "End date can't be before start date")
-    //   )
-    //   .nullable(),
+    firstName: Yup.string().required('First Name is required'),
+    phone1: Yup.string().matches(/^\+?[0-9]+$/, 'Phone number must contain only numeric characters and may start with a "+" sign'),
+    phone2: Yup.string().matches(/^\+?[0-9]+$/, 'Phone number must contain only numeric characters and may start with a "+" sign'),
+    email: Yup.string().email('Invalid email address')
   });
 
   const defaultValues = useMemo(
     () => ({
-      priorityLevel: lead?.priorityLevel || '',
-      companyType: lead?.companyType || '',
-      leadOwner: lead?.leadOwner || '',
-
-      startDate: lead?.startDate ? new Date(lead.startDate) : new Date(),
-      endDate: lead?.endDate ? new Date(lead.endDate) : new Date(),
-      contactInformation: {
-        firstName: lead?.contactInformation?.firstName || '',
-        lastName: lead?.contactInformation?.lastName || '',
-        company: lead?.contactInformation?.company || '',
-        companyNumber: lead?.contactInformation?.companyNumber || '',
-        industry: lead?.contactInformation?.industry || '',
-        address: lead?.contactInformation?.address || '',
-        phone1: lead?.contactInformation?.phone1 || '',
-        phone2: lead?.contactInformation?.phone2 || '',
-        email: lead?.contactInformation?.email || ''
-      },
-
-      projectType: lead?.projectType || '',
-      projectSize: lead?.projectSize || '',
-      budgetEstimate: lead?.budgetEstimate || '',
-      currency: lead ? lead.currency : '',
-      expectedStart: lead?.expectedStart ? new Date(lead.expectedStart) : new Date(),
-      expectedCompletion: lead?.expectedCompletion ? new Date(lead.expectedCompletion) : null
-
-      // descriptionInformation: [
-      //   {
-      //     note: lead?.descriptionInformation[0].note || '',
-      //     // fileName: lead?.descriptionInformation[0].fileName || '',
-      //     files: lead?.descriptionInformation[0].files || false,
-      //   },
-      // ],
-      // document: lead?.document || false,
+      firstName: lead?.firstName || '',
+      lastName: lead?.lastName || '',
+      company: lead?.company || '',
+      address: lead?.address || '',
+      phone1: lead?.phone1 || '',
+      phone2: lead?.phone2 || '',
+      email: lead?.email || ''
     }),
     [lead]
   );
@@ -276,8 +213,8 @@ const ViewLead = ({ lead, onCancel }) => {
                           label="First Name"
                           disabled={true}
                           // placeholder="1st LEG VOYAGE"
-                          {...getFieldProps('contactInformation.firstName')}
-                          onChange={(event) => setFieldValue('contactInformation.firstName', event.target.value)}
+                          {...getFieldProps('firstName')}
+                          onChange={(event) => setFieldValue('firstName', event.target.value)}
                         />
                       </FormControl>
                     </Grid>
@@ -292,7 +229,7 @@ const ViewLead = ({ lead, onCancel }) => {
                           disabled={true}
                           id="lead-last-name"
                           placeholder="Enter Customer Last Name"
-                          {...getFieldProps('contactInformation.lastName')}
+                          {...getFieldProps('lastName')}
                           // error={Boolean(touched.lastName && errors.lastName)}
                           // helperText={touched.lastName && errors.lastName}
                         />
@@ -310,7 +247,7 @@ const ViewLead = ({ lead, onCancel }) => {
                           disabled={true}
                           id="lead-phone 1"
                           placeholder="Enter Phone Number 1"
-                          {...getFieldProps('contactInformation.phone1')}
+                          {...getFieldProps('phone1')}
                           error={Boolean(touched.phone1 && errors.phone1)}
                           helperText={touched.phone1 && errors.phone1}
                         />
@@ -329,9 +266,9 @@ const ViewLead = ({ lead, onCancel }) => {
                           disabled={true}
                           id="lead-phone 2"
                           placeholder="Enter Phone Number 2"
-                          {...getFieldProps('contactInformation.phone2')}
-                          error={Boolean(touched.contactInformation?.phone2 && errors.contactInformation?.phone2)}
-                          helperText={touched.contactInformation?.phone2 && errors.contactInformation?.phone2}
+                          {...getFieldProps('phone2')}
+                          error={Boolean(touched.phone2 && errors.phone2)}
+                          helperText={touched.phone2 && errors.phone2}
                         />
                       </Stack>
                     </Grid>
@@ -346,7 +283,7 @@ const ViewLead = ({ lead, onCancel }) => {
                           id="lead-email"
                           disabled={true}
                           placeholder="Enter Customer Email"
-                          {...getFieldProps('contactInformation.email')}
+                          {...getFieldProps('email')}
                           error={Boolean(touched.email && errors.email)}
                           helperText={touched.email && errors.email}
                         />
@@ -363,9 +300,9 @@ const ViewLead = ({ lead, onCancel }) => {
                           fullWidth
                           id="lead-address"
                           placeholder="Enter lead Adderess"
-                          {...getFieldProps('name')}
-                          error={Boolean(touched.name && errors.name)}
-                          helperText={touched.name && errors.name}
+                          {...getFieldProps('address')}
+                          error={Boolean(touched.address && errors.address)}
+                          helperText={touched.address && errors.address}
                         />
                       </Stack>
                     </Grid>
@@ -380,21 +317,15 @@ const ViewLead = ({ lead, onCancel }) => {
                           disabled={true}
                           id="customer-company-name"
                           placeholder="Enter Customer Company Name"
-                          {...getFieldProps('contactInformation.company')}
-                          error={Boolean(touched.name && errors.name)}
-                          helperText={touched.name && errors.name}
+                          {...getFieldProps('company')}
+                          error={Boolean(touched.company && errors.company)}
+                          helperText={touched.company && errors.company}
                         />
                       </Stack>
                     </Grid>
-
-                    
-
-                    
                   </Grid>
                 </Grid>
                 {/* end of contact information */}
-
-              
 
                 <Divider />
               </Grid>

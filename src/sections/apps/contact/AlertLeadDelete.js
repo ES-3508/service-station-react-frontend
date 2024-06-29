@@ -11,13 +11,14 @@ import { PopupTransition } from 'components/@extended/Transitions';
 import { DeleteFilled } from '@ant-design/icons';
 import { deleteLead } from 'store/reducers/leads';
 import { dispatch } from 'store';
+import { deleteContact } from 'store/reducers/contact';
 
 // ==============================|| Lead - DELETE ||============================== //
 
 export default function AlertLeadDelete({ title, leadId, open, handleClose }) {
 
   const deleteHandler = async () => {
-    dispatch(deleteLead(leadId));
+    dispatch(deleteContact(leadId));
     handleClose(true)
   }
 
