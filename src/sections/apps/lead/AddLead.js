@@ -50,6 +50,7 @@ import { CameraOutlined, CaretRightOutlined, DeleteFilled, RetweetOutlined } fro
 import { deleteLead, updateLead, uploadLeadImage } from 'store/reducers/leads';
 import { createLead } from 'store/reducers/leads';
 import ConvertToProject from './ConvertToProject';
+import { createVehicle, updateVehivle } from 'store/reducers/vehicle';
 
 // ==============================|| CUSTOMER ADD / EDIT / DELETE ||============================== //
 
@@ -107,84 +108,15 @@ const AddLead = ({ lead, onCancel }) => {
   };
 
   const LeadSchema = Yup.object().shape({
-    // priorityLevel: Yup.string(),
-    // companyType: Yup.string(),
-    // leadOwner: Yup.string(),
-    // startDate: Yup.date(),
-    // endDate: Yup.date()
-    //   .when(
-    //     'startDate',
-    //     (date, schema) => date && schema.min(date, "End date can't be before start date")
-    //   )
-    //   .nullable(),
-    contactInformation: Yup.object().shape({
-      firstName: Yup.string().required('First Name is required'),
-      //   lastName: Yup.string().required('Last Name is required'),
-      //   surName: Yup.string(),
-      //   company: Yup.string(),
-      //   companyNumber: Yup.string(),
-      //   industry: Yup.string(),
-      //   address: Yup.string(),
-      phone1: Yup.string().matches(/^\+?[0-9]+$/, 'Phone number must contain only numeric characters and may start with a "+" sign'),
-      phone2: Yup.string().matches(/^\+?[0-9]+$/, 'Phone number must contain only numeric characters and may start with a "+" sign'),
-      email: Yup.string().email('Invalid email address')
-    })
-    // descriptionInformation: Yup.array().of(
-    //   Yup.object().shape({
-    //     note: Yup.string(),
-    //     // fileName: Yup.string(),
-    //     files: Yup.mixed(),
-    //     // Remove createdBy, updatedBy, createdAt, and updatedAt
-    //   })
-    // ),
-    // projectType: Yup.string(),
-    // projectSize: Yup.string(),
-    // currency: Yup.string(),
-    // budgetEstimate: Yup.string(),
-    // expectedStart: Yup.date(),
-    // expectedCompletion: Yup.date()
-    //   .when(
-    //     'expectedStart',
-    //     (date, schema) => date && schema.min(date, "End date can't be before start date")
-    //   )
-    //   .nullable(),
+    numberPlate: Yup.string().required('Number plate is required')
   });
 
   const defaultValues = useMemo(
     () => ({
-      priorityLevel: lead?.priorityLevel || '',
-      companyType: lead?.companyType || '',
-      leadOwner: lead?.leadOwner || '',
-
-      startDate: lead?.startDate ? new Date(lead.startDate) : new Date(),
-      endDate: lead?.endDate ? new Date(lead.endDate) : new Date(),
-      contactInformation: {
-        firstName: lead?.contactInformation?.firstName || '',
-        lastName: lead?.contactInformation?.lastName || '',
-        company: lead?.contactInformation?.company || '',
-        companyNumber: lead?.contactInformation?.companyNumber || '',
-        industry: lead?.contactInformation?.industry || '',
-        address: lead?.contactInformation?.address || '',
-        phone1: lead?.contactInformation?.phone1 || '',
-        phone2: lead?.contactInformation?.phone2 || '',
-        email: lead?.contactInformation?.email || ''
-      },
-
-      projectType: lead?.projectType || 'Glass',
-      projectSize: lead?.projectSize || '',
-      budgetEstimate: lead?.budgetEstimate || '',
-      currency: lead ? lead.currency : 'GBP',
-      expectedStart: lead?.expectedStart ? new Date(lead.expectedStart) : new Date(),
-      expectedCompletion: lead?.expectedCompletion ? new Date(lead.expectedCompletion) : null
-
-      // descriptionInformation: [
-      //   {
-      //     note: lead?.descriptionInformation[0].note || '',
-      //     // fileName: lead?.descriptionInformation[0].fileName || '',
-      //     files: lead?.descriptionInformation[0].files || false,
-      //   },
-      // ],
-      // document: lead?.document || false,
+      numberPlate: lead?.numberPlate || '',
+      manufacturer: lead?.manufacturer || '',
+      model: lead?.model || '',
+      manufactureYear: lead?.manufactureYear || null,
     }),
     [lead]
   );
@@ -202,7 +134,7 @@ const AddLead = ({ lead, onCancel }) => {
               setSelectedImage(undefined);
               if (fileUrl) {
                 dispatch(
-                  updateLead(lead._id, {
+                  updateVehivle(lead._id, {
                     ...values,
                     imageUrl: fileUrl.payload
                   })
@@ -211,7 +143,7 @@ const AddLead = ({ lead, onCancel }) => {
             });
           } else {
             dispatch(
-              updateLead(lead._id, {
+              updateVehivle(lead._id, {
                 ...values,
                 imageUrl: lead.imageUrl
               })
@@ -225,7 +157,7 @@ const AddLead = ({ lead, onCancel }) => {
               setSelectedImage(undefined);
               if (fileUrl) {
                 dispatch(
-                  createLead({
+                  createVehicle({
                     ...values,
                     imageUrl: fileUrl.payload
                   })
@@ -234,7 +166,7 @@ const AddLead = ({ lead, onCancel }) => {
             });
           } else {
             console.log('create values ', values);
-            dispatch(createLead(values));
+            dispatch(createVehicle(values));
           }
 
           resetForm();
@@ -255,114 +187,113 @@ const AddLead = ({ lead, onCancel }) => {
       <FormikProvider value={formik}>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-  <Grid container justifyContent="space-between" alignItems="center">
-    <Grid item>
-      <DialogTitle sx={{ fontSize: 32, p: 3.5 }}>{lead ? 'Edit Vehicle' : 'Add Vehicle'}</DialogTitle>
-    </Grid>
-    <Grid item>
-      {lead && (
-        <Button variant="contained" color="primary" size="small" sx={{ marginRight: '20px' }} onClick={handleOpenModal}>
-          Convert to Project {' '}
-        </Button>
-      )}
-    </Grid>
-  </Grid>
-  <Divider />
-  <DialogContent sx={{ pt: 0.8 }}>
-    <Grid container spacing={1}>
-      <Grid item xs={12}></Grid>
-      <DialogTitle sx={{ marginTop: '10px' }}>Vehicle Information</DialogTitle>
-      <Grid item xs={12}>
-        <Grid container spacing={3}>
-          {/* Number Plate */}
-          <Grid item xs={12} sm={6}>
-            <FormControl fullWidth>
-              <TextField
-                id="numberPlate"
-                label="Number Plate"
-                {...getFieldProps('vehicleInformation.numberPlate')}
-                onChange={(event) => setFieldValue('vehicleInformation.numberPlate', event.target.value)}
-                error={Boolean(touched.vehicleInformation?.numberPlate && errors.vehicleInformation?.numberPlate)}
-                helperText={touched.vehicleInformation?.numberPlate && errors.vehicleInformation?.numberPlate}
-              />
-            </FormControl>
-          </Grid>
+            <Grid container justifyContent="space-between" alignItems="center">
+              <Grid item>
+                <DialogTitle sx={{ fontSize: 32, p: 3.5 }}>{lead ? 'Edit Vehicle' : 'Add Vehicle'}</DialogTitle>
+              </Grid>
+              <Grid item>
+                {lead && (
+                  <Button variant="contained" color="primary" size="small" sx={{ marginRight: '20px' }} onClick={handleOpenModal}>
+                    Convert to Project{' '}
+                  </Button>
+                )}
+              </Grid>
+            </Grid>
+            <Divider />
+            <DialogContent sx={{ pt: 0.8 }}>
+              <Grid container spacing={1}>
+                <Grid item xs={12}></Grid>
+                <DialogTitle sx={{ marginTop: '10px' }}>Vehicle Information</DialogTitle>
+                <Grid item xs={12}>
+                  <Grid container spacing={3}>
+                    {/* Number Plate */}
+                    <Grid item xs={12} sm={6}>
+                      <FormControl fullWidth>
+                        <TextField
+                          id="numberPlate"
+                          label="Number Plate"
+                          {...getFieldProps('numberPlate')}
+                          onChange={(event) => setFieldValue('numberPlate', event.target.value)}
+                          error={Boolean(touched.numberPlate && errors.numberPlate)}
+                          helperText={touched.numberPlate && errors.numberPlate}
+                        />
+                      </FormControl>
+                    </Grid>
 
-          {/* Manufacturer */}
-          <Grid item xs={12} sm={6}>
-            <FormControl fullWidth>
-              <TextField
-                id="manufacturer"
-                label="Manufacturer"
-                {...getFieldProps('vehicleInformation.manufacturer')}
-                onChange={(event) => setFieldValue('vehicleInformation.manufacturer', event.target.value)}
-                error={Boolean(touched.vehicleInformation?.manufacturer && errors.vehicleInformation?.manufacturer)}
-                helperText={touched.vehicleInformation?.manufacturer && errors.vehicleInformation?.manufacturer}
-              />
-            </FormControl>
-          </Grid>
+                    {/* Manufacturer */}
+                    <Grid item xs={12} sm={6}>
+                      <FormControl fullWidth>
+                        <TextField
+                          id="manufacturer"
+                          label="Manufacturer"
+                          {...getFieldProps('manufacturer')}
+                          onChange={(event) => setFieldValue('manufacturer', event.target.value)}
+                          error={Boolean(touched.manufacturer && errors.manufacturer)}
+                          helperText={touched.manufacturer && errors.manufacturer}
+                        />
+                      </FormControl>
+                    </Grid>
 
-          {/* Model */}
-          <Grid item xs={12} sm={6}>
-            <FormControl fullWidth>
-              <TextField
-                id="model"
-                label="Model"
-                {...getFieldProps('vehicleInformation.model')}
-                onChange={(event) => setFieldValue('vehicleInformation.model', event.target.value)}
-                error={Boolean(touched.vehicleInformation?.model && errors.vehicleInformation?.model)}
-                helperText={touched.vehicleInformation?.model && errors.vehicleInformation?.model}
-              />
-            </FormControl>
-          </Grid>
+                    {/* Model */}
+                    <Grid item xs={12} sm={6}>
+                      <FormControl fullWidth>
+                        <TextField
+                          id="model"
+                          label="Model"
+                          {...getFieldProps('model')}
+                          onChange={(event) => setFieldValue('model', event.target.value)}
+                          error={Boolean(touched.model && errors.model)}
+                          helperText={touched.model && errors.model}
+                        />
+                      </FormControl>
+                    </Grid>
 
-          {/* Manufacture Year */}
-          <Grid item xs={12} sm={6}>
-            <FormControl fullWidth>
-              <TextField
-                id="manufactureYear"
-                label="Manufacture Year"
-                type="number"
-                {...getFieldProps('vehicleInformation.manufactureYear')}
-                onChange={(event) => setFieldValue('vehicleInformation.manufactureYear', event.target.value)}
-                error={Boolean(touched.vehicleInformation?.manufactureYear && errors.vehicleInformation?.manufactureYear)}
-                helperText={touched.vehicleInformation?.manufactureYear && errors.vehicleInformation?.manufactureYear}
-              />
-            </FormControl>
-          </Grid>
-        </Grid>
-      </Grid>
-    </Grid>
-    <Dialog open={openModal} onClose={handleCloseModal}>
-      <ConvertToProject lead={lead} onCancel={handleCloseModal} />
-    </Dialog>
-  </DialogContent>
-  <Divider />
-  <DialogActions sx={{ p: 2.5 }}>
-    <Grid container justifyContent="space-between" alignItems="center">
-      <Grid item>
-        {!isCreating && (
-          <Tooltip title="Delete Vehicle" placement="top">
-            <IconButton onClick={() => deleteHandler(lead)} size="large" color="error">
-              <DeleteFilled />
-            </IconButton>
-          </Tooltip>
-        )}
-      </Grid>
-      <Grid item>
-        <Stack direction="row" spacing={2} alignItems="center">
-          <Button color="error" onClick={onCancel}>
-            Cancel
-          </Button>
-          <Button type="submit" variant="contained" disabled={isSubmitting}>
-            {lead ? 'Edit' : 'Add'}
-          </Button>
-        </Stack>
-      </Grid>
-    </Grid>
-  </DialogActions>
-</Form>
-
+                    {/* Manufacture Year */}
+                    <Grid item xs={12} sm={6}>
+                      <FormControl fullWidth>
+                        <TextField
+                          id="manufactureYear"
+                          label="Manufacture Year"
+                          type="number"
+                          {...getFieldProps('manufactureYear')}
+                          onChange={(event) => setFieldValue('manufactureYear', event.target.value)}
+                          error={Boolean(touched.manufactureYear && errors.manufactureYear)}
+                          helperText={touched.manufactureYear && errors.manufactureYear}
+                        />
+                      </FormControl>
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Dialog open={openModal} onClose={handleCloseModal}>
+                <ConvertToProject lead={lead} onCancel={handleCloseModal} />
+              </Dialog>
+            </DialogContent>
+            <Divider />
+            <DialogActions sx={{ p: 2.5 }}>
+              <Grid container justifyContent="space-between" alignItems="center">
+                <Grid item>
+                  {!isCreating && (
+                    <Tooltip title="Delete Vehicle" placement="top">
+                      <IconButton onClick={() => deleteHandler(lead)} size="large" color="error">
+                        <DeleteFilled />
+                      </IconButton>
+                    </Tooltip>
+                  )}
+                </Grid>
+                <Grid item>
+                  <Stack direction="row" spacing={2} alignItems="center">
+                    <Button color="error" onClick={onCancel}>
+                      Cancel
+                    </Button>
+                    <Button type="submit" variant="contained" disabled={isSubmitting}>
+                      {lead ? 'Edit' : 'Add'}
+                    </Button>
+                  </Stack>
+                </Grid>
+              </Grid>
+            </DialogActions>
+          </Form>
         </LocalizationProvider>
       </FormikProvider>
       {!isCreating && (

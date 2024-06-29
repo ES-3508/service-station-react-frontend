@@ -20,6 +20,7 @@ import invoice from './invoice';
 import tasks from './tasks';
 import leads from './leads';
 import contacts from './contact';
+import vehicles from './vehicle';
 // ==============================|| COMBINE REDUCERS ||============================== //
 
 const reducers = combineReducers({
@@ -45,7 +46,8 @@ const reducers = combineReducers({
   invoice,
   roles,
   leads,
-  contacts
+  contacts,
+  vehicles
   
 });
 

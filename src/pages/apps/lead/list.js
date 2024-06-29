@@ -63,6 +63,7 @@ import LeadCardPage from './card';
 import ViewLead from 'sections/apps/lead/LeadView';
 import TabLead from 'sections/apps/lead/View';
 import { Link } from 'react-router-dom';
+import { getVehicles } from 'store/reducers/vehicle';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -77,9 +78,9 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
   const [numOfPages, setNumOfPages] = useState(10);
 
   const {
-    leads: { leads, total },
+    vehicles: { vehicles, total },
     action
-  } = useSelector((state) => state.leads);
+  } = useSelector((state) => state.vehicles);
 
   const {
     getTableProps,
@@ -101,9 +102,9 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
   } = useTable(
     {
       columns,
-      data: leads,
+      data: vehicles,
       filterTypes,
-      initialState: { pageIndex: 0, pageSize: 10, hiddenColumns: ['age', 'address', 'imageUrl', 'zipCode', 'web', 'description'] },
+      initialState: { pageIndex: 0, pageSize: 10, hiddenColumns: [] },
       manualPagination: true,
       pageCount: Math.ceil(total / numOfPages),
       autoResetPage: false
@@ -117,14 +118,14 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
   );
 
   useEffect(() => {
-    dispatch(getLeads(pageIndex, pageSize, query));
+    dispatch(getVehicles(pageIndex, pageSize, query));
   }, [pageIndex, pageSize, query, action]);
 
   const renderRowSubComponent = useCallback(
     ({ row }) => {
-      return <LeadView data={leads.find((lead) => lead._id === row.values._id)} />;
+      return <LeadView data={vehicles.find((lead) => lead._id === row.values._id)} />;
     },
-    [leads]
+    [vehicles]
   );
 
   return (
@@ -156,7 +157,7 @@ function ReactTable({ columns, getHeaderProps, handleAdd }) {
               Add Vehicel
             </Button>
 
-            <CSVExport data={selectedFlatRows.length > 0 ? selectedFlatRows.map((d) => d.original) : leads} filename={'lead-list.csv'} />
+            <CSVExport data={selectedFlatRows.length > 0 ? selectedFlatRows.map((d) => d.original) : vehicles} filename={'vehicle-list.csv'} />
           </Stack>
         </Stack>
 
@@ -289,13 +290,13 @@ const ActionCell = (row, setLead, setLeadDeleteId, handleAdd, handleView, handle
   );
 
   const {
-    leads: { leads, total },
+    vehicles: { vehicles, total },
     action
-  } = useSelector((state) => state.leads);
+  } = useSelector((state) => state.vehicles);
 
   const filterLeadsById = (_id) => {
     console.log(_id, 'idddddddddd');
-    const selectedLead = leads.find((lead) => lead._id === _id);
+    const selectedLead = vehicles.find((lead) => lead._id === _id);
     // Do something with the selected lead, for example, set it in state
     setLead(selectedLead);
   };
@@ -348,7 +349,8 @@ const ActionCell = (row, setLead, setLeadDeleteId, handleAdd, handleView, handle
             handleClose();
             setLeadDeleteId({
               _id: row.values._id,
-              created: row.values.created
+              created: row.values.created,
+              numberPlate: row.values.numberPlate
             });
           }}
         >
@@ -363,11 +365,11 @@ const CustomCell2 = (row, setLead, handleOpenTabLead) => {
   const { values } = row;
   console.log('values name ', row.values._id);
   const {
-    leads: { leads, total },
+    vehicles: { vehicles, total },
     action
-  } = useSelector((state) => state.leads);
+  } = useSelector((state) => state.vehicles);
   const filterLeadsById = (_id) => {
-    const selectedLead = leads.find((lead) => lead._id === _id);
+    const selectedLead = vehicles.find((lead) => lead._id === _id);
     // Do something with the selected lead, for example, set it in state
     setLead(selectedLead);
   };
@@ -385,9 +387,9 @@ const CustomCell2 = (row, setLead, handleOpenTabLead) => {
             //   handleOpenTabLead();
             // }}
           >
-            {values?.contactInformation?.firstName}
-            {` `}
-            {values?.contactInformation?.lastName}
+            {values?.numberPlate}
+            {/* {` `}
+            {values?.contactInformation?.lastName} */}
           </Typography>
         </Link>
       </Stack>
@@ -426,7 +428,8 @@ const LeadListPage = () => {
   const [lead, setLead] = useState();
   const [deletingLead, setDeletingLead] = useState({
     _id: null,
-    created: ''
+    created: '',
+    numberPlate: ''
   });
   const [tebLeadOpen, setTabLeadOpen] = useState(false);
 
@@ -458,20 +461,20 @@ const LeadListPage = () => {
       },
       {
         Header: 'Number Plate',
-        accessor: 'vehicleInformation.numberPlate',
+        accessor: 'numberPlate',
         Cell: ({ row }) => CustomCell2(row, setLead, handleOpenTabLead)
       },
       {
         Header: 'Manufacturer',
-        accessor: 'vehicleInformation.manufacturer'
+        accessor: 'manufacturer'
       },
       {
         Header: 'Model',
-        accessor: 'vehicleInformation.model'
+        accessor: 'model'
       },
       {
         Header: 'Manufacture Year',
-        accessor: 'vehicleInformation.manufactureYear',
+        accessor: 'manufactureYear',
         Cell: ({ value }) => {
           if (value === null) {
             return ''; // Or you can return any other representation of a blank cell
@@ -533,7 +536,7 @@ const LeadListPage = () => {
           <ScrollX>
             <ReactTable columns={columns} handleAdd={handleAdd} getHeaderProps={(column) => column.getSortByToggleProps()} />
           </ScrollX>
-          <AlertLeadDelete title={deletingLead.created} leadId={deletingLead._id} open={open} handleClose={handleClose} />
+          <AlertLeadDelete title={deletingLead.numberPlate} leadId={deletingLead._id} open={open} handleClose={handleClose} />
           {/* add user dialog */}
           <Dialog
             maxWidth="sm"

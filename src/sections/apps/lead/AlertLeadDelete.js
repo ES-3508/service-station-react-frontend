@@ -11,13 +11,14 @@ import { PopupTransition } from 'components/@extended/Transitions';
 import { DeleteFilled } from '@ant-design/icons';
 import { deleteLead } from 'store/reducers/leads';
 import { dispatch } from 'store';
+import { deleteVehicle } from 'store/reducers/vehicle';
 
 // ==============================|| Lead - DELETE ||============================== //
 
 export default function AlertLeadDelete({ title, leadId, open, handleClose }) {
 
   const deleteHandler = async () => {
-    dispatch(deleteLead(leadId));
+    dispatch(deleteVehicle(leadId));
     handleClose(true)
   }
 
@@ -46,7 +47,7 @@ export default function AlertLeadDelete({ title, leadId, open, handleClose }) {
                 {' '}
                 &quot;{title}&quot;{' '}
               </Typography>
-              user, all task assigned to that user will also be deleted.
+              vehicle, all task assigned to that vehicle will also be deleted.
             </Typography>
           </Stack>
 

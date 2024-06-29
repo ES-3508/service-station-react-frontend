@@ -7,19 +7,19 @@ const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit")
 const initialState = {
     action: false,
     error: null,
-    contact: {},
-    contacts: {
-        contacts: [],
+    vehicle: {},
+    vehicles: {
+        vehicles: [],
         page: null,
         total: null,
         limit: null,
     },
-    deletedcontact: {},
+    deletedVehivle: {},
     uploadedImageUrl: null,
 }
 
-const contacts = createSlice({
-    name: 'contacts',
+const vehicles = createSlice({
+    name: 'vehicles',
     initialState,
     reducers: {
         // HAS ERROR
@@ -28,12 +28,12 @@ const contacts = createSlice({
         },
 
         // GET leadS
-        getContactsSuccess(state, action) {
-            state.contacts = action.payload;
+        getVehiclesSuccess(state, action) {
+            state.vehicles = action.payload;
         },
 
-        deleteContactSuccess(state, action) {
-            state.deletedcontact = action.payload;
+        deleteVehicleSuccess(state, action) {
+            state.deletedVehivle = action.payload;
         },
 
         setAction(state) {
@@ -46,54 +46,52 @@ const contacts = createSlice({
     }
 });
 
-export default contacts.reducer;
+export default vehicles.reducer;
 
-export function setActionContacts() {
-    dispatch(contacts.actions.setAction());
+export function setActionVehicles() {
+    dispatch(vehicles.actions.setAction());
 }
 
-export function getContacts(pageIndex = 0, pageSize = 10, query) {
+export function getVehicles(pageIndex = 0, pageSize = 10, query) {
     return async () => {
         try {
 
-            let requestUrl = `/api/v1/contact?page=${pageIndex + 1}&limit=${pageSize}`;
+            let requestUrl = `/api/v1/vehicle?page=${pageIndex + 1}&limit=${pageSize}`;
 
             if (query) {
                 requestUrl = `${requestUrl}&query=${query}`
             }
 
             const response = await axios.get(requestUrl);
-            console.log("contacts response",response);
 
             if (response.status === 200) {
-                dispatch(contacts.actions.getContactsSuccess(response.data.data));
+                dispatch(vehicles.actions.getVehiclesSuccess(response.data.data));
             }
 
         } catch (error) {
-            dispatch(contacts.actions.hasError(error));
+            dispatch(vehicles.actions.hasError(error));
         }
     };
 }
 
-export function createContact(values) {
+export function createVehicle(values) {
     return async () => {
         try {
-            const response = await axios.post('/api/v1/contact', {
+            const response = await axios.post('/api/v1/vehicle', {
                 ...values,
-                phone: Number(values.phone),
-                age: Number(values.age),
+                manufactureYear: Number(values.manufactureYear),
                 // TODO: set uploaded image,
                 // imageUrl: "https://uploads-ssl.webflow.com/63f46d18f2e566716e8d3a69/63f88caea3a61965fef45229_oguz-yagiz-kara-MZf0mI14RI0-unsplash%20(1)-p-500.jpg"
             });
 
             if (response.status === 200) {
 
-                setActionContacts();
+                setActionVehicles();
 
                 dispatch(
                     openSnackbar({
                         open: true,
-                        message: 'Contact crated successfully.',
+                        message: 'Vehicle crated successfully.',
                         variant: 'alert',
                         alert: {
                             color: 'success'
@@ -108,7 +106,7 @@ export function createContact(values) {
             dispatch(
                 openSnackbar({
                     open: true,
-                    message: 'Contacts could not create.',
+                    message: 'Vehicle could not create.',
                     variant: 'alert',
                     alert: {
                         color: 'error'
@@ -116,27 +114,27 @@ export function createContact(values) {
                     close: false
                 })
             );
-            dispatch(contacts.actions.hasError(err));
+            dispatch(vehicles.actions.hasError(err));
         }
     }
 }
 
-export function updateContact(leadId, values) {
+export function updateVehivle(leadId, values) {
     return async () => {
         try {
-            const response = await axios.put(`/api/v1/contact/${leadId}/update`, {
+            const response = await axios.put(`/api/v1/vehicle/${leadId}/update`, {
                 ...values,
                 age: Number(values.age),
             });
 
             if (response.status === 200) {
 
-                setActionContacts();
+                setActionVehicles();
 
                 dispatch(
                     openSnackbar({
                         open: true,
-                        message: 'Contact updated successfully.',
+                        message: 'Vehicle updated successfully.',
                         variant: 'alert',
                         alert: {
                             color: 'success'
@@ -151,7 +149,7 @@ export function updateContact(leadId, values) {
             dispatch(
                 openSnackbar({
                     open: true,
-                    message: 'Contact could not update.',
+                    message: 'Vehicle could not update.',
                     variant: 'alert',
                     alert: {
                         color: 'error'
@@ -159,27 +157,27 @@ export function updateContact(leadId, values) {
                     close: false
                 })
             );
-            dispatch(contacts.actions.hasError(err));
+            dispatch(vehicles.actions.hasError(err));
         }
     }
 }
 
 
-export function deleteContact(leadId) {
+export function deleteVehicle(leadId) {
     return async () => {
         try {
-            const response = await axios.post(`/api/v1/contact/${leadId}/delete`);
+            const response = await axios.post(`/api/v1/vehicle/${leadId}/delete`);
 
             if (response.status === 200) {
 
-                dispatch(contacts.actions.deleteContactSuccess(response.data));
+                dispatch(vehicles.actions.deleteVehicleSuccess(response.data));
 
-                setActionContacts();
+                setActionVehicles();
 
                 dispatch(
                     openSnackbar({
                         open: true,
-                        message: 'Lead deleted successfully.',
+                        message: 'Vehicle deleted successfully.',
                         variant: 'alert',
                         alert: {
                             color: 'success'
@@ -193,7 +191,7 @@ export function deleteContact(leadId) {
             dispatch(
                 openSnackbar({
                     open: true,
-                    message: 'Lead deleted failed.',
+                    message: 'Vehicle deleted failed.',
                     variant: 'alert',
                     alert: {
                         color: 'error'
@@ -201,7 +199,7 @@ export function deleteContact(leadId) {
                     close: false
                 })
             );
-            dispatch(contacts.actions.hasError(error));
+            dispatch(vehicles.actions.hasError(error));
         }
     };
 }
